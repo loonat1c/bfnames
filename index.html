@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Речевой трекер дорам</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f0e0c;
+    --surface: #1a1917;
+    --surface2: #232220;
+    --border: rgba(255,255,255,0.08);
+    --border2: rgba(255,255,255,0.14);
+    --text: #f0ece4;
+    --text2: #9a9690;
+    --text3: #5a5752;
+    --accent: #c9a96e;
+    --accent2: #e8d5b0;
+    --ty-bg: #0e2318;
+    --ty-text: #4ebb87;
+    --vy-bg: #0e1a2e;
+    --vy-text: #5b9bd5;
+    --radius: 10px;
+    --radius-lg: 16px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    font-weight: 300;
+  }
+
+  /* HEADER */
+  header {
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+    position: sticky;
+    top: 0;
+    background: var(--bg);
+    z-index: 100;
+  }
+  .logo {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: .02em;
+  }
+  .logo span { color: var(--text2); font-weight: 400; font-size: 13px; margin-left: 8px; }
+  .status-dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: #3a3835; display: inline-block; margin-right: 6px;
+    transition: background .3s;
+  }
+  .status-dot.online { background: var(--ty-text); }
+  #status-text { font-size: 12px; color: var(--text3); }
+
+  /* LAYOUT */
+  .layout { display: flex; height: calc(100vh - 56px); }
+
+  /* SIDEBAR */
+  .sidebar {
+    width: 220px;
+    flex-shrink: 0;
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+  }
+  .sidebar-section { padding: 1.25rem 1rem 0.5rem; }
+  .sidebar-label {
+    font-size: 10px;
+    letter-spacing: .1em;
+    color: var(--text3);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    padding: 0 4px;
+  }
+  .drama-btn {
+    width: 100%;
+    text-align: left;
+    padding: 8px 10px;
+    border-radius: 8px;
+    border: none;
+    background: transparent;
+    color: var(--text2);
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all .15s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .drama-btn:hover { background: var(--surface); color: var(--text); }
+  .drama-btn.active { background: var(--surface2); color: var(--accent2); }
+  .drama-btn .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); flex-shrink: 0; opacity: .5; }
+  .drama-btn.active .dot { opacity: 1; }
+  .add-drama-row {
+    display: flex; gap: 6px; padding: 0 1rem 1rem;
+    margin-top: auto;
+    border-top: 1px solid var(--border);
+    padding-top: 1rem;
+  }
+  .add-drama-row input {
+    flex: 1; font-size: 12px; padding: 6px 8px;
+    background: var(--surface); border: 1px solid var(--border2);
+    border-radius: 7px; color: var(--text); outline: none;
+    font-family: 'Noto Sans KR', sans-serif;
+  }
+  .add-drama-row input:focus { border-color: var(--accent); }
+  .btn-sm {
+    padding: 6px 10px; font-size: 12px; border-radius: 7px;
+    background: var(--accent); color: #0f0e0c; border: none;
+    cursor: pointer; font-weight: 500; flex-shrink: 0;
+    font-family: 'Noto Sans KR', sans-serif;
+    transition: opacity .15s;
+  }
+  .btn-sm:hover { opacity: .85; }
+
+  /* MAIN */
+  main { flex: 1; overflow-y: auto; padding: 2rem; }
+  .no-drama {
+    display: flex; flex-direction: column; align-items: center;
+    justify-content: center; height: 100%; color: var(--text3);
+    gap: 12px;
+  }
+  .no-drama .big { font-family: 'Noto Serif KR', serif; font-size: 32px; color: var(--border2); }
+
+  /* TABS */
+  .tabs { display: flex; gap: 2px; margin-bottom: 2rem; border-bottom: 1px solid var(--border); }
+  .tab {
+    padding: 8px 16px; font-size: 13px; border: none; background: transparent;
+    color: var(--text3); cursor: pointer; font-family: 'Noto Sans KR', sans-serif;
+    border-bottom: 2px solid transparent; margin-bottom: -1px; transition: all .15s;
+  }
+  .tab:hover { color: var(--text2); }
+  .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  /* CARDS */
+  .card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius-lg); padding: 1.25rem; margin-bottom: 1rem;
+  }
+  .card-title { font-size: 11px; letter-spacing: .08em; color: var(--text3); text-transform: uppercase; margin-bottom: 14px; }
+
+  /* FORM */
+  .form-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  input, select {
+    padding: 8px 12px; font-size: 13px;
+    background: var(--surface2); border: 1px solid var(--border2);
+    border-radius: var(--radius); color: var(--text); outline: none;
+    font-family: 'Noto Sans KR', sans-serif; transition: border-color .15s;
+  }
+  input:focus, select:focus { border-color: var(--accent); }
+  select option { background: var(--surface2); }
+  .btn {
+    padding: 8px 16px; font-size: 13px; border-radius: var(--radius);
+    background: var(--accent); color: #0f0e0c; border: none;
+    cursor: pointer; font-weight: 500;
+    font-family: 'Noto Sans KR', sans-serif; transition: opacity .15s; white-space: nowrap;
+  }
+  .btn:hover { opacity: .85; }
+  .btn-ghost {
+    background: transparent; color: var(--text2);
+    border: 1px solid var(--border2);
+  }
+  .btn-ghost:hover { background: var(--surface2); color: var(--text); opacity: 1; }
+
+  /* BADGES */
+  .badge {
+    display: inline-block; font-size: 11px; padding: 2px 9px;
+    border-radius: 10px; font-weight: 500;
+  }
+  .badge.ty { background: var(--ty-bg); color: var(--ty-text); }
+  .badge.vy { background: var(--vy-bg); color: var(--vy-text); }
+  .badge.dash { background: var(--surface2); color: var(--text3); }
+
+  /* CHARS */
+  .chars-wrap { display: flex; flex-wrap: wrap; gap: 6px; min-height: 28px; }
+  .char-tag {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 13px; padding: 4px 10px;
+    background: var(--surface2); border: 1px solid var(--border2);
+    border-radius: 20px; color: var(--text2);
+  }
+  .del-btn {
+    border: none; background: transparent; color: var(--text3);
+    cursor: pointer; font-size: 15px; line-height: 1; padding: 0 1px;
+    font-family: inherit;
+  }
+  .del-btn:hover { color: var(--text); }
+
+  /* PAIRS LIST */
+  .pair-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 14px; background: var(--surface2);
+    border-radius: var(--radius); margin-bottom: 6px; font-size: 13px;
+  }
+  .pair-body { flex: 1; }
+  .pair-row { display: flex; align-items: center; gap: 6px; margin-bottom: 3px; }
+  .pair-row:last-child { margin-bottom: 0; }
+  .pair-arrow { color: var(--text3); font-size: 11px; }
+  .pair-note { font-size: 11px; color: var(--text3); margin-top: 4px; }
+
+  /* SEARCH RESULT */
+  .result-card {
+    background: var(--surface2); border: 1px solid var(--border2);
+    border-radius: var(--radius-lg); padding: 1.25rem; margin-top: 1rem;
+  }
+  .result-title { font-family: 'Noto Serif KR', serif; font-size: 16px; color: var(--accent2); margin-bottom: 12px; }
+  .result-row { display: flex; align-items: center; gap: 8px; font-size: 14px; margin-bottom: 6px; }
+
+  /* PANE */
+  .pane { display: none; }
+  .pane.active { display: block; }
+
+  .empty { font-size: 13px; color: var(--text3); padding: 4px 0; }
+
+  /* LOADING */
+  #loading {
+    position: fixed; inset: 0; background: var(--bg);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 999; font-family: 'Noto Serif KR', serif;
+    font-size: 14px; color: var(--text3); letter-spacing: .05em;
+  }
+
+  @media (max-width: 600px) {
+    .sidebar { width: 160px; }
+    main { padding: 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<div id="loading">연결 중…</div>
+
+<header>
+  <div class="logo">드라마 <span>речевой трекер</span></div>
+  <div><span class="status-dot" id="status-dot"></span><span id="status-text">подключение…</span></div>
+</header>
+
+<div class="layout">
+  <div class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Дорамы</div>
+      <div id="drama-list"></div>
+    </div>
+    <div style="flex:1"></div>
+    <div class="add-drama-row">
+      <input id="drama-input" placeholder="Новая дорама…" onkeydown="if(event.key==='Enter')addDrama()">
+      <button class="btn-sm" onclick="addDrama()">+</button>
+    </div>
+  </div>
+
+  <main>
+    <div id="no-drama" class="no-drama">
+      <div class="big">ドラマ</div>
+      <div>Выбери дораму слева или создай новую</div>
+    </div>
+
+    <div id="drama-view" style="display:none">
+      <div class="tabs">
+        <button class="tab active" onclick="switchTab('chars',this)">Персонажи</button>
+        <button class="tab" onclick="switchTab('pairs',this)">Пары</button>
+        <button class="tab" onclick="switchTab('search',this)">Поиск</button>
+      </div>
+
+      <!-- CHARS -->
+      <div id="pane-chars" class="pane active">
+        <div class="card">
+          <div class="card-title">Добавить персонажа</div>
+          <div class="form-row">
+            <input id="char-input" placeholder="Имя персонажа" onkeydown="if(event.key==='Enter')addChar()" style="flex:1">
+            <button class="btn" onclick="addChar()">Добавить</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">Список персонажей</div>
+          <div class="chars-wrap" id="chars-list"></div>
+        </div>
+      </div>
+
+      <!-- PAIRS -->
+      <div id="pane-pairs" class="pane">
+        <div class="card">
+          <div class="card-title">Добавить пару</div>
+          <div class="form-row" style="margin-bottom:10px">
+            <select id="sel-a" style="flex:1"><option value="">— от кого —</option></select>
+            <select id="sel-b" style="flex:1"><option value="">— к кому —</option></select>
+          </div>
+          <div class="form-row" style="margin-bottom:10px">
+            <span style="font-size:12px;color:var(--text3);white-space:nowrap">А → Б:</span>
+            <select id="sel-speech"><option value="ты">ты</option><option value="вы">вы</option><option value="—">—</option></select>
+            <span style="font-size:12px;color:var(--text3);white-space:nowrap">Б → А:</span>
+            <select id="sel-speech-rev"><option value="ты">ты</option><option value="вы">вы</option><option value="—">—</option></select>
+          </div>
+          <div class="form-row">
+            <input id="note-input" placeholder="Заметка (необязательно)" style="flex:1">
+            <button class="btn" onclick="addPair()">Сохранить</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">Все пары</div>
+          <div id="pairs-list"></div>
+        </div>
+      </div>
+
+      <!-- SEARCH -->
+      <div id="pane-search" class="pane">
+        <div class="card">
+          <div class="card-title">Найти пару</div>
+          <div class="form-row">
+            <select id="find-a" onchange="renderResult()" style="flex:1"><option value="">— персонаж А —</option></select>
+            <select id="find-b" onchange="renderResult()" style="flex:1"><option value="">— персонаж Б —</option></select>
+          </div>
+          <div id="result-area"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Firebase SDKs -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, onValue, set, remove, push } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+// =============================================
+// ВСТАВЬ СВОИ ДАННЫЕ FIREBASE СЮДА:
+const firebaseConfig = {
+  apiKey: "AIzaSyAg_UhVP2DRU_jrqJD-Or3Iy8ZEIQWaAIU",
+  authDomain: "bfnames.firebaseapp.com",
+  databaseURL: "https://bfnames-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "bfnames",
+  storageBucket: "bfnames.firebasestorage.app",
+  messagingSenderId: "1066954721078",
+  appId: "1:1066954721078:web:fb729d5ccb8671db175597"
+};
+// =============================================
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+let state = { dramas: {}, currentDrama: null };
+
+// Status
+function setStatus(online) {
+  document.getElementById('status-dot').className = 'status-dot' + (online ? ' online' : '');
+  document.getElementById('status-text').textContent = online ? 'синхронизировано' : 'нет связи';
+}
+
+// Live sync
+const dbRef = ref(db, 'dramas');
+onValue(dbRef, snap => {
+  document.getElementById('loading').style.display = 'none';
+  setStatus(true);
+  state.dramas = snap.val() || {};
+  renderSidebar();
+  if (state.currentDrama) renderCurrentDrama();
+}, err => { setStatus(false); document.getElementById('loading').style.display = 'none'; });
+
+// ---- SIDEBAR ----
+function renderSidebar() {
+  const list = document.getElementById('drama-list');
+  const keys = Object.keys(state.dramas);
+  if (!keys.length) { list.innerHTML = '<div style="font-size:12px;color:var(--text3);padding:4px 4px">Нет дорам</div>'; return; }
+  list.innerHTML = keys.map(k => {
+    const d = state.dramas[k];
+    const active = state.currentDrama === k ? ' active' : '';
+    return `<button class="drama-btn${active}" onclick="selectDrama('${k}')">
+      <span class="dot"></span>${d.name || k}
+    </button>`;
+  }).join('');
+}
+
+window.addDrama = function() {
+  const inp = document.getElementById('drama-input');
+  const v = inp.value.trim();
+  if (!v) return;
+  const newRef = push(ref(db, 'dramas'));
+  set(newRef, { name: v, chars: {}, pairs: {} });
+  inp.value = '';
+};
+
+window.selectDrama = function(id) {
+  state.currentDrama = id;
+  document.getElementById('no-drama').style.display = 'none';
+  document.getElementById('drama-view').style.display = 'block';
+  renderSidebar();
+  renderCurrentDrama();
+};
+
+// ---- CURRENT DRAMA ----
+function renderCurrentDrama() {
+  const d = state.dramas[state.currentDrama];
+  if (!d) return;
+  renderChars();
+  renderPairs();
+  updateSelects();
+}
+
+function drama() { return state.dramas[state.currentDrama] || {}; }
+function dramaPath() { return `dramas/${state.currentDrama}`; }
+
+// ---- CHARS ----
+function renderChars() {
+  const chars = Object.entries(drama().chars || {});
+  const w = document.getElementById('chars-list');
+  w.innerHTML = chars.length
+    ? chars.map(([k, v]) => `<span class="char-tag">${v}<button class="del-btn" onclick="removeChar('${k}')">×</button></span>`).join('')
+    : '<span class="empty">Нет персонажей</span>';
+}
+
+function updateSelects() {
+  const chars = Object.entries(drama().chars || {});
+  const opts = '<option value="">— выбрать —</option>' + chars.map(([k,v]) => `<option value="${k}">${v}</option>`).join('');
+  ['sel-a','sel-b','find-a','find-b'].forEach(id => {
+    const el = document.getElementById(id);
+    const cur = el.value;
+    el.innerHTML = opts;
+    if (chars.find(([k])=>k===cur)) el.value = cur;
+  });
+}
+
+window.addChar = function() {
+  const inp = document.getElementById('char-input');
+  const v = inp.value.trim();
+  if (!v || !state.currentDrama) return;
+  const newRef = push(ref(db, `${dramaPath()}/chars`));
+  set(newRef, v);
+  inp.value = '';
+};
+
+window.removeChar = function(key) {
+  remove(ref(db, `${dramaPath()}/chars/${key}`));
+  const pairs = drama().pairs || {};
+  Object.keys(pairs).forEach(pk => {
+    const p = pairs[pk];
+    if (p.a === key || p.b === key) remove(ref(db, `${dramaPath()}/pairs/${pk}`));
+  });
+};
+
+// ---- PAIRS ----
+function badge(s) {
+  const cls = s === 'ты' ? 'ty' : s === 'вы' ? 'vy' : 'dash';
+  return `<span class="badge ${cls}">${s}</span>`;
+}
+
+function charName(key) {
+  return (drama().chars || {})[key] || key;
+}
+
+function renderPairs() {
+  const pairs = Object.entries(drama().pairs || {});
+  const w = document.getElementById('pairs-list');
+  if (!pairs.length) { w.innerHTML = '<div class="empty">Нет пар</div>'; return; }
+  w.innerHTML = pairs.map(([k, p]) => `
+    <div class="pair-item">
+      <div class="pair-body">
+        <div class="pair-row">${charName(p.a)}<span class="pair-arrow">→</span>${charName(p.b)}: ${badge(p.speech)}</div>
+        <div class="pair-row">${charName(p.b)}<span class="pair-arrow">→</span>${charName(p.a)}: ${badge(p.speechRev)}</div>
+        ${p.note ? `<div class="pair-note">${p.note}</div>` : ''}
+      </div>
+      <button class="del-btn" onclick="removePair('${k}')">×</button>
+    </div>`).join('');
+}
+
+window.addPair = function() {
+  const a = document.getElementById('sel-a').value;
+  const b = document.getElementById('sel-b').value;
+  if (!a || !b || a === b) { alert('Выбери двух разных персонажей'); return; }
+  const s = document.getElementById('sel-speech').value;
+  const sr = document.getElementById('sel-speech-rev').value;
+  const note = document.getElementById('note-input').value.trim();
+  const pairs = drama().pairs || {};
+  // удалить дубли
+  Object.entries(pairs).forEach(([k, p]) => {
+    if ((p.a === a && p.b === b) || (p.a === b && p.b === a)) remove(ref(db, `${dramaPath()}/pairs/${k}`));
+  });
+  push(ref(db, `${dramaPath()}/pairs`), { a, b, speech: s, speechRev: sr, note });
+  document.getElementById('note-input').value = '';
+};
+
+window.removePair = function(key) {
+  remove(ref(db, `${dramaPath()}/pairs/${key}`));
+};
+
+// ---- SEARCH ----
+window.renderResult = function() {
+  const ak = document.getElementById('find-a').value;
+  const bk = document.getElementById('find-b').value;
+  const ra = document.getElementById('result-area');
+  if (!ak || !bk) { ra.innerHTML = ''; return; }
+  if (ak === bk) { ra.innerHTML = '<div class="empty" style="margin-top:8px">Выбери разных персонажей</div>'; return; }
+  const pairs = Object.values(drama().pairs || {});
+  const p = pairs.find(x => (x.a === ak && x.b === bk) || (x.a === bk && x.b === ak));
+  if (!p) { ra.innerHTML = '<div class="result-card"><div class="empty">Пара не найдена</div></div>'; return; }
+  const fwd = p.a === ak ? { s: p.speech, r: p.speechRev } : { s: p.speechRev, r: p.speech };
+  const an = charName(ak), bn = charName(bk);
+  ra.innerHTML = `<div class="result-card">
+    <div class="result-title">${an} — ${bn}</div>
+    <div class="result-row">${an} <span style="color:var(--text3)">→</span> ${bn}: ${badge(fwd.s)}</div>
+    <div class="result-row">${bn} <span style="color:var(--text3)">→</span> ${an}: ${badge(fwd.r)}</div>
+    ${p.note ? `<div style="font-size:13px;color:var(--text3);margin-top:8px">${p.note}</div>` : ''}
+  </div>`;
+};
+
+// ---- TABS ----
+window.switchTab = function(t, btn) {
+  document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.pane').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('pane-' + t).classList.add('active');
+};
+</script>
+</body>
+</html>
