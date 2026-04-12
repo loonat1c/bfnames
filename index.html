@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Baddest Females - Обращения в дорамах</title>
+<title>Baddest Females - Трекер обращений</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -24,6 +24,38 @@
     --radius: 10px;
     --radius-lg: 16px;
   }
+  body.light {
+    --bg: #f7f5f0;
+    --surface: #ffffff;
+    --surface2: #f0ede6;
+    --border: rgba(0,0,0,0.08);
+    --border2: rgba(0,0,0,0.13);
+    --text: #1a1814;
+    --text2: #6b6760;
+    --text3: #a8a49e;
+    --accent: #a07c3e;
+    --accent2: #7a5e2a;
+    --ty-bg: #e6f7ef;
+    --ty-text: #1a7a50;
+    --vy-bg: #e6f0fb;
+    --vy-text: #1a52a0;
+  }
+  .theme-toggle { display: flex; align-items: center; gap: 8px; }
+  .toggle-switch { position: relative; width: 36px; height: 20px; cursor: pointer; }
+  .toggle-switch input { display: none; }
+  .toggle-track {
+    position: absolute; inset: 0;
+    background: var(--surface2); border: 1px solid var(--border2);
+    border-radius: 10px; transition: background .2s;
+  }
+  .toggle-switch input:checked + .toggle-track { background: var(--accent); border-color: var(--accent); }
+  .toggle-thumb {
+    position: absolute; top: 3px; left: 3px;
+    width: 14px; height: 14px; border-radius: 50%;
+    background: var(--text3); transition: transform .2s, background .2s;
+  }
+  .toggle-switch input:checked ~ .toggle-thumb { transform: translateX(16px); background: #fff; }
+  .toggle-icon { font-size: 13px; color: var(--text3); user-select: none; }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
     font-family: 'Noto Sans KR', sans-serif;
@@ -256,8 +288,19 @@
 <div id="loading">연결 중…</div>
 
 <header>
-  <div class="logo">Baddest Females <span>Обращения в дорамах</span></div>
-  <div><span class="status-dot" id="status-dot"></span><span id="status-text">подключение…</span></div>
+  <div class="logo">Baddest Females<span>Трекер обращений</span></div>
+  <div style="display:flex;align-items:center;gap:16px">
+    <div><span class="status-dot" id="status-dot"></span><span id="status-text">подключение…</span></div>
+    <div class="theme-toggle">
+      <span class="toggle-icon">☽</span>
+      <label class="toggle-switch">
+        <input type="checkbox" id="theme-chk" onchange="toggleTheme(this.checked)">
+        <div class="toggle-track"></div>
+        <div class="toggle-thumb"></div>
+      </label>
+      <span class="toggle-icon">☀</span>
+    </div>
+  </div>
 </header>
 
 <div class="layout">
@@ -277,7 +320,7 @@
 
   <main>
     <div id="no-drama" class="no-drama">
-      <div class="big">ドラマ</div>
+      <div class="big">배디스트 피메일즈</div>
       <div>Выбери дораму слева или создай новую</div>
     </div>
 
@@ -539,6 +582,20 @@ window.renderResult = function() {
     ${p.note ? `<div style="font-size:13px;color:var(--text3);margin-top:8px">${p.note}</div>` : ''}
   </div>`;
 };
+
+// ---- THEME ----
+window.toggleTheme = function(isLight) {
+  document.body.classList.toggle('light', isLight);
+  localStorage.setItem('dc_theme', isLight ? 'light' : 'dark');
+};
+(function(){
+  const saved = localStorage.getItem('dc_theme');
+  if (saved === 'light') {
+    document.body.classList.add('light');
+    const chk = document.getElementById('theme-chk');
+    if (chk) chk.checked = true;
+  }
+})();
 
 // ---- TABS ----
 window.switchTab = function(t, btn) {
