@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Обращения в дорамах BF</title>
+<title>Речевой трекер дорам</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -67,7 +67,7 @@
 
   /* SIDEBAR */
   .sidebar {
-    width: 220px;
+    width: 260px;
     flex-shrink: 0;
     border-right: 1px solid var(--border);
     display: flex;
@@ -108,11 +108,20 @@
   .drama-btn .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); flex-shrink: 0; opacity: .5; }
   .drama-btn.active .dot { opacity: 1; }
   .add-drama-row {
-    display: flex; gap: 6px; padding: 0 1rem 1rem;
-    margin-top: auto;
-    border-top: 1px solid var(--border);
-    padding-top: 1rem;
+    display: flex; gap: 6px; padding: 1rem 1rem 0.5rem;
+    border-bottom: 1px solid var(--border);
   }
+  .sidebar-search {
+    padding: 0.5rem 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .sidebar-search input {
+    width: 100%; font-size: 12px; padding: 6px 8px;
+    background: var(--surface); border: 1px solid var(--border2);
+    border-radius: 7px; color: var(--text); outline: none;
+    font-family: 'Noto Sans KR', sans-serif;
+  }
+  .sidebar-search input:focus { border-color: var(--accent); }
   .add-drama-row input {
     flex: 1; font-size: 12px; padding: 6px 8px;
     background: var(--surface); border: 1px solid var(--border2);
@@ -247,20 +256,22 @@
 <div id="loading">연결 중…</div>
 
 <header>
-  <div class="logo">Baddest Females<span>Трекер обращений</span></div>
+  <div class="logo">드라마 <span>речевой трекер</span></div>
   <div><span class="status-dot" id="status-dot"></span><span id="status-text">подключение…</span></div>
 </header>
 
 <div class="layout">
   <div class="sidebar">
-    <div class="sidebar-section">
-      <div class="sidebar-label">Дорамы</div>
-      <div id="drama-list"></div>
-    </div>
-    <div style="flex:1"></div>
     <div class="add-drama-row">
       <input id="drama-input" placeholder="Новая дорама…" onkeydown="if(event.key==='Enter')addDrama()">
       <button class="btn-sm" onclick="addDrama()">+</button>
+    </div>
+    <div class="sidebar-search">
+      <input id="drama-search" placeholder="Поиск…" oninput="filterDramas(this.value)">
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Дорамы</div>
+      <div id="drama-list"></div>
     </div>
   </div>
 
@@ -372,11 +383,18 @@ onValue(dbRef, snap => {
 }, err => { setStatus(false); document.getElementById('loading').style.display = 'none'; });
 
 // ---- SIDEBAR ----
+let dramaFilter = '';
+
 function renderSidebar() {
   const list = document.getElementById('drama-list');
   const keys = Object.keys(state.dramas);
+  const filtered = keys.filter(k => {
+    const name = (state.dramas[k].name || k).toLowerCase();
+    return name.includes(dramaFilter.toLowerCase());
+  });
   if (!keys.length) { list.innerHTML = '<div style="font-size:12px;color:var(--text3);padding:4px 4px">Нет дорам</div>'; return; }
-  list.innerHTML = keys.map(k => {
+  if (!filtered.length) { list.innerHTML = '<div style="font-size:12px;color:var(--text3);padding:4px 4px">Ничего не найдено</div>'; return; }
+  list.innerHTML = filtered.map(k => {
     const d = state.dramas[k];
     const active = state.currentDrama === k ? ' active' : '';
     return `<button class="drama-btn${active}" onclick="selectDrama('${k}')">
@@ -384,6 +402,11 @@ function renderSidebar() {
     </button>`;
   }).join('');
 }
+
+window.filterDramas = function(val) {
+  dramaFilter = val;
+  renderSidebar();
+};
 
 window.addDrama = function() {
   const inp = document.getElementById('drama-input');
