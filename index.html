@@ -40,6 +40,98 @@
     --vy-bg: #d4e8fc;
     --vy-text: #0f3d82;
   }
+  /* ── COLOR PALETTES ── */
+  body.palette-sakura {
+    --bg: #1a0f14; --surface: #261520; --surface2: #32202b;
+    --border: rgba(255,200,220,0.09); --border2: rgba(255,200,220,0.16);
+    --text: #f5e6ed; --text2: #c4a0b4; --text3: #7a5068;
+    --accent: #e8739a; --accent2: #f5b8cf;
+    --ty-bg: #1a2618; --ty-text: #5dd68a;
+    --vy-bg: #1a1030; --vy-text: #8baaf5;
+  }
+  body.palette-sakura.light {
+    --bg: #fdf0f5; --surface: #ffffff; --surface2: #f5e0ec;
+    --border: rgba(180,60,100,0.10); --border2: rgba(180,60,100,0.18);
+    --text: #2a0f1c; --text2: #7a3058; --text3: #b87898;
+    --accent: #c0305a; --accent2: #8a1a38;
+    --ty-bg: #d8f5e4; --ty-text: #0f5c30;
+    --vy-bg: #dce8fd; --vy-text: #0f3882;
+  }
+  body.palette-ocean {
+    --bg: #080e18; --surface: #101828; --surface2: #182030;
+    --border: rgba(80,160,255,0.09); --border2: rgba(80,160,255,0.16);
+    --text: #e0eeff; --text2: #8ab0d8; --text3: #4a7098;
+    --accent: #3d9cf0; --accent2: #90ccff;
+    --ty-bg: #0b2018; --ty-text: #3dd68c;
+    --vy-bg: #0b1830; --vy-text: #5ba8f5;
+  }
+  body.palette-ocean.light {
+    --bg: #eef4fc; --surface: #ffffff; --surface2: #daeaf8;
+    --border: rgba(20,80,160,0.10); --border2: rgba(20,80,160,0.18);
+    --text: #081428; --text2: #1a4878; --text3: #5888b8;
+    --accent: #0a5abf; --accent2: #063a88;
+    --ty-bg: #d4f5e6; --ty-text: #0a5030;
+    --vy-bg: #d4e8fc; --vy-text: #0f3d82;
+  }
+  body.palette-forest {
+    --bg: #080f0a; --surface: #101a12; --surface2: #182418;
+    --border: rgba(80,200,100,0.09); --border2: rgba(80,200,100,0.15);
+    --text: #e2f0e4; --text2: #88b890; --text3: #486850;
+    --accent: #4ec068; --accent2: #a0e0a8;
+    --ty-bg: #0b2014; --ty-text: #3dd88a;
+    --vy-bg: #0b1a30; --vy-text: #60a8f8;
+  }
+  body.palette-forest.light {
+    --bg: #eef6ee; --surface: #ffffff; --surface2: #daeeda;
+    --border: rgba(20,100,40,0.10); --border2: rgba(20,100,40,0.18);
+    --text: #081408; --text2: #1a5828; --text3: #508860;
+    --accent: #1a7030; --accent2: #0a4820;
+    --ty-bg: #d4f5e2; --ty-text: #0a5028;
+    --vy-bg: #d4e6fc; --vy-text: #0f3882;
+  }
+  body.palette-violet {
+    --bg: #0e080f; --surface: #181020; --surface2: #22182e;
+    --border: rgba(160,100,255,0.09); --border2: rgba(160,100,255,0.16);
+    --text: #f0e8ff; --text2: #b090d8; --text3: #705090;
+    --accent: #a060f0; --accent2: #d0a8ff;
+    --ty-bg: #0b2018; --ty-text: #3dd68c;
+    --vy-bg: #180b30; --vy-text: #9878f8;
+  }
+  body.palette-violet.light {
+    --bg: #f4f0fc; --surface: #ffffff; --surface2: #ece4f8;
+    --border: rgba(80,20,160,0.10); --border2: rgba(80,20,160,0.18);
+    --text: #180828; --text2: #501888; --text3: #9068b8;
+    --accent: #6020c0; --accent2: #3a0890;
+    --ty-bg: #d8f5e4; --ty-text: #0f5c30;
+    --vy-bg: #e4d8fc; --vy-text: #4010a0;
+  }
+  body.palette-sand {
+    --bg: #13100a; --surface: #1e1a12; --surface2: #2a241a;
+    --border: rgba(200,170,100,0.09); --border2: rgba(200,170,100,0.16);
+    --text: #f5f0e4; --text2: #c8b880; --text3: #806848;
+    --accent: #d4a040; --accent2: #f0d090;
+    --ty-bg: #0c2016; --ty-text: #40d888;
+    --vy-bg: #0c1830; --vy-text: #60a8f8;
+  }
+  body.palette-sand.light {
+    --bg: #faf6ec; --surface: #ffffff; --surface2: #f0e8d0;
+    --border: rgba(120,80,20,0.10); --border2: rgba(120,80,20,0.18);
+    --text: #201408; --text2: #6a4810; --text3: #a88050;
+    --accent: #9a6010; --accent2: #6a3e08;
+    --ty-bg: #d8f5e4; --ty-text: #0f5c30;
+    --vy-bg: #d8e8fc; --vy-text: #0f3882;
+  }
+
+  /* PALETTE PICKER */
+  .palette-picker { display: flex; align-items: center; gap: 6px; }
+  .pal-dot {
+    width: 18px; height: 18px; border-radius: 50%; cursor: pointer;
+    border: 2px solid transparent; transition: transform .15s, border-color .15s;
+    flex-shrink: 0;
+  }
+  .pal-dot:hover { transform: scale(1.2); }
+  .pal-dot.active { border-color: var(--text); transform: scale(1.15); }
+
   .theme-toggle { display: flex; align-items: center; gap: 8px; }
   .toggle-switch { position: relative; width: 36px; height: 20px; cursor: pointer; }
   .toggle-switch input { display: none; }
@@ -289,9 +381,17 @@
 <div id="loading">연결 중…</div>
 
 <header>
-  <div class="logo">Baddest Females<span>Трекер обращений</span></div>
+  <div class="logo">Baddest Females</div>
   <div style="display:flex;align-items:center;gap:16px">
     <div><span class="status-dot" id="status-dot"></span><span id="status-text">подключение…</span></div>
+    <div class="palette-picker" id="palette-picker">
+      <div class="pal-dot active" style="background:#d4a853" data-pal="" title="Янтарь" onclick="setPalette('')"></div>
+      <div class="pal-dot" style="background:#e8739a" data-pal="sakura" title="Сакура" onclick="setPalette('sakura')"></div>
+      <div class="pal-dot" style="background:#3d9cf0" data-pal="ocean" title="Океан" onclick="setPalette('ocean')"></div>
+      <div class="pal-dot" style="background:#4ec068" data-pal="forest" title="Лес" onclick="setPalette('forest')"></div>
+      <div class="pal-dot" style="background:#a060f0" data-pal="violet" title="Фиолет" onclick="setPalette('violet')"></div>
+      <div class="pal-dot" style="background:#d4a040" data-pal="sand" title="Песок" onclick="setPalette('sand')"></div>
+    </div>
     <div class="theme-toggle">
       <span class="toggle-icon">☽</span>
       <label class="toggle-switch">
@@ -342,7 +442,14 @@
           </div>
         </div>
         <div class="card">
-          <div class="card-title">Список персонажей</div>
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap">
+            <div class="card-title" style="margin:0;flex:1">Список персонажей</div>
+            <input id="chars-search" placeholder="Поиск…" oninput="renderChars()" style="font-size:13px;padding:5px 10px;width:160px;flex-shrink:0">
+            <select id="chars-sort" onchange="renderChars()" style="font-size:13px;padding:5px 10px;flex-shrink:0">
+              <option value="date">По дате</option>
+              <option value="alpha">По алфавиту</option>
+            </select>
+          </div>
           <div class="chars-wrap" id="chars-list"></div>
         </div>
       </div>
@@ -483,7 +590,13 @@ function dramaPath() { return `dramas/${state.currentDrama}`; }
 
 // ---- CHARS ----
 function renderChars() {
-  const chars = Object.entries(drama().chars || {});
+  let chars = Object.entries(drama().chars || {});
+  const searchEl = document.getElementById('chars-search');
+  const sortEl = document.getElementById('chars-sort');
+  const q = searchEl ? searchEl.value.trim().toLowerCase() : '';
+  const sort = sortEl ? sortEl.value : 'date';
+  if (q) chars = chars.filter(([k, v]) => v.toLowerCase().includes(q));
+  if (sort === 'alpha') chars = [...chars].sort((a, b) => a[1].localeCompare(b[1], 'ru'));
   const w = document.getElementById('chars-list');
   w.innerHTML = chars.length
     ? chars.map(([k, v]) => `<span class="char-tag">${v}<button class="del-btn" onclick="removeChar('${k}')">×</button></span>`).join('')
@@ -585,11 +698,28 @@ window.renderResult = function() {
 };
 
 // ---- THEME ----
+const PALETTES = ['', 'sakura', 'ocean', 'forest', 'violet', 'sand'];
+
+window.setPalette = function(pal) {
+  PALETTES.forEach(p => document.body.classList.remove('palette-' + p));
+  if (pal) document.body.classList.add('palette-' + pal);
+  localStorage.setItem('dc_palette', pal);
+  document.querySelectorAll('.pal-dot').forEach(d => {
+    d.classList.toggle('active', d.dataset.pal === pal);
+  });
+};
+
 window.toggleTheme = function(isLight) {
   document.body.classList.toggle('light', isLight);
   localStorage.setItem('dc_theme', isLight ? 'light' : 'dark');
 };
+
 (function(){
+  const savedPal = localStorage.getItem('dc_palette') || '';
+  if (savedPal) document.body.classList.add('palette-' + savedPal);
+  document.querySelectorAll('.pal-dot').forEach(d => {
+    d.classList.toggle('active', d.dataset.pal === savedPal);
+  });
   const saved = localStorage.getItem('dc_theme');
   if (saved === 'light') {
     document.body.classList.add('light');
