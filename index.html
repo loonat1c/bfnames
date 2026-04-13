@@ -15,14 +15,7 @@
   --vy-bg:#0b1830;--vy-text:#5ba8f5;
   --radius:12px;--radius-lg:16px;--sidebar-w:300px;
 }
-body.light{
-  --bg:#f2efe8;--surface:#fff;--surface2:#e8e4da;
-  --border:rgba(0,0,0,.10);--border2:rgba(0,0,0,.20);
-  --text:#18160f;--text2:#3a3830;--text3:#706c66;
-  --accent:#8c5e18;--accent2:#5c3c08;
-  --ty-bg:#d4f5e4;--ty-text:#145c38;
-  --vy-bg:#d4e8fc;--vy-text:#0f3d82;
-}
+body.light{--bg:#f2efe8;--surface:#fff;--surface2:#e8e4da;--border:rgba(0,0,0,.10);--border2:rgba(0,0,0,.20);--text:#18160f;--text2:#3a3830;--text3:#706c66;--accent:#8c5e18;--accent2:#5c3c08;--ty-bg:#d4f5e4;--ty-text:#145c38;--vy-bg:#d4e8fc;--vy-text:#0f3d82}
 body.palette-sakura{--bg:#1a0f14;--surface:#261520;--surface2:#32202b;--border:rgba(255,200,220,.09);--border2:rgba(255,200,220,.20);--text:#f5e6ed;--text2:#d8b8c8;--text3:#a87888;--accent:#e8739a;--accent2:#f5b8cf;--ty-bg:#1a2618;--ty-text:#5dd68a;--vy-bg:#1a1030;--vy-text:#8baaf5}
 body.palette-sakura.light{--bg:#fdf0f5;--surface:#fff;--surface2:#f5e0ec;--border:rgba(180,60,100,.10);--border2:rgba(180,60,100,.22);--text:#2a0f1c;--text2:#501030;--text3:#904868;--accent:#c0305a;--accent2:#8a1a38;--ty-bg:#d8f5e4;--ty-text:#0f5c30;--vy-bg:#dce8fd;--vy-text:#0f3882}
 body.palette-ocean{--bg:#080e18;--surface:#101828;--surface2:#182030;--border:rgba(80,160,255,.09);--border2:rgba(80,160,255,.20);--text:#e0eeff;--text2:#a8c8e8;--text3:#6890b0;--accent:#3d9cf0;--accent2:#90ccff;--ty-bg:#0b2018;--ty-text:#3dd68c;--vy-bg:#0b1830;--vy-text:#5ba8f5}
@@ -41,17 +34,14 @@ body.palette-copper.light{--bg:#faf4ec;--surface:#fff;--surface2:#f0e4d0;--borde
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:16px}
 
-/* HEADER */
 header{border-bottom:1px solid var(--border);padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;height:64px;position:sticky;top:0;background:var(--bg);z-index:200;gap:10px}
 .logo{font-family:'DM Serif Display',serif;font-size:22px;color:var(--accent);letter-spacing:.01em;display:flex;align-items:center;gap:10px;flex-shrink:0}
 .sidebar-toggle{display:none;background:transparent;border:1px solid var(--border2);border-radius:8px;color:var(--text2);cursor:pointer;padding:7px 11px;font-size:18px;line-height:1}
 .header-right{display:flex;align-items:center;gap:12px;flex-shrink:0}
-.status-dot{width:8px;height:8px;border-radius:50%;background:#3a3835;display:inline-block;margin-right:5px;transition:background .3s;flex-shrink:0}
-.status-dot.online{background:var(--ty-text)}
-body.light .status-dot{background:#c8c0b4}
+.status-dot{width:8px;height:8px;border-radius:50%;background:var(--text3);display:inline-block;margin-right:5px;transition:background .3s;flex-shrink:0}
+.status-dot.online{background:var(--ty-text) !important}
 #status-text{font-size:13px;color:var(--text3)}
 
-/* PALETTE */
 .palette-wrap{position:relative}
 .palette-btn{display:flex;align-items:center;gap:6px;padding:6px 12px;border:1px solid var(--border2);border-radius:20px;background:transparent;color:var(--text2);font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s}
 .palette-btn:hover{border-color:var(--accent);color:var(--text)}
@@ -65,7 +55,6 @@ body.light .status-dot{background:#c8c0b4}
 .pal-dot.active{border-color:var(--text)}
 .pal-dot-label{font-size:10px;color:var(--text3);margin-top:4px;text-align:center}
 
-/* THEME TOGGLE */
 .theme-toggle{display:flex;align-items:center;gap:7px}
 .toggle-switch{position:relative;width:38px;height:22px;cursor:pointer;flex-shrink:0}
 .toggle-switch input{display:none}
@@ -75,20 +64,17 @@ body.light .status-dot{background:#c8c0b4}
 .toggle-switch input:checked~.toggle-thumb{transform:translateX(16px);background:#fff}
 .toggle-icon{font-size:14px;color:var(--text2)}
 
-/* LAYOUT */
 .layout{display:flex;height:calc(100vh - 64px);position:relative;overflow:hidden}
 
-/* SIDEBAR */
 .sidebar{width:var(--sidebar-w);flex-shrink:0;border-right:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto;background:var(--bg);transition:transform .25s ease}
 .sidebar-top{padding:.875rem 1rem;border-bottom:1px solid var(--border);display:flex;flex-direction:column;gap:8px;flex-shrink:0}
 .sidebar-add{display:flex;gap:6px}
-.sidebar-add input{flex:1;font-size:14px;padding:9px 12px;background:var(--surface2);border:1px solid var(--border2);border-radius:10px;color:var(--text);outline:none;font-family:'DM Sans',sans-serif}
-.sidebar-add input::placeholder{color:var(--text3)}
-.sidebar-add input:focus{border-color:var(--accent)}
-.sidebar-search-input{width:100%;font-size:14px;padding:9px 12px;background:var(--surface2);border:1px solid var(--border2);border-radius:10px;color:var(--text);outline:none;font-family:'DM Sans',sans-serif}
-.sidebar-search-input::placeholder{color:var(--text3)}
-.sidebar-search-input:focus{border-color:var(--accent)}
+.s-inp{font-size:14px;padding:9px 12px;background:var(--surface2);border:1px solid var(--border2);border-radius:10px;color:var(--text);outline:none;font-family:'DM Sans',sans-serif;width:100%}
+.s-inp::placeholder{color:var(--text3)}
+.s-inp:focus{border-color:var(--accent)}
+.sidebar-add .s-inp{flex:1}
 .sidebar-filter-select{width:100%;font-size:13px;padding:8px 12px;background:var(--surface2);border:1px solid var(--border2);border-radius:10px;color:var(--text);outline:none;font-family:'DM Sans',sans-serif;cursor:pointer}
+.sidebar-filter-select option{background:var(--bg);color:var(--text)}
 .sidebar-filter-select:focus{border-color:var(--accent)}
 .btn-sm{padding:9px 14px;font-size:14px;border-radius:10px;background:var(--accent);color:#0f0e0c;border:none;cursor:pointer;font-weight:500;font-family:'DM Sans',sans-serif;transition:opacity .15s;flex-shrink:0}
 .btn-sm:hover{opacity:.85}
@@ -116,26 +102,21 @@ body.light .status-dot{background:#c8c0b4}
 
 .sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:149}
 
-/* MAIN */
 main{flex:1;overflow-y:auto;padding:2rem 2.5rem;min-width:0;display:flex;flex-direction:column}
 .drama-view-inner{flex:1;display:flex;flex-direction:column;min-height:0}
 .no-drama{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;color:var(--text3);gap:16px}
-.no-drama .big{font-family:'DM Serif Display',serif;font-size:56px;color:var(--border2)}
-.no-drama .hint{font-size:16px}
+.no-drama .big{font-family:'DM Serif Display',serif;font-size:56px;color:var(--border2);text-align:center;line-height:1.2}
 
-/* TABS — no overflow, no scrollbar */
 .tabs{display:flex;border-bottom:1px solid var(--border);margin-bottom:1.75rem;flex-shrink:0;overflow:visible}
 .tab{padding:11px 20px;font-size:15px;border:none;background:transparent;color:var(--text3);cursor:pointer;font-family:'DM Sans',sans-serif;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .15s;white-space:nowrap}
 .tab:hover{color:var(--text2)}
 .tab.active{color:var(--accent);border-bottom-color:var(--accent)}
 
-/* CARDS */
 .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem;margin-bottom:1.25rem}
 .card-title{font-size:12px;letter-spacing:.09em;color:var(--text3);text-transform:uppercase;margin-bottom:16px;font-weight:500}
 .card-header{display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap}
 .card-header .card-title{margin:0;flex:1}
 
-/* FORM */
 .form-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
 input,select{padding:10px 14px;font-size:15px;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--radius);color:var(--text);outline:none;font-family:'DM Sans',sans-serif;transition:border-color .15s}
 input::placeholder{color:var(--text3)}
@@ -148,7 +129,11 @@ select option{background:var(--bg);color:var(--text)}
 .btn-danger{background:#b03030;color:#fff;border:none}
 .btn-danger:hover{opacity:.85}
 
-/* GENDER */
+/* add type switcher */
+.add-type-switch{display:flex;border:1px solid var(--border2);border-radius:10px;overflow:hidden;flex-shrink:0}
+.add-type-opt{padding:10px 14px;font-size:14px;border:none;background:transparent;color:var(--text3);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s;white-space:nowrap}
+.add-type-opt.active{background:var(--accent);color:#0f0e0c;font-weight:500}
+
 .gender-select{display:flex;border:1px solid var(--border2);border-radius:10px;overflow:hidden;flex-shrink:0}
 .gender-opt{padding:10px 16px;font-size:14px;border:none;background:transparent;color:var(--text3);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s}
 .gender-opt.active{background:var(--accent);color:#0f0e0c;font-weight:500}
@@ -156,19 +141,16 @@ select option{background:var(--bg);color:var(--text)}
 .gender-m{background:rgba(91,168,245,.18);color:var(--vy-text)}
 .gender-f{background:rgba(232,115,154,.18);color:#e8739a}
 
-/* BADGES */
 .badge{display:inline-block;font-size:13px;padding:3px 12px;border-radius:12px;font-weight:500}
 .badge.ty{background:var(--ty-bg);color:var(--ty-text)}
 .badge.vy{background:var(--vy-bg);color:var(--vy-text)}
 .badge.dash{background:var(--surface2);color:var(--text3)}
 
-/* CHARS */
 .chars-wrap{display:flex;flex-wrap:wrap;gap:8px;min-height:32px}
 .char-tag{display:inline-flex;align-items:center;gap:5px;font-size:15px;padding:6px 12px;background:var(--surface2);border:1.5px solid var(--border2);border-radius:24px;color:var(--text2);position:relative;transition:color .2s,border-color .2s}
 .char-tag.char-new{border-color:var(--accent);color:var(--text)}
 .char-tag.pending-delete{border-color:transparent;color:#c07070;background:rgba(176,48,48,.08)}
 /* photo tooltip */
-.char-tag{cursor:default}
 .char-photo-tip{display:none;position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);background:var(--surface);border:1px solid var(--border2);border-radius:10px;padding:4px;z-index:100;box-shadow:0 4px 20px rgba(0,0,0,.4);pointer-events:none}
 .char-photo-tip img{width:100px;height:100px;object-fit:cover;border-radius:8px;display:block}
 .char-tag:hover .char-photo-tip{display:block}
@@ -178,24 +160,27 @@ select option{background:var(--bg);color:var(--text)}
 .del-ring-svg{position:absolute;inset:0;width:22px;height:22px;transform:rotate(-90deg)}
 .del-ring-circle{fill:none;stroke:#c03030;stroke-width:2;stroke-dasharray:60;stroke-dashoffset:60;stroke-linecap:round}
 .del-ring-x{font-size:12px;line-height:22px;text-align:center;width:22px;height:22px;color:#c07070;position:absolute;inset:0}
-/* action buttons */
 .char-actions{display:inline-flex;align-items:center;gap:3px;flex-shrink:0}
 .del-btn{border:none;background:transparent;color:var(--text3);cursor:pointer;font-size:16px;line-height:1;padding:0 2px;font-family:inherit;transition:color .15s}
 .del-btn:hover{color:#e05050}
 .edit-btn{border:none;background:transparent;color:var(--text3);cursor:pointer;font-size:13px;line-height:1;padding:0 2px;font-family:inherit;transition:color .15s}
 .edit-btn:hover{color:var(--accent)}
 
-/* PAIR CHAR PICKER */
+/* TERMS (написания) */
+.term-tag{display:inline-flex;align-items:center;gap:5px;font-size:14px;padding:5px 12px;background:var(--surface2);border:1.5px solid var(--border2);border-radius:8px;color:var(--text2);position:relative;transition:color .2s,border-color .2s}
+.term-tag.term-new{border-color:var(--accent);color:var(--text)}
+.term-tag.pending-delete-t{border-color:transparent;color:#c07070;background:rgba(176,48,48,.08)}
+
+/* PAIR PICKER */
 .pair-char-picker{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:14px}
 .picker-tag{display:inline-flex;align-items:center;gap:5px;font-size:14px;padding:5px 12px;background:var(--surface2);border:1.5px solid var(--border2);border-radius:20px;color:var(--text2);cursor:pointer;transition:all .15s;user-select:none}
 .picker-tag:hover{border-color:var(--accent);color:var(--text)}
-.picker-tag.sel-a{border-color:var(--accent);background:rgba(var(--accent-rgb,212,168,83),.15);color:var(--text)}
+.picker-tag.sel-a{border-color:var(--accent);background:rgba(212,168,83,.12);color:var(--text)}
 .picker-tag.sel-b{border-color:var(--vy-text);background:rgba(91,168,245,.12);color:var(--text)}
 .picker-label{font-size:11px;font-weight:600;padding:1px 5px;border-radius:5px;margin-left:2px}
 .picker-label-a{background:var(--accent);color:#0f0e0c}
 .picker-label-b{background:var(--vy-text);color:#fff}
 
-/* PAIRS LIST */
 .pair-item{display:flex;align-items:flex-start;gap:12px;padding:14px 18px;background:var(--surface2);border-radius:var(--radius);margin-bottom:8px;font-size:15px}
 .pair-body{flex:1}
 .pair-row{display:flex;align-items:center;gap:8px;margin-bottom:4px;flex-wrap:wrap}
@@ -203,12 +188,10 @@ select option{background:var(--bg);color:var(--text)}
 .pair-arrow{color:var(--text3);font-size:13px}
 .pair-note{font-size:13px;color:var(--text3);margin-top:6px}
 
-/* SEARCH RESULT */
 .result-card{background:var(--surface2);border:1px solid var(--border2);border-radius:var(--radius-lg);padding:1.75rem;margin-top:1.5rem}
 .result-title{font-family:'DM Serif Display',serif;font-size:22px;color:var(--accent2);margin-bottom:16px}
 .result-row{display:flex;align-items:center;gap:10px;font-size:16px;margin-bottom:10px;flex-wrap:wrap}
 
-/* HISTORY */
 .history-item{display:flex;gap:14px;padding:14px 0;border-bottom:1px solid var(--border);align-items:flex-start}
 .history-item:last-child{border-bottom:none}
 .history-time{font-size:12px;color:var(--text3);white-space:nowrap;min-width:95px;padding-top:2px}
@@ -217,7 +200,6 @@ select option{background:var(--bg);color:var(--text)}
 .history-undo{font-size:13px;padding:5px 12px;border-radius:8px;background:transparent;border:1px solid var(--border2);color:var(--text3);cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;flex-shrink:0;transition:all .15s}
 .history-undo:hover{border-color:var(--accent);color:var(--accent)}
 
-/* STATUS / AIRDAY */
 .status-row{display:flex;align-items:center;gap:12px;font-size:15px;color:var(--text2);flex-wrap:wrap}
 .seg-wrap{display:flex;border:1px solid var(--border2);border-radius:10px;overflow:hidden}
 .seg-opt{padding:8px 14px;font-size:14px;border:none;background:transparent;color:var(--text3);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s;white-space:nowrap}
@@ -226,17 +208,15 @@ select option{background:var(--bg);color:var(--text)}
 .del-drama-btn:hover{opacity:.85}
 .del-drama-btn.show{display:inline-block}
 
-/* MODAL */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:500;display:flex;align-items:center;justify-content:center;padding:1rem}
 .modal{background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius-lg);padding:2rem;max-width:420px;width:100%}
 .modal-title{font-family:'DM Serif Display',serif;font-size:20px;color:var(--text);margin-bottom:10px}
 .modal-text{font-size:15px;color:var(--text2);margin-bottom:1.5rem;line-height:1.6}
-.modal-body{display:flex;flex-direction:column;gap:10px;margin-bottom:1.5rem}
-.modal-body label{font-size:13px;color:var(--text3)}
+.modal-body{display:flex;flex-direction:column;gap:12px;margin-bottom:1.5rem}
+.modal-body label{font-size:13px;color:var(--text3);display:block;margin-bottom:4px}
 .modal-body input{width:100%;font-size:14px;padding:9px 12px}
 .modal-btns{display:flex;gap:10px;justify-content:flex-end}
 
-/* MISC */
 .pane{display:none}.pane.active{display:block}
 .empty{font-size:15px;color:var(--text3);padding:4px 0}
 #loading{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:999;font-family:'DM Serif Display',serif;font-size:15px;color:var(--text3);letter-spacing:.05em}
@@ -244,7 +224,7 @@ select option{background:var(--bg);color:var(--text)}
 @media(max-width:700px){
   :root{--sidebar-w:290px}
   header{padding:0 1rem;height:58px}
-  .logo{font-size:19px}
+  .logo{font-size:18px}
   .sidebar-toggle{display:block}
   #status-text{display:none}
   .sidebar{position:fixed;top:58px;left:0;bottom:0;z-index:150;transform:translateX(-100%);border-right:1px solid var(--border2);box-shadow:4px 0 24px rgba(0,0,0,.4);background:var(--bg)}
@@ -253,6 +233,7 @@ select option{background:var(--bg);color:var(--text)}
   main{padding:1.25rem}
   .layout{height:calc(100vh - 58px)}
   .tab{padding:9px 12px;font-size:13px}
+  .no-drama .big{font-size:36px}
   .char-photo-tip{display:none!important}
 }
 </style>
@@ -291,10 +272,10 @@ select option{background:var(--bg);color:var(--text)}
   <div class="sidebar" id="sidebar">
     <div class="sidebar-top">
       <div class="sidebar-add">
-        <input id="drama-input" placeholder="Новая дорама…" onkeydown="if(event.key==='Enter')addDrama()">
+        <input class="s-inp" id="drama-input" placeholder="Новая дорама…" onkeydown="if(event.key==='Enter')addDrama()">
         <button class="btn-sm" onclick="addDrama()">+</button>
       </div>
-      <input class="sidebar-search-input" placeholder="Поиск дорам…" oninput="filterDramas(this.value)">
+      <input class="s-inp" placeholder="Поиск дорам…" oninput="filterDramas(this.value)">
       <select class="sidebar-filter-select" id="airday-filter" onchange="renderSidebar()">
         <option value="">Все дни</option>
         <option value="mn-tu">ПН-ВТ</option>
@@ -304,31 +285,19 @@ select option{background:var(--bg);color:var(--text)}
     </div>
     <div class="sidebar-group">
       <div class="sidebar-label" onclick="toggleGroup('active')">
-        Текущие
-        <div class="sidebar-label-right">
-          <span class="sidebar-label-count" id="count-active">0</span>
-          <span class="sidebar-label-arrow" id="arrow-active">▾</span>
-        </div>
+        Текущие<div class="sidebar-label-right"><span class="sidebar-label-count" id="count-active">0</span><span class="sidebar-label-arrow" id="arrow-active">▾</span></div>
       </div>
       <div class="group-content" id="drama-list-active"></div>
     </div>
     <div class="sidebar-group">
       <div class="sidebar-label" onclick="toggleGroup('done')">
-        Завершённые
-        <div class="sidebar-label-right">
-          <span class="sidebar-label-count" id="count-done">0</span>
-          <span class="sidebar-label-arrow collapsed" id="arrow-done">▾</span>
-        </div>
+        Завершённые<div class="sidebar-label-right"><span class="sidebar-label-count" id="count-done">0</span><span class="sidebar-label-arrow collapsed" id="arrow-done">▾</span></div>
       </div>
       <div class="group-content" id="drama-list-done" style="max-height:0;overflow:hidden"></div>
     </div>
     <div class="sidebar-group trash-group">
       <div class="sidebar-label" onclick="toggleGroup('trash')">
-        Корзина
-        <div class="sidebar-label-right">
-          <span class="sidebar-label-count" id="count-trash">0</span>
-          <span class="sidebar-label-arrow collapsed" id="arrow-trash">▾</span>
-        </div>
+        Корзина<div class="sidebar-label-right"><span class="sidebar-label-count" id="count-trash">0</span><span class="sidebar-label-arrow collapsed" id="arrow-trash">▾</span></div>
       </div>
       <div class="group-content" id="drama-list-trash" style="max-height:0;overflow:hidden"></div>
     </div>
@@ -336,8 +305,8 @@ select option{background:var(--bg);color:var(--text)}
 
   <main>
     <div id="no-drama" class="no-drama">
-      <div class="big">배디스트 피메일즈</div>
-      <div class="hint">Выбери дораму слева или создай новую</div>
+      <div class="big">배디스트<br>피메일즈</div>
+      <div style="font-size:16px;color:var(--text3)">Выбери дораму слева или создай новую</div>
     </div>
     <div id="drama-view" style="display:none" class="drama-view-inner">
       <div class="tabs">
@@ -347,27 +316,46 @@ select option{background:var(--bg);color:var(--text)}
         <button class="tab" onclick="switchTab('history',this)">История</button>
       </div>
 
-      <!-- CHARS -->
+      <!-- CHARS pane -->
       <div id="pane-chars" class="pane active">
+        <!-- ADD BLOCK -->
         <div class="card">
-          <div class="card-title">Добавить персонажа</div>
-          <div class="form-row" style="margin-bottom:10px">
-            <input id="char-input" placeholder="Имя персонажа" onkeydown="if(event.key==='Enter')addChar()" style="flex:1;min-width:120px">
-            <div class="gender-select">
-              <button class="gender-opt active" id="g-m" onclick="setGender('m')">М</button>
-              <button class="gender-opt" id="g-f" onclick="setGender('f')">Ж</button>
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+            <div class="card-title" style="margin:0;flex:1">Добавить</div>
+            <div class="add-type-switch">
+              <button class="add-type-opt active" id="add-type-char" onclick="setAddType('char')">Персонажа</button>
+              <button class="add-type-opt" id="add-type-term" onclick="setAddType('term')">Написание</button>
             </div>
           </div>
-          <div class="form-row" style="margin-bottom:12px">
-            <input id="char-photo-input" placeholder="Ссылка на фото (необязательно)" style="flex:1">
+          <!-- char fields -->
+          <div id="add-char-fields">
+            <div class="form-row" style="margin-bottom:10px">
+              <input id="char-input" placeholder="Имя персонажа" onkeydown="if(event.key==='Enter')addChar()" style="flex:1;min-width:120px">
+              <div class="gender-select">
+                <button class="gender-opt active" id="g-m" onclick="setGender('m')">М</button>
+                <button class="gender-opt" id="g-f" onclick="setGender('f')">Ж</button>
+              </div>
+            </div>
+            <div class="form-row" style="margin-bottom:12px">
+              <input id="char-photo-input" placeholder="Ссылка на фото (необязательно)" style="flex:1">
+            </div>
+            <div class="form-row">
+              <button class="btn" onclick="addChar()">Добавить персонажа</button>
+            </div>
           </div>
-          <div class="form-row">
-            <button class="btn" onclick="addChar()">Добавить</button>
+          <!-- term fields -->
+          <div id="add-term-fields" style="display:none">
+            <div class="form-row">
+              <input id="term-input" placeholder="Написание (место, компания, термин…)" onkeydown="if(event.key==='Enter')addTerm()" style="flex:1">
+              <button class="btn" onclick="addTerm()">Добавить</button>
+            </div>
           </div>
         </div>
+
+        <!-- CHARS LIST -->
         <div class="card">
           <div class="card-header">
-            <div class="card-title">Список персонажей</div>
+            <div class="card-title">Персонажи</div>
             <input id="chars-search" placeholder="Поиск…" oninput="renderChars()" style="font-size:13px;padding:7px 11px;width:130px;flex-shrink:0">
             <select id="chars-sort" onchange="renderChars()" style="font-size:13px;padding:7px 11px;flex-shrink:0">
               <option value="alpha">По алфавиту</option>
@@ -376,6 +364,17 @@ select option{background:var(--bg);color:var(--text)}
           </div>
           <div class="chars-wrap" id="chars-list"></div>
         </div>
+
+        <!-- TERMS LIST -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Написания</div>
+            <input id="terms-search" placeholder="Поиск…" oninput="renderTerms()" style="font-size:13px;padding:7px 11px;width:130px;flex-shrink:0">
+          </div>
+          <div class="chars-wrap" id="terms-list"></div>
+        </div>
+
+        <!-- AIRDAY -->
         <div class="card">
           <div class="card-title">День недели эфира</div>
           <div class="status-row">
@@ -387,6 +386,8 @@ select option{background:var(--bg);color:var(--text)}
             </div>
           </div>
         </div>
+
+        <!-- MOVE DRAMA -->
         <div class="card">
           <div class="card-title">Переместить дораму</div>
           <div class="status-row">
@@ -400,7 +401,7 @@ select option{background:var(--bg);color:var(--text)}
         </div>
       </div>
 
-      <!-- PAIRS -->
+      <!-- PAIRS pane -->
       <div id="pane-pairs" class="pane">
         <div class="card">
           <div class="card-title">Выбери персонажей</div>
@@ -426,7 +427,7 @@ select option{background:var(--bg);color:var(--text)}
         </div>
       </div>
 
-      <!-- SEARCH -->
+      <!-- SEARCH pane -->
       <div id="pane-search" class="pane">
         <div class="card">
           <div class="card-title">Найти пару</div>
@@ -438,7 +439,7 @@ select option{background:var(--bg);color:var(--text)}
         </div>
       </div>
 
-      <!-- HISTORY -->
+      <!-- HISTORY pane -->
       <div id="pane-history" class="pane">
         <div class="card">
           <div class="card-title">История изменений</div>
@@ -449,7 +450,7 @@ select option{background:var(--bg);color:var(--text)}
   </main>
 </div>
 
-<!-- MODAL (confirm + edit) -->
+<!-- MODAL -->
 <div id="modal-overlay" class="modal-overlay" style="display:none">
   <div class="modal">
     <div class="modal-title" id="modal-title"></div>
@@ -471,17 +472,22 @@ const db=getDatabase(initializeApp(cfg));
 
 let state={dramas:{},currentDrama:null};
 let dramaFilter='';
-let pendingDeletes={};
+let pendingDeletes={};   // chars
+let pendingDeletesT={};  // terms
 let newCharKeys={};
+let newTermKeys={};
 let selectedGender='m';
-let pickerA=null,pickerB=null; // selected char keys in pair picker
+let addType='char';
+let pickerA=null,pickerB=null;
 let collapsedGroups=new Set(JSON.parse(localStorage.getItem('dc_collapsed')||'["done","trash"]'));
 const DELETE_MS=5000,RING_C=60;
+const AIR_ORDER={'mn-tu':0,'wd-th':1,'fr-su':2,'':3};
 
-// ── STATUS ──────────────────────────────────────────────────────────────
+// STATUS
 function setStatus(ok){
-  document.getElementById('status-dot').className='status-dot'+(ok?' online':'');
-  document.getElementById('status-text').textContent=ok?'синхронизировано':'нет связи';
+  const dot=document.getElementById('status-dot');
+  dot.className='status-dot'+(ok?' online':'');
+  document.getElementById('status-text').textContent=ok?'Онлайн':'нет связи';
 }
 onValue(ref(db,'dramas'),snap=>{
   document.getElementById('loading').style.display='none';
@@ -491,7 +497,7 @@ onValue(ref(db,'dramas'),snap=>{
   if(state.currentDrama) renderCurrentDrama();
 },()=>{setStatus(false);document.getElementById('loading').style.display='none';});
 
-// ── MOBILE ───────────────────────────────────────────────────────────────
+// MOBILE
 window.toggleSidebar=()=>{
   document.getElementById('sidebar').classList.toggle('open');
   document.getElementById('sidebar-overlay').classList.toggle('active');
@@ -501,7 +507,7 @@ window.closeSidebar=()=>{
   document.getElementById('sidebar-overlay').classList.remove('active');
 };
 
-// ── COLLAPSIBLE ──────────────────────────────────────────────────────────
+// COLLAPSIBLE
 window.toggleGroup=function(g){
   const el=document.getElementById('drama-list-'+g);
   const arrow=document.getElementById('arrow-'+g);
@@ -519,72 +525,77 @@ window.toggleGroup=function(g){
 function applyCollapse(g){
   const el=document.getElementById('drama-list-'+g);
   const arrow=document.getElementById('arrow-'+g);
-  if(!el||!arrow) return;
+  if(!el||!arrow)return;
   if(collapsedGroups.has(g)){el.style.maxHeight='0';el.style.overflow='hidden';arrow.classList.add('collapsed');}
   else{el.style.maxHeight=el.scrollHeight+'px';el.style.overflow='hidden';arrow.classList.remove('collapsed');}
 }
 
-// ── SIDEBAR ──────────────────────────────────────────────────────────────
+// SIDEBAR
 window.renderSidebar=function(){
   const q=dramaFilter.toLowerCase();
   const af=document.getElementById('airday-filter')?.value||'';
   let keys=Object.keys(state.dramas);
   if(q) keys=keys.filter(k=>(state.dramas[k].name||k).toLowerCase().includes(q));
-  keys.sort((a,b)=>(state.dramas[a].name||a).localeCompare(state.dramas[b].name||b,'ru'));
 
   const active=keys.filter(k=>{
     const d=state.dramas[k];
     return(!d.status||d.status==='ongoing')&&(!af||d.airday===af);
   });
-  const done=keys.filter(k=>state.dramas[k].status==='done');
-  const trash=keys.filter(k=>state.dramas[k].status==='trash');
+  // sort active: by airday order then alpha
+  active.sort((a,b)=>{
+    const da=state.dramas[a],db2=state.dramas[b];
+    const ao=AIR_ORDER[da.airday||'']??3,bo=AIR_ORDER[db2.airday||'']??3;
+    if(ao!==bo) return ao-bo;
+    return (da.name||a).localeCompare(db2.name||b,'ru');
+  });
+
+  const done=keys.filter(k=>state.dramas[k].status==='done')
+    .sort((a,b)=>(state.dramas[a].name||a).localeCompare(state.dramas[b].name||b,'ru'));
+  const trash=keys.filter(k=>state.dramas[k].status==='trash')
+    .sort((a,b)=>(state.dramas[a].name||a).localeCompare(state.dramas[b].name||b,'ru'));
 
   document.getElementById('count-active').textContent=active.length;
   document.getElementById('count-done').textContent=done.length;
   document.getElementById('count-trash').textContent=trash.length;
 
   const airLabels={'mn-tu':'ПН-ВТ','wd-th':'СР-ЧТ','fr-su':'ПТ-ВС'};
-  function airTag(d){
-    if(!d.airday) return '';
-    return `<span style="font-size:10px;color:var(--text3);border:1px solid var(--border2);border-radius:5px;padding:1px 5px;flex-shrink:0">${airLabels[d.airday]||''}</span>`;
-  }
-  function mkBtn(k,cls,showDel){
+
+  function mkBtn(k,cls,showDel,showAir){
     const d=state.dramas[k];
     const isAct=state.currentDrama===k;
+    const air=showAir&&d.airday?`<span style="font-size:10px;color:var(--text3);border:1px solid var(--border2);border-radius:5px;padding:1px 5px;flex-shrink:0">${airLabels[d.airday]}</span>`:''
     const del=showDel?`<button class="drama-del-btn" onclick="event.stopPropagation();confirmDeleteDrama('${k}')">🗑</button>`:'';
     return `<button class="drama-btn${isAct?' active':''}${cls}" onclick="selectDrama('${k}')">
-      <span class="dot"></span><span class="drama-btn-name">${d.name||k}</span>${airTag(d)}${del}
+      <span class="dot"></span><span class="drama-btn-name">${d.name||k}</span>${air}${del}
     </button>`;
   }
-  function fill(list,id,cls,showDel){
+  function fill(list,id,cls,showDel,showAir){
     const el=document.getElementById(id);
-    el.innerHTML=list.length?list.map(k=>mkBtn(k,cls,showDel)).join(''):'<div class="empty-group">Нет дорам</div>';
+    el.innerHTML=list.length?list.map(k=>mkBtn(k,cls,showDel,showAir)).join(''):'<div class="empty-group">Нет дорам</div>';
     if(!collapsedGroups.has(id.replace('drama-list-',''))) el.style.maxHeight=el.scrollHeight+'px';
   }
-  fill(active,'drama-list-active','',false);
-  fill(done,'drama-list-done',' drama-done',false);
-  fill(trash,'drama-list-trash',' drama-trash',true);
+  fill(active,'drama-list-active','',false,true);
+  fill(done,'drama-list-done',' drama-done',false,false);
+  fill(trash,'drama-list-trash',' drama-trash',true,false);
   applyCollapse('active');applyCollapse('done');applyCollapse('trash');
 };
 
 window.filterDramas=v=>{dramaFilter=v;renderSidebar();};
-
 window.addDrama=function(){
   const inp=document.getElementById('drama-input');
   const v=inp.value.trim();if(!v)return;
   push(ref(db,'dramas'),{name:v,chars:{},pairs:{},status:'ongoing'});
   inp.value='';
 };
-
 window.selectDrama=function(id){
   state.currentDrama=id;
-  pendingDeletes={};newCharKeys={};pickerA=null;pickerB=null;
+  pendingDeletes={};pendingDeletesT={};newCharKeys={};newTermKeys={};pickerA=null;pickerB=null;
   document.getElementById('no-drama').style.display='none';
   document.getElementById('drama-view').style.display='block';
   renderSidebar();renderCurrentDrama();closeSidebar();
 };
 
-// ── DELETE DRAMA ─────────────────────────────────────────────────────────
+// DELETE DRAMA — removes ALL data from Firebase
 function doDelete(id){
   remove(ref(db,`dramas/${id}`));
   if(state.currentDrama===id){
@@ -595,11 +606,11 @@ function doDelete(id){
 }
 window.confirmDeleteDrama=function(id){
   const name=(state.dramas[id]||{}).name||id;
-  showConfirm('Удалить навсегда?',`«${name}» — все данные удалятся без восстановления.`,()=>doDelete(id));
+  showConfirm('Удалить навсегда?',`«${name}» — все данные (персонажи, пары, написания, история) будут удалены без восстановления.`,()=>doDelete(id));
 };
 window.confirmDeleteCurrentDrama=function(){if(state.currentDrama)confirmDeleteDrama(state.currentDrama);};
 
-// ── MODAL ────────────────────────────────────────────────────────────────
+// MODAL
 let _modalOk=null;
 function showConfirm(title,text,onOk){
   document.getElementById('modal-title').textContent=title;
@@ -611,33 +622,27 @@ function showConfirm(title,text,onOk){
   _modalOk=onOk;
   document.getElementById('modal-confirm').onclick=()=>{_modalOk&&_modalOk();closeModal();};
 }
-function showEdit(title,fields,onSave){
+function showEdit(title,fields,onSave,extraHtml){
   document.getElementById('modal-title').textContent=title;
   document.getElementById('modal-text').textContent='';
   const body=document.getElementById('modal-body');
   body.style.display='flex';
-  body.innerHTML=fields.map(f=>`
-    <div>
-      <label>${f.label}</label>
-      <input id="medit-${f.id}" value="${(f.value||'').replace(/"/g,'&quot;')}" placeholder="${f.placeholder||''}">
-    </div>`).join('');
+  body.innerHTML=fields.map(f=>`<div><label>${f.label}</label><input id="medit-${f.id}" value="${(f.value||'').replace(/"/g,'&quot;')}" placeholder="${f.placeholder||''}"></div>`).join('')+(extraHtml||'');
   document.getElementById('modal-confirm').textContent='Сохранить';
   document.getElementById('modal-confirm').className='btn';
   document.getElementById('modal-overlay').style.display='flex';
-  _modalOk=onSave;
   document.getElementById('modal-confirm').onclick=()=>{
-    const vals={};
-    fields.forEach(f=>{vals[f.id]=document.getElementById('medit-'+f.id).value.trim();});
-    _modalOk&&_modalOk(vals);closeModal();
+    const vals={};fields.forEach(f=>{vals[f.id]=document.getElementById('medit-'+f.id)?.value.trim()||'';});
+    onSave(vals);closeModal();
   };
 }
 window.closeModal=()=>{document.getElementById('modal-overlay').style.display='none';_modalOk=null;};
 document.getElementById('modal-overlay').addEventListener('click',e=>{if(e.target===e.currentTarget)closeModal();});
 
-// ── CURRENT DRAMA ─────────────────────────────────────────────────────────
+// CURRENT DRAMA
 function renderCurrentDrama(){
   const d=state.dramas[state.currentDrama];if(!d)return;
-  renderChars();renderPairs();renderPairPicker();updateSelects();renderHistory();
+  renderChars();renderTerms();renderPairs();renderPairPicker();updateSelects();renderHistory();
   const s=d.status||'ongoing';
   ['ongoing','done','trash'].forEach(v=>document.getElementById('status-'+v).classList.toggle('active',s===v));
   document.getElementById('del-drama-btn').classList.toggle('show',s==='trash');
@@ -648,7 +653,7 @@ function renderCurrentDrama(){
 function drama(){return state.dramas[state.currentDrama]||{};}
 function dramaPath(){return `dramas/${state.currentDrama}`;}
 
-// ── DRAMA STATUS / AIRDAY ────────────────────────────────────────────────
+// DRAMA STATUS / AIRDAY
 window.setDramaStatus=function(s){
   if(!state.currentDrama)return;
   if((drama().status||'ongoing')===s)return;
@@ -656,9 +661,18 @@ window.setDramaStatus=function(s){
   update(ref(db,dramaPath()),{status:s});
   if(s!=='trash') logHistory(`Статус → «${s==='done'?'Завершена':'Текущие'}»`,'status',{status:s});
 };
-window.setAirday=function(v){if(state.currentDrama) update(ref(db,dramaPath()),{airday:v});};
+window.setAirday=function(v){if(state.currentDrama)update(ref(db,dramaPath()),{airday:v});};
 
-// ── HISTORY ──────────────────────────────────────────────────────────────
+// ADD TYPE SWITCH
+window.setAddType=function(t){
+  addType=t;
+  document.getElementById('add-type-char').classList.toggle('active',t==='char');
+  document.getElementById('add-type-term').classList.toggle('active',t==='term');
+  document.getElementById('add-char-fields').style.display=t==='char'?'':'none';
+  document.getElementById('add-term-fields').style.display=t==='term'?'':'none';
+};
+
+// HISTORY
 function logHistory(desc,type,payload){
   if(!state.currentDrama)return;
   const now=Date.now(),cutoff=now-30*24*60*60*1000;
@@ -683,8 +697,8 @@ function renderHistory(){
   }).join('');
 }
 window.undoAddChar=(ck,hk)=>{remove(ref(db,`${dramaPath()}/chars/${ck}`));remove(ref(db,`${dramaPath()}/history/${hk}`));};
-window.undoDelChar=(payloadJson,hk)=>{
-  try{const p=JSON.parse(payloadJson.replace(/\\'/g,"'"));set(ref(db,`${dramaPath()}/chars/${p.key}`),{name:p.name,gender:p.gender||'m',photo:p.photo||''});}catch(e){}
+window.undoDelChar=(pj,hk)=>{
+  try{const p=JSON.parse(pj.replace(/\\'/g,"'"));set(ref(db,`${dramaPath()}/chars/${p.key}`),{name:p.name,gender:p.gender||'m',photo:p.photo||''});}catch(e){}
   remove(ref(db,`${dramaPath()}/history/${hk}`));
 };
 window.undoAddPair=(pk,hk)=>{remove(ref(db,`${dramaPath()}/pairs/${pk}`));remove(ref(db,`${dramaPath()}/history/${hk}`));};
@@ -695,7 +709,7 @@ window.undoDelPair=hk=>{
   remove(ref(db,`${dramaPath()}/history/${hk}`));
 };
 
-// ── GENDER ───────────────────────────────────────────────────────────────
+// GENDER
 window.setGender=function(g){
   selectedGender=g;
   document.getElementById('g-m').classList.toggle('active',g==='m');
@@ -703,38 +717,30 @@ window.setGender=function(g){
 };
 function gIcon(g){return g==='f'?'<span class="gender-icon gender-f">Ж</span>':'<span class="gender-icon gender-m">М</span>';}
 
-// ── CHAR DATA HELPERS ────────────────────────────────────────────────────
+// CHAR HELPERS
 function getChar(k){
   const v=(drama().chars||{})[k];
-  if(!v) return null;
-  if(typeof v==='object') return v;
-  return {name:v,gender:'m',photo:''};
+  if(!v)return null;
+  return typeof v==='object'?v:{name:v,gender:'m',photo:''};
 }
 function charName(k){const c=getChar(k);return c?c.name:k;}
-function charGender(k){const c=getChar(k);return c?c.gender:'m';}
 
-// ── CHARS ────────────────────────────────────────────────────────────────
+// CHARS
 window.renderChars=function(){
-  let chars=Object.entries(drama().chars||{}).map(([k,v])=>{
-    const c=typeof v==='object'?v:{name:v,gender:'m',photo:''};
-    return [k,c];
-  });
+  let chars=Object.entries(drama().chars||{}).map(([k,v])=>[k,typeof v==='object'?v:{name:v,gender:'m',photo:''}]);
   const q=(document.getElementById('chars-search')?.value||'').trim().toLowerCase();
   const sort=document.getElementById('chars-sort')?.value||'alpha';
   if(q) chars=chars.filter(([,c])=>c.name.toLowerCase().includes(q));
   if(sort==='alpha') chars=[...chars].sort((a,b)=>a[1].name.localeCompare(b[1].name,'ru'));
-
   const w=document.getElementById('chars-list');
   if(!chars.length){w.innerHTML='<span class="empty">Нет персонажей</span>';return;}
-
   w.innerHTML=chars.map(([k,c])=>{
     if(pendingDeletes[k]){
-      const elapsed=Date.now()-pendingDeletes[k].startTs;
-      const prog=Math.min(elapsed/DELETE_MS,1);
+      const prog=Math.min((Date.now()-pendingDeletes[k].startTs)/DELETE_MS,1);
       const off=RING_C-(RING_C*prog);
       return `<span class="char-tag pending-delete" data-key="${k}">
         ${gIcon(c.gender)}${c.name}
-        <span class="del-ring-wrap" onclick="restoreChar('${k}')" title="Восстановить">
+        <span class="del-ring-wrap" onclick="restoreChar('${k}')">
           <span class="del-ring-bg"></span>
           <svg class="del-ring-svg" viewBox="0 0 22 22"><circle class="del-ring-circle" cx="11" cy="11" r="9" style="stroke-dashoffset:${off}"/></svg>
           <span class="del-ring-x">↩</span>
@@ -742,12 +748,12 @@ window.renderChars=function(){
       </span>`;
     }
     const isNew=!!newCharKeys[k];
-    const photoTip=c.photo?`<span class="char-photo-tip"><img src="${c.photo}" alt="" onerror="this.parentNode.style.display='none'"></span>`:'';
+    const tip=c.photo?`<span class="char-photo-tip"><img src="${c.photo}" alt="" onerror="this.parentNode.style.display='none'"></span>`:'';
     return `<span class="char-tag${isNew?' char-new':''}" data-key="${k}">
-      ${photoTip}${gIcon(c.gender)}${c.name}
+      ${tip}${gIcon(c.gender)}${c.name}
       <span class="char-actions">
-        <button class="edit-btn" onclick="openEditChar('${k}')" title="Редактировать">✎</button>
-        <button class="del-btn" onclick="removeChar('${k}')" title="Удалить">×</button>
+        <button class="edit-btn" onclick="openEditChar('${k}')">✎</button>
+        <button class="del-btn" onclick="removeChar('${k}')">×</button>
       </span>
     </span>`;
   }).join('');
@@ -759,7 +765,7 @@ function updateSelects(){
   ['sel-a','sel-b','find-a','find-b'].forEach(id=>{
     const el=document.getElementById(id);if(!el)return;
     const cur=el.value;el.innerHTML=opts;
-    if(chars.find(([k])=>k===cur)) el.value=cur;
+    if(chars.find(([k])=>k===cur))el.value=cur;
   });
 }
 
@@ -769,62 +775,40 @@ window.addChar=function(){
   const photo=(document.getElementById('char-photo-input')?.value||'').trim();
   const r=push(ref(db,`${dramaPath()}/chars`));
   set(r,{name:v,gender:selectedGender,photo});
-  logHistory(`Добавлен персонаж <b>${v}</b> (${selectedGender==='f'?'Ж':'М'})`,'add_char',{key:r.key,name:v,gender:selectedGender,photo});
+  logHistory(`Добавлен персонаж <b>${v}</b>`,'add_char',{key:r.key,name:v,gender:selectedGender,photo});
   newCharKeys[r.key]=true;
   setTimeout(()=>{delete newCharKeys[r.key];renderChars();},10000);
-  inp.value='';
-  document.getElementById('char-photo-input').value='';
+  inp.value='';document.getElementById('char-photo-input').value='';
   renderChars();
 };
 
 window.openEditChar=function(key){
   const c=getChar(key);if(!c)return;
+  let editGender=c.gender||'m';
+  const gHtml=`<div>
+    <label>Пол</label>
+    <div style="display:flex;border:1px solid var(--border2);border-radius:10px;overflow:hidden;width:fit-content;margin-top:4px">
+      <button id="eg-m" onclick="document.getElementById('eg-m').classList.add('active');document.getElementById('eg-f').classList.remove('active')" class="gender-opt${editGender==='m'?' active':''}" style="padding:8px 16px">М</button>
+      <button id="eg-f" onclick="document.getElementById('eg-f').classList.add('active');document.getElementById('eg-m').classList.remove('active')" class="gender-opt${editGender==='f'?' active':''}" style="padding:8px 16px">Ж</button>
+    </div></div>`;
   showEdit('Редактировать персонажа',[
-    {id:'name',label:'Имя',value:c.name,placeholder:'Имя'},
+    {id:'name',label:'Имя',value:c.name},
     {id:'photo',label:'Ссылка на фото',value:c.photo||'',placeholder:'https://…'},
   ],vals=>{
-    if(!vals.name)return;
-    const prev=c;
-    update(ref(db,`${dramaPath()}/chars/${key}`),{name:vals.name,gender:c.gender,photo:vals.photo});
-    logHistory(`Изменён персонаж <b>${prev.name}</b> → <b>${vals.name}</b>`,'edit_char',{key,oldName:prev.name,newName:vals.name});
-  });
-  // Add gender toggle inside modal after render
-  setTimeout(()=>{
-    const body=document.getElementById('modal-body');
-    const gDiv=document.createElement('div');
-    gDiv.innerHTML=`<label>Пол</label><div style="display:flex;border:1px solid var(--border2);border-radius:10px;overflow:hidden;width:fit-content;margin-top:4px">
-      <button onclick="this.classList.add('active');this.nextSibling.classList.remove('active')" class="gender-opt${c.gender==='m'?' active':''}" style="padding:8px 16px">М</button>
-      <button onclick="this.classList.add('active');this.previousSibling.classList.remove('active')" class="gender-opt${c.gender==='f'?' active':''}" style="padding:8px 16px">Ж</button>
-    </div>`;
-    body.appendChild(gDiv);
-    // patch save to also read gender
-    const origOk=_modalOk;
-    _modalOk=function(vals){
-      const btns=gDiv.querySelectorAll('button');
-      const g=btns[0].classList.contains('active')?'m':'f';
-      update(ref(db,`${dramaPath()}/chars/${key}`),{name:vals.name||c.name,gender:g,photo:vals.photo??c.photo??''});
-      logHistory(`Изменён персонаж <b>${c.name}</b>${vals.name&&vals.name!==c.name?' → <b>'+vals.name+'</b>':''}`,'edit_char',{key});
-    };
-    document.getElementById('modal-confirm').onclick=()=>{
-      const vals={name:document.getElementById('medit-name').value.trim(),photo:document.getElementById('medit-photo').value.trim()};
-      _modalOk(vals);closeModal();
-    };
-  },0);
+    const g=document.getElementById('eg-f')?.classList.contains('active')?'f':'m';
+    const name=vals.name||c.name;
+    update(ref(db,`${dramaPath()}/chars/${key}`),{name,gender:g,photo:vals.photo??''});
+    logHistory(`Изменён персонаж <b>${c.name}</b>${name!==c.name?` → <b>${name}</b>`:'`}`,'edit_char',{key});
+  },gHtml);
 };
 
-// ── RING DELETE ───────────────────────────────────────────────────────────
+// RING DELETE (chars)
 function animateRing(key){
   if(!pendingDeletes[key])return;
   const circle=document.querySelector(`.char-tag[data-key="${key}"] .del-ring-circle`);
-  if(circle){
-    const elapsed=Date.now()-pendingDeletes[key].startTs;
-    const prog=Math.min(elapsed/DELETE_MS,1);
-    circle.style.strokeDashoffset=RING_C-(RING_C*prog);
-  }
-  if(Date.now()-pendingDeletes[key].startTs<DELETE_MS)
-    pendingDeletes[key].rafId=requestAnimationFrame(()=>animateRing(key));
+  if(circle){const p=Math.min((Date.now()-pendingDeletes[key].startTs)/DELETE_MS,1);circle.style.strokeDashoffset=RING_C-(RING_C*p);}
+  if(Date.now()-pendingDeletes[key].startTs<DELETE_MS) pendingDeletes[key].rafId=requestAnimationFrame(()=>animateRing(key));
 }
-
 window.removeChar=function(key){
   if(pendingDeletes[key])return;
   const c=getChar(key);if(!c)return;
@@ -832,75 +816,132 @@ window.removeChar=function(key){
   renderChars();
   pendingDeletes[key].rafId=requestAnimationFrame(()=>animateRing(key));
   pendingDeletes[key].timer=setTimeout(()=>{
-    if(pendingDeletes[key]?.rafId) cancelAnimationFrame(pendingDeletes[key].rafId);
+    if(pendingDeletes[key]?.rafId)cancelAnimationFrame(pendingDeletes[key].rafId);
     const pairs=drama().pairs||{};
     Object.entries(pairs).filter(([,p])=>p.a===key||p.b===key).forEach(([pk])=>remove(ref(db,`${dramaPath()}/pairs/${pk}`)));
     remove(ref(db,`${dramaPath()}/chars/${key}`));
     logHistory(`Удалён персонаж <b>${c.name}</b>`,'del_char',{key,name:c.name,gender:c.gender,photo:c.photo||''});
-    delete pendingDeletes[key];
-    renderChars();
+    delete pendingDeletes[key];renderChars();
   },DELETE_MS);
 };
-
 window.restoreChar=function(key){
   if(!pendingDeletes[key])return;
   clearTimeout(pendingDeletes[key].timer);
-  if(pendingDeletes[key].rafId) cancelAnimationFrame(pendingDeletes[key].rafId);
-  delete pendingDeletes[key];
-  renderChars();
+  if(pendingDeletes[key].rafId)cancelAnimationFrame(pendingDeletes[key].rafId);
+  delete pendingDeletes[key];renderChars();
 };
 
-// ── PAIR PICKER ───────────────────────────────────────────────────────────
-function renderPairPicker(){
-  const chars=Object.entries(drama().chars||{}).map(([k,v])=>{
-    const c=typeof v==='object'?v:{name:v,gender:'m'};
-    return [k,c];
-  }).sort((a,b)=>a[1].name.localeCompare(b[1].name,'ru'));
-
-  const w=document.getElementById('pair-picker');
-  if(!w)return;
-  if(!chars.length){w.innerHTML='<span class="empty">Нет персонажей</span>';return;}
-
-  w.innerHTML=chars.map(([k,c])=>{
-    let cls='';
-    let label='';
-    if(pickerA===k){cls=' sel-a';label='<span class="picker-label picker-label-a">А</span>';}
-    else if(pickerB===k){cls=' sel-b';label='<span class="picker-label picker-label-b">Б</span>';}
-    return `<span class="picker-tag${cls}" onclick="pickerClick('${k}')">
-      ${gIcon(c.gender)}${c.name}${label}
+// TERMS (написания)
+window.renderTerms=function(){
+  let terms=Object.entries(drama().terms||{});
+  const q=(document.getElementById('terms-search')?.value||'').trim().toLowerCase();
+  if(q) terms=terms.filter(([,v])=>v.toLowerCase().includes(q));
+  terms.sort((a,b)=>a[1].localeCompare(b[1],'ru'));
+  const w=document.getElementById('terms-list');
+  if(!terms.length){w.innerHTML='<span class="empty">Нет написаний</span>';return;}
+  w.innerHTML=terms.map(([k,v])=>{
+    if(pendingDeletesT[k]){
+      const p=Math.min((Date.now()-pendingDeletesT[k].startTs)/DELETE_MS,1);
+      const off=RING_C-(RING_C*p);
+      return `<span class="term-tag pending-delete-t" data-tkey="${k}">
+        ${v}
+        <span class="del-ring-wrap" onclick="restoreTerm('${k}')">
+          <span class="del-ring-bg"></span>
+          <svg class="del-ring-svg" viewBox="0 0 22 22"><circle class="del-ring-circle" cx="11" cy="11" r="9" style="stroke-dashoffset:${off}"/></svg>
+          <span class="del-ring-x">↩</span>
+        </span>
+      </span>`;
+    }
+    const isNew=!!newTermKeys[k];
+    return `<span class="term-tag${isNew?' term-new':''}" data-tkey="${k}">
+      ${v}
+      <span class="char-actions">
+        <button class="edit-btn" onclick="openEditTerm('${k}')">✎</button>
+        <button class="del-btn" onclick="removeTerm('${k}')">×</button>
+      </span>
     </span>`;
   }).join('');
-}
+};
 
+window.addTerm=function(){
+  const inp=document.getElementById('term-input');
+  const v=inp.value.trim();if(!v||!state.currentDrama)return;
+  const r=push(ref(db,`${dramaPath()}/terms`));
+  set(r,v);
+  newTermKeys[r.key]=true;
+  setTimeout(()=>{delete newTermKeys[r.key];renderTerms();},10000);
+  inp.value='';renderTerms();
+};
+
+window.openEditTerm=function(key){
+  const v=(drama().terms||{})[key];if(!v)return;
+  showEdit('Редактировать написание',[
+    {id:'val',label:'Написание',value:v},
+  ],vals=>{
+    if(!vals.val)return;
+    set(ref(db,`${dramaPath()}/terms/${key}`),vals.val);
+  });
+};
+
+function animateRingT(key){
+  if(!pendingDeletesT[key])return;
+  const circle=document.querySelector(`.term-tag[data-tkey="${key}"] .del-ring-circle`);
+  if(circle){const p=Math.min((Date.now()-pendingDeletesT[key].startTs)/DELETE_MS,1);circle.style.strokeDashoffset=RING_C-(RING_C*p);}
+  if(Date.now()-pendingDeletesT[key].startTs<DELETE_MS) pendingDeletesT[key].rafId=requestAnimationFrame(()=>animateRingT(key));
+}
+window.removeTerm=function(key){
+  if(pendingDeletesT[key])return;
+  const v=(drama().terms||{})[key];if(!v)return;
+  pendingDeletesT[key]={val:v,startTs:Date.now(),timer:null,rafId:null};
+  renderTerms();
+  pendingDeletesT[key].rafId=requestAnimationFrame(()=>animateRingT(key));
+  pendingDeletesT[key].timer=setTimeout(()=>{
+    if(pendingDeletesT[key]?.rafId)cancelAnimationFrame(pendingDeletesT[key].rafId);
+    remove(ref(db,`${dramaPath()}/terms/${key}`));
+    delete pendingDeletesT[key];renderTerms();
+  },DELETE_MS);
+};
+window.restoreTerm=function(key){
+  if(!pendingDeletesT[key])return;
+  clearTimeout(pendingDeletesT[key].timer);
+  if(pendingDeletesT[key].rafId)cancelAnimationFrame(pendingDeletesT[key].rafId);
+  delete pendingDeletesT[key];renderTerms();
+};
+
+// PAIR PICKER
+function renderPairPicker(){
+  const chars=Object.entries(drama().chars||{}).map(([k,v])=>{
+    const c=typeof v==='object'?v:{name:v,gender:'m'};return [k,c];
+  }).sort((a,b)=>a[1].name.localeCompare(b[1].name,'ru'));
+  const w=document.getElementById('pair-picker');if(!w)return;
+  if(!chars.length){w.innerHTML='<span class="empty">Нет персонажей</span>';return;}
+  w.innerHTML=chars.map(([k,c])=>{
+    let cls='',label='';
+    if(pickerA===k){cls=' sel-a';label='<span class="picker-label picker-label-a">А</span>';}
+    else if(pickerB===k){cls=' sel-b';label='<span class="picker-label picker-label-b">Б</span>';}
+    return `<span class="picker-tag${cls}" onclick="pickerClick('${k}')">${gIcon(c.gender)}${c.name}${label}</span>`;
+  }).join('');
+}
 window.pickerClick=function(key){
   if(pickerA===key){pickerA=null;}
   else if(pickerB===key){pickerB=null;}
   else if(!pickerA){pickerA=key;}
   else if(!pickerB){pickerB=key;}
-  else{pickerA=key;pickerB=null;}// reset
-
-  // sync selects
-  const selA=document.getElementById('sel-a');
-  const selB=document.getElementById('sel-b');
-  if(selA) selA.value=pickerA||'';
-  if(selB) selB.value=pickerB||'';
+  else{pickerA=key;pickerB=null;}
+  const sa=document.getElementById('sel-a'),sb=document.getElementById('sel-b');
+  if(sa)sa.value=pickerA||'';
+  if(sb)sb.value=pickerB||'';
   renderPairPicker();
 };
-
 window.syncPickerFromSelects=function(){
   pickerA=document.getElementById('sel-a').value||null;
   pickerB=document.getElementById('sel-b').value||null;
   renderPairPicker();
 };
 
-// ── PAIRS ────────────────────────────────────────────────────────────────
+// PAIRS
 function badge(s){const c=s==='ты'?'ty':s==='вы'?'vy':'dash';return `<span class="badge ${c}">${s}</span>`;}
-
-function charTag(k){
-  const c=getChar(k);
-  if(!c) return k;
-  return `${gIcon(c.gender)}${c.name}`;
-}
+function charTag(k){const c=getChar(k);if(!c)return k;return `${gIcon(c.gender)}${c.name}`;}
 
 function renderPairs(){
   const pairs=Object.entries(drama().pairs||{});
@@ -916,35 +957,28 @@ function renderPairs(){
       <button class="del-btn" onclick="removePair('${k}')">×</button>
     </div>`).join('');
 }
-
 window.addPair=function(){
   const a=document.getElementById('sel-a').value,b=document.getElementById('sel-b').value;
   if(!a||!b||a===b){alert('Выбери двух разных персонажей');return;}
   const s=document.getElementById('sel-speech').value,sr=document.getElementById('sel-speech-rev').value;
   const note=document.getElementById('note-input').value.trim();
   const pairs=drama().pairs||{};
-  Object.entries(pairs).forEach(([k,p])=>{
-    if((p.a===a&&p.b===b)||(p.a===b&&p.b===a)) remove(ref(db,`${dramaPath()}/pairs/${k}`));
-  });
+  Object.entries(pairs).forEach(([k,p])=>{if((p.a===a&&p.b===b)||(p.a===b&&p.b===a))remove(ref(db,`${dramaPath()}/pairs/${k}`));});
   const r=push(ref(db,`${dramaPath()}/pairs`));
   set(r,{a,b,speech:s,speechRev:sr,note});
   logHistory(`Добавлена пара <b>${charName(a)}</b> — <b>${charName(b)}</b> (${s}/${sr})`,'add_pair',{pairKey:r.key,a,b,speech:s,speechRev:sr,note});
   document.getElementById('note-input').value='';
-  // reset picker
   pickerA=null;pickerB=null;
-  document.getElementById('sel-a').value='';
-  document.getElementById('sel-b').value='';
+  document.getElementById('sel-a').value='';document.getElementById('sel-b').value='';
   renderPairPicker();
 };
-
 window.removePair=function(key){
   const p=(drama().pairs||{})[key];if(!p)return;
-  logHistory(`Удалена пара <b>${charName(p.a)}</b> — <b>${charName(p.b)}</b>`,'del_pair',
-    {pairKey:key,a:p.a,b:p.b,speech:p.speech,speechRev:p.speechRev,note:p.note||''});
+  logHistory(`Удалена пара <b>${charName(p.a)}</b> — <b>${charName(p.b)}</b>`,'del_pair',{pairKey:key,a:p.a,b:p.b,speech:p.speech,speechRev:p.speechRev,note:p.note||''});
   remove(ref(db,`${dramaPath()}/pairs/${key}`));
 };
 
-// ── SEARCH ────────────────────────────────────────────────────────────────
+// SEARCH
 window.renderResult=function(){
   const ak=document.getElementById('find-a').value,bk=document.getElementById('find-b').value;
   const ra=document.getElementById('result-area');
@@ -953,26 +987,25 @@ window.renderResult=function(){
   const p=Object.values(drama().pairs||{}).find(x=>(x.a===ak&&x.b===bk)||(x.a===bk&&x.b===ak));
   if(!p){ra.innerHTML='<div class="result-card"><div class="empty">Пара не найдена</div></div>';return;}
   const fwd=p.a===ak?{s:p.speech,r:p.speechRev}:{s:p.speechRev,r:p.speech};
-  const an=charName(ak),bn=charName(bk);
   ra.innerHTML=`<div class="result-card">
-    <div class="result-title">${an} — ${bn}</div>
+    <div class="result-title">${charName(ak)} — ${charName(bk)}</div>
     <div class="result-row">${charTag(ak)}<span style="color:var(--text3);margin:0 6px">→</span>${charTag(bk)}: ${badge(fwd.s)}</div>
     <div class="result-row">${charTag(bk)}<span style="color:var(--text3);margin:0 6px">→</span>${charTag(ak)}: ${badge(fwd.r)}</div>
     ${p.note?`<div style="font-size:14px;color:var(--text3);margin-top:10px">${p.note}</div>`:''}
   </div>`;
 };
 
-// ── TABS ──────────────────────────────────────────────────────────────────
+// TABS
 window.switchTab=function(t,btn){
   document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
   document.querySelectorAll('.pane').forEach(p=>p.classList.remove('active'));
   btn.classList.add('active');
   document.getElementById('pane-'+t).classList.add('active');
-  if(t==='history') renderHistory();
-  if(t==='pairs') renderPairPicker();
+  if(t==='history')renderHistory();
+  if(t==='pairs')renderPairPicker();
 };
 
-// ── PALETTE ───────────────────────────────────────────────────────────────
+// PALETTE
 const PALETTES=[
   {id:'',color:'#d4a853',label:'Янтарь'},
   {id:'sakura',color:'#e8739a',label:'Сакура'},
@@ -995,7 +1028,7 @@ function buildPaletteGrid(){
 function updateSwatch(pal){const p=PALETTES.find(x=>x.id===pal)||PALETTES[0];document.getElementById('pal-swatch').style.background=p.color;}
 window.setPalette=function(pal){
   PALETTES.forEach(p=>document.body.classList.remove('palette-'+p.id));
-  if(pal) document.body.classList.add('palette-'+pal);
+  if(pal)document.body.classList.add('palette-'+pal);
   localStorage.setItem('dc_palette',pal);
   document.querySelectorAll('.pal-dot').forEach(d=>d.classList.toggle('active',d.dataset.pal===pal));
   updateSwatch(pal);
@@ -1004,20 +1037,20 @@ window.setPalette=function(pal){
 window.togglePaletteDropdown=()=>document.getElementById('palette-dropdown').classList.toggle('open');
 document.addEventListener('click',e=>{if(!document.getElementById('palette-wrap').contains(e.target))document.getElementById('palette-dropdown').classList.remove('open');});
 
-// ── THEME ─────────────────────────────────────────────────────────────────
+// THEME
 window.toggleTheme=function(isLight){
   document.body.classList.toggle('light',isLight);
   localStorage.setItem('dc_theme',isLight?'light':'dark');
 };
 
-// ── INIT ──────────────────────────────────────────────────────────────────
+// INIT
 (function(){
   const pal=localStorage.getItem('dc_palette')||'';
-  if(pal) document.body.classList.add('palette-'+pal);
+  if(pal)document.body.classList.add('palette-'+pal);
   if(localStorage.getItem('dc_theme')==='light'){
     document.body.classList.add('light');
     const chk=document.getElementById('theme-chk');
-    if(chk) chk.checked=true;
+    if(chk)chk.checked=true;
   }
   buildPaletteGrid();
 })();
