@@ -798,7 +798,7 @@ window.openEditChar=function(key){
     const g=document.getElementById('eg-f')?.classList.contains('active')?'f':'m';
     const name=vals.name||c.name;
     update(ref(db,`${dramaPath()}/chars/${key}`),{name,gender:g,photo:vals.photo??''});
-    logHistory(`Изменён персонаж <b>${c.name}</b>${name!==c.name?` → <b>${name}</b>`:'`}`,'edit_char',{key});
+    logHistory('Изменён персонаж <b>'+c.name+'</b>'+(name!==c.name?' → <b>'+name+'</b>':''),'edit_char',{key});
   },gHtml);
 };
 
