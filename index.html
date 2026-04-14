@@ -185,7 +185,7 @@ select option{background:var(--bg);color:var(--text)}
 .char-actions{display:inline-flex;align-items:center;flex-shrink:0;position:relative}
 .act-btn{border:none;background:transparent;color:var(--text3);cursor:pointer;font-size:16px;line-height:1;padding:0 3px;font-family:inherit;transition:color .15s;flex-shrink:0}
 .act-btn:hover{color:var(--text)}
-.act-menu{display:none;position:absolute;bottom:calc(100% + 6px);right:0;background:var(--surface);border:1px solid var(--border2);border-radius:10px;box-shadow:0 4px 20px rgba(0,0,0,.35);z-index:200;min-width:130px;overflow:hidden;white-space:nowrap}
+.act-menu{display:none;position:absolute;top:calc(100% + 4px);left:0;background:var(--surface);border:1px solid var(--border2);border-radius:10px;box-shadow:0 4px 20px rgba(0,0,0,.35);z-index:200;min-width:130px;overflow:hidden;white-space:nowrap}
 .act-menu.open{display:block}
 .act-menu-item{display:flex;align-items:center;gap:8px;padding:9px 14px;font-size:13px;cursor:pointer;color:var(--text2);font-family:'DM Sans',sans-serif;transition:background .12s}
 .act-menu-item:hover{background:var(--surface2);color:var(--text)}
@@ -445,11 +445,8 @@ select option{background:var(--bg);color:var(--text)}
       <!-- SEARCH -->
       <div id="pane-search" class="pane">
         <div class="card">
-          <div class="card-title">Найти пару</div>
-          <div class="form-row">
-            <select id="find-a" onchange="renderResult()" style="flex:1"><option value="">— персонаж А —</option></select>
-            <select id="find-b" onchange="renderResult()" style="flex:1"><option value="">— персонаж Б —</option></select>
-          </div>
+          <div class="card-title">Выбери персонажей для поиска</div>
+          <div class="pair-char-picker" id="search-picker"></div>
           <div id="result-area"></div>
         </div>
       </div>
@@ -486,6 +483,7 @@ let pendingDeletes={},pendingDeletesT={};
 let newCharKeys={},newTermKeys={};
 let selectedGender='m',addType='char';
 let pickerSel=[]; // array of selected char keys, max 5
+let searchSel=[]; // selected chars in search tab, max 2
 let collapsedGroups=new Set(JSON.parse(localStorage.getItem('dc_collapsed')||'["done","trash"]'));
 const DELETE_MS=5000,RING_C=60;
 const AIR_ORDER={'mn-tu':0,'wd-th':1,'fr-su':2,'':3};
@@ -512,18 +510,13 @@ function checkReminder(){
   const d=drama();
   // only show for ongoing dramas
   if(d.status==='done'||d.status==='trash'){el.classList.remove('show');return;}
-  // check once-per-day dismissal
-  const dismissed=localStorage.getItem('reminder_dismissed');
-  const today=new Date().toDateString();
-  if(dismissed===today){el.classList.remove('show');return;}
-  // show if drama has chars but no pairs
+  // show if drama has chars but no pairs (permanent, no dismissal)
   const hasChars=Object.keys(d.chars||{}).length>0;
   const hasPairs=Object.keys(d.pairs||{}).length>0;
   el.classList.toggle('show',hasChars&&!hasPairs);
 }
 window.dismissReminder=function(){
   document.getElementById('reminder').classList.remove('show');
-  localStorage.setItem('reminder_dismissed',new Date().toDateString());
 };
 window.goToPairs=function(){
   const btn=document.getElementById('tab-pairs');
@@ -593,7 +586,7 @@ window.renderSidebar=function(){
 window.filterDramas=v=>{dramaFilter=v;renderSidebar();};
 window.addDrama=function(){const inp=document.getElementById('drama-input');const v=inp.value.trim();if(!v)return;push(ref(db,'dramas'),{name:v,chars:{},pairs:{},status:'ongoing'});inp.value='';};
 window.selectDrama=function(id){
-  state.currentDrama=id;pendingDeletes={};pendingDeletesT={};newCharKeys={};newTermKeys={};pickerSel=[];
+  state.currentDrama=id;pendingDeletes={};pendingDeletesT={};newCharKeys={};newTermKeys={};pickerSel=[];searchSel=[];
   document.getElementById('no-drama').style.display='none';document.getElementById('drama-view').style.display='block';
   renderSidebar();renderCurrentDrama();closeSidebar();checkReminder();
 };
@@ -655,9 +648,9 @@ function showLockedMsg(){alert('Дорама заблокирована для �
 window.setDramaStatus=function(s){
   if(!state.currentDrama)return;
   if((drama().status||'ongoing')===s)return;
-  if(s==='done'||s==='trash')remove(ref(db,`${dramaPath()}/history`));
+  // keep history — do NOT clear it on status change
   update(ref(db,dramaPath()),{status:s});
-  if(s!=='trash')logHistory(`Статус → «${s==='done'?'Завершена':'Текущие'}»`,'status',{status:s});
+  logHistory(`Статус → «${s==='done'?'Завершена':s==='trash'?'Корзина':'Текущие'}»`,'status',{status:s});
   // expand the target group so user sees where drama went
   const groupMap={'ongoing':'active','done':'done','trash':'trash'};
   const targetGroup=groupMap[s]||'active';
@@ -706,6 +699,10 @@ window.undoAddChar=(ck,hk)=>confirmUndo(()=>{remove(ref(db,`${dramaPath()}/chars
 window.undoDelChar=(pj,hk)=>confirmUndo(()=>{try{const p=JSON.parse(pj.replace(/\\\'/g,"'"));set(ref(db,`${dramaPath()}/chars/${p.key}`),{name:p.name,gender:p.gender||'m',photo:p.photo||'',pinned:p.pinned||false});}catch(e){}remove(ref(db,`${dramaPath()}/history/${hk}`));});
 window.undoAddTerm=(tk,hk)=>confirmUndo(()=>{remove(ref(db,`${dramaPath()}/terms/${tk}`));remove(ref(db,`${dramaPath()}/history/${hk}`));});
 window.undoDelTerm=(pj,hk)=>confirmUndo(()=>{try{const p=JSON.parse(pj.replace(/\\\'/g,"'"));set(ref(db,`${dramaPath()}/terms/${p.key}`),{val:p.val,pinned:p.pinned||false});}catch(e){}remove(ref(db,`${dramaPath()}/history/${hk}`));});
+window.undoAddPairGroup=(pairsJson,hk)=>confirmUndo(()=>{
+  try{const pairs=JSON.parse(pairsJson.replace(/\\'/g,"'"));pairs.forEach(p=>remove(ref(db,`${dramaPath()}/pairs/${p.key}`)));}catch(e){}
+  remove(ref(db,`${dramaPath()}/history/${hk}`));
+});
 window.undoAddPair=(pk,hk)=>confirmUndo(()=>{remove(ref(db,`${dramaPath()}/pairs/${pk}`));remove(ref(db,`${dramaPath()}/history/${hk}`));});
 window.undoDelPair=hk=>confirmUndo(()=>{const h=(drama().history||{})[hk];if(!h)return;const p=h.payload;set(ref(db,`${dramaPath()}/pairs/${p.pairKey}`),{a:p.a,b:p.b,speech:p.speech,speechRev:p.speechRev,note:p.note||''});remove(ref(db,`${dramaPath()}/history/${hk}`));});
 
@@ -739,7 +736,7 @@ window.renderChars=function(){
     const pinned=c.pinned;
     const pinClass=pinned?' pinned':'';
     const pinIcon=pinned?'★':'☆';
-    return `<span class="char-tag${isNew?' char-new':''}${pinClass}" data-key="${k}">${tip}${gIcon(c.gender)}${c.name}<span class="char-actions"><button class="act-btn" onclick="toggleActMenu(event,'act-c-${k}')" title="Действия">⋯</button><div class="act-menu" id="act-c-${k}"><div class="act-menu-item${pinned?' pinned-item':''}" onclick="closeActMenus();togglePinChar('${k}')">${pinned?'★ Открепить':'☆ Закрепить'}</div><div class="act-menu-item" onclick="closeActMenus();openEditChar('${k}')">✎ Изменить</div><div class="act-menu-item danger" onclick="closeActMenus();removeChar('${k}')">× Удалить</div></div></span></span>`;
+    return `<span class="char-tag${isNew?' char-new':''}${pinClass}" data-key="${k}">${tip}${gIcon(c.gender)}${c.name}<span class="char-actions"><button class="act-btn" onclick="toggleActMenu(event,'act-c-${k}')" title="Действия">⋮</button><div class="act-menu" id="act-c-${k}"><div class="act-menu-item${pinned?' pinned-item':''}" onclick="closeActMenus();togglePinChar('${k}')">${pinned?'★ Открепить':'☆ Закрепить'}</div><div class="act-menu-item" onclick="closeActMenus();openEditChar('${k}')">✎ Изменить</div><div class="act-menu-item danger" onclick="closeActMenus();removeChar('${k}')">× Удалить</div></div></span></span>`;
   }).join('');
 };
 
@@ -817,7 +814,7 @@ window.renderTerms=function(){
     }
     const isNew=!!newTermKeys[k];
     const pinIcon=pinned?'★':'☆';
-    return `<span class="term-tag${isNew?' term-new':''}${pinned?' pinned':''}" data-tkey="${k}">${t.val}<span class="char-actions"><button class="act-btn" onclick="toggleActMenu(event,'act-t-${k}')" title="Действия">⋯</button><div class="act-menu" id="act-t-${k}"><div class="act-menu-item${pinned?' pinned-item':''}" onclick="closeActMenus();togglePinTerm('${k}')">${pinned?'★ Открепить':'☆ Закрепить'}</div><div class="act-menu-item" onclick="closeActMenus();openEditTerm('${k}')">✎ Изменить</div><div class="act-menu-item danger" onclick="closeActMenus();removeTerm('${k}')">× Удалить</div></div></span></span>`;
+    return `<span class="term-tag${isNew?' term-new':''}${pinned?' pinned':''}" data-tkey="${k}">${t.val}<span class="char-actions"><button class="act-btn" onclick="toggleActMenu(event,'act-t-${k}')" title="Действия">⋮</button><div class="act-menu" id="act-t-${k}"><div class="act-menu-item${pinned?' pinned-item':''}" onclick="closeActMenus();togglePinTerm('${k}')">${pinned?'★ Открепить':'☆ Закрепить'}</div><div class="act-menu-item" onclick="closeActMenus();openEditTerm('${k}')">✎ Изменить</div><div class="act-menu-item danger" onclick="closeActMenus();removeTerm('${k}')">× Удалить</div></div></span></span>`;
   }).join('');
 };
 
@@ -984,10 +981,14 @@ function renderPairs(){
         }
         clique.forEach(c=>visited.add(c));
         const names=clique.map(c=>charTag(c)).join('<span class="pair-arrow">, </span>');
+        // collect notes from clique pairs
+        const cliqueNotes=cliquePairKeys.map(pk=>{const pp=rawPairs.find(([rk])=>rk===pk);return pp?pp[1].note||'':''}).filter(Boolean);
+        const groupNote=cliqueNotes[0]||'';
         html+=`<div class="pair-item"><div class="pair-body">
           <div class="pair-row" style="flex-wrap:wrap;gap:4px">${names}</div>
-          <div class="pair-row" style="margin-top:4px"><span style="color:var(--text3);font-size:13px">все друг к другу на</span> ${badge(speech)}</div>
-        </div><button class="del-btn" onclick="removePairGroup([${cliquePairKeys.map(k=>"'"+k+"'").join(',')}])" title="Удалить группу">×</button></div>`;
+          <div class="pair-row" style="margin-top:4px"><span style="color:var(--text3);font-size:13px">между собой на</span> ${badge(speech)}</div>
+          ${groupNote?`<div class="pair-note">${groupNote}</div>`:''}
+        </div><button class="del-btn" onclick="confirmRemovePairGroup([${cliquePairKeys.map(k=>"'"+k+"'").join(',')}])" title="Удалить группу">×</button></div>`;
       }
     }
   }
@@ -1010,14 +1011,14 @@ function renderPairs(){
   w.innerHTML=html;
 }
 
-window.removePairGroup=function(keys){
-  keys.forEach(k=>remove(ref(db,`${dramaPath()}/pairs/${k}`)));
-};
+
 window.addPair=function(){
   if(dramaIsLocked()){showLockedMsg();return;}
   if(pickerSel.length<2){alert('Выбери хотя бы двух персонажей');return;}
   const note=document.getElementById('note-input')?.value.trim()||'';
   const pairs=drama().pairs||{};
+  const savedKeys=[];
+  const savedNames=[];
   // save all unique pairs from selected set
   for(let i=0;i<pickerSel.length;i++){
     for(let j=i+1;j<pickerSel.length;j++){
@@ -1029,8 +1030,17 @@ window.addPair=function(){
       Object.entries(pairs).forEach(([k,p])=>{if((p.a===a&&p.b===b)||(p.a===b&&p.b===a))remove(ref(db,`${dramaPath()}/pairs/${k}`));});
       const r=push(ref(db,`${dramaPath()}/pairs`));
       set(r,{a,b,speech:s,speechRev:sr,note});
-      logHistory(`Добавлено обращение <b>${charName(a)}</b> — <b>${charName(b)}</b> (${s}/${sr})`,'add_pair',{pairKey:r.key,a,b,speech:s,speechRev:sr,note});
+      savedKeys.push({key:r.key,a,b,speech:s,speechRev:sr,note});
+      savedNames.push(`<b>${charName(a)}</b>—<b>${charName(b)}</b>`);
     }
+  }
+  // Single history entry for the whole group
+  if(savedKeys.length===1){
+    const sk=savedKeys[0];
+    logHistory(`Добавлено обращение <b>${charName(sk.a)}</b> — <b>${charName(sk.b)}</b> (${sk.speech}/${sk.speechRev})`,'add_pair_group',{pairs:savedKeys});
+  } else {
+    const names=pickerSel.map(k=>`<b>${charName(k)}</b>`).join(', ');
+    logHistory(`Добавлена группа обращений: ${names}`,'add_pair_group',{pairs:savedKeys});
   }
   if(document.getElementById('note-input'))document.getElementById('note-input').value='';
   pickerSel=[];
@@ -1038,20 +1048,78 @@ window.addPair=function(){
 };
 window.removePair=function(key){
   const p=(drama().pairs||{})[key];if(!p)return;
-  logHistory(`Удалено обращение <b>${charName(p.a)}</b> — <b>${charName(p.b)}</b>`,'del_pair',{pairKey:key,a:p.a,b:p.b,speech:p.speech,speechRev:p.speechRev,note:p.note||''});
-  remove(ref(db,`${dramaPath()}/pairs/${key}`));
+  showConfirm('Удалить обращение?',`${charName(p.a)} — ${charName(p.b)}`,()=>{
+    logHistory(`Удалено обращение <b>${charName(p.a)}</b> — <b>${charName(p.b)}</b>`,'del_pair',{pairKey:key,a:p.a,b:p.b,speech:p.speech,speechRev:p.speechRev,note:p.note||''});
+    remove(ref(db,`${dramaPath()}/pairs/${key}`));
+  });
+};
+window.confirmRemovePairGroup=function(keys){
+  showConfirm('Удалить группу обращений?','Все обращения в этой группе будут удалены.',()=>{
+    keys.forEach(k=>{
+      const p=(drama().pairs||{})[k];if(!p)return;
+      logHistory(`Удалено обращение <b>${charName(p.a)}</b> — <b>${charName(p.b)}</b>`,'del_pair',{pairKey:k,a:p.a,b:p.b,speech:p.speech,speechRev:p.speechRev,note:p.note||''});
+      remove(ref(db,`${dramaPath()}/pairs/${k}`));
+    });
+  });
 };
 
 // SEARCH
+function renderSearchPicker(){
+  const chars=Object.entries(drama().chars||{}).map(([k,v])=>{const c=typeof v==='object'?v:{name:v,gender:'m',photo:''};return[k,c];}).sort((a,b)=>a[1].name.localeCompare(b[1].name,'ru'));
+  const w=document.getElementById('search-picker');if(!w)return;
+  if(!chars.length){w.innerHTML='<span class="empty">Нет персонажей</span>';return;}
+  w.innerHTML=chars.map(([k,c])=>{
+    const idx=searchSel.indexOf(k);
+    const isSel=idx>=0;
+    const col=idx===0?'var(--accent)':'#5ba8f5';
+    const label=isSel?`<span class="picker-label" style="background:${col}">${idx===0?'А':'Б'}</span>`:'';
+    const tip=c.photo?`<span class="picker-photo-tip"><img src="${c.photo}" alt="" onerror="this.parentNode.style.display='none'"></span>`:'';
+    return `<span class="picker-tag${isSel?' selected':''}" onclick="searchPickerClick('${k}')" style="${isSel?'border-color:'+col:''}">${tip}${gIcon(c.gender)}${c.name}${label}</span>`;
+  }).join('');
+  renderResult();
+}
+
+window.searchPickerClick=function(key){
+  const idx=searchSel.indexOf(key);
+  if(idx>=0){searchSel.splice(idx,1);}
+  else if(searchSel.length<2){searchSel.push(key);}
+  else{searchSel=[key];}
+  renderSearchPicker();
+};
+
 window.renderResult=function(){
-  const ak=document.getElementById('find-a').value,bk=document.getElementById('find-b').value;
   const ra=document.getElementById('result-area');
-  if(!ak||!bk){ra.innerHTML='';return;}
-  if(ak===bk){ra.innerHTML='<div class="empty" style="margin-top:10px">Выбери разных персонажей</div>';return;}
-  const p=Object.values(drama().pairs||{}).find(x=>(x.a===ak&&x.b===bk)||(x.a===bk&&x.b===ak));
-  if(!p){ra.innerHTML='<div class="result-card"><div class="empty">Пара не найдена</div></div>';return;}
+  if(!ra) return;
+  if(searchSel.length<2){ra.innerHTML='';return;}
+  const ak=searchSel[0],bk=searchSel[1];
+  const pairs=Object.values(drama().pairs||{});
+  const p=pairs.find(x=>(x.a===ak&&x.b===bk)||(x.a===bk&&x.b===ak));
+  if(!p){
+    ra.innerHTML=`<div class="result-card" style="text-align:center">
+      <div style="font-size:15px;color:var(--text3);margin-bottom:12px">Обращение между <b style="color:var(--text)">${charName(ak)}</b> и <b style="color:var(--text)">${charName(bk)}</b> не задано</div>
+      <button class="btn" onclick="goFillPair('${ak}','${bk}')">→ Заполнить в Обращениях</button>
+    </div>`;
+    return;
+  }
   const fwd=p.a===ak?{s:p.speech,r:p.speechRev}:{s:p.speechRev,r:p.speech};
-  ra.innerHTML=`<div class="result-card"><div class="result-title">${charName(ak)} — ${charName(bk)}</div><div class="result-row">${charTag(ak)}<span style="color:var(--text3);margin:0 6px">→</span>${charTag(bk)}: ${badge(fwd.s)}</div><div class="result-row">${charTag(bk)}<span style="color:var(--text3);margin:0 6px">→</span>${charTag(ak)}: ${badge(fwd.r)}</div>${p.note?`<div style="font-size:14px;color:var(--text3);margin-top:10px">${p.note}</div>`:''}</div>`;
+  const sym=fwd.s===fwd.r&&fwd.s!=='—';
+  let rows=sym
+    ?`<div class="result-row">${charTag(ak)}<span style="color:var(--text3);margin:0 6px">↔</span>${charTag(bk)}: ${badge(fwd.s)}</div>`
+    :`<div class="result-row">${charTag(ak)}<span style="color:var(--text3);margin:0 6px">→</span>${charTag(bk)}: ${badge(fwd.s)}</div>
+     <div class="result-row">${charTag(bk)}<span style="color:var(--text3);margin:0 6px">→</span>${charTag(ak)}: ${badge(fwd.r)}</div>`;
+  ra.innerHTML=`<div class="result-card">
+    <div class="result-title">${charName(ak)} — ${charName(bk)}</div>
+    ${rows}
+    ${p.note?`<div style="font-size:14px;color:var(--text3);margin-top:10px">${p.note}</div>`:''}
+  </div>`;
+};
+
+window.goFillPair=function(ak,bk){
+  // switch to pairs tab and pre-select these two
+  pickerSel=[ak,bk];
+  const btn=document.getElementById('tab-pairs');
+  if(btn)switchTab('pairs',btn);
+  renderPairPicker();
 };
 
 // TABS
@@ -1059,7 +1127,7 @@ window.switchTab=function(t,btn){
   document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
   document.querySelectorAll('.pane').forEach(p=>p.classList.remove('active'));
   btn.classList.add('active');document.getElementById('pane-'+t).classList.add('active');
-  if(t==='history')renderHistory();if(t==='pairs')renderPairPicker();
+  if(t==='history')renderHistory();if(t==='pairs')renderPairPicker();if(t==='search'){searchSel=[];renderSearchPicker();}
 };
 
 // PALETTE
