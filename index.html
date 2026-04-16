@@ -71,8 +71,7 @@ header{border-bottom:1px solid var(--border);padding:0 1.5rem;display:flex;align
 .reminder-text{flex:1;line-height:1.4}
 .reminder-arrow{font-size:13px;font-weight:600;color:var(--accent);white-space:nowrap;cursor:pointer;padding:5px 12px;border:1px solid var(--accent);border-radius:8px;transition:all .15s;text-decoration:none;flex-shrink:0}
 .reminder-arrow:hover{background:var(--accent);color:#0f0e0c}
-.reminder-close{background:transparent;border:none;color:var(--text3);cursor:pointer;font-size:20px;line-height:1;padding:0 0 0 8px;flex-shrink:0;transition:color .15s}
-.reminder-close:hover{color:var(--text)}
+
 
 /* LAYOUT */
 .layout{display:flex;height:calc(100vh - 64px);position:relative;overflow:hidden}
@@ -272,6 +271,50 @@ select option{background:var(--bg);color:var(--text)}
   .no-drama .big{font-size:36px}
   .char-photo-tip{display:none!important}
 }
+
+/* SCHEDULE SIDEBAR */
+.schedule-wrap{border-top:1px solid var(--border);padding:.75rem 0 .5rem;flex-shrink:0}
+.schedule-header{display:flex;align-items:center;justify-content:space-between;padding:0 1rem;margin-bottom:8px;cursor:pointer;user-select:none}
+.schedule-title{font-size:11px;letter-spacing:.09em;color:var(--text3);text-transform:uppercase}
+.schedule-title:hover{color:var(--text2)}
+.schedule-arrow{font-size:10px;color:var(--text3);transition:transform .2s;display:inline-block}
+.schedule-arrow.collapsed{transform:rotate(-90deg)}
+.schedule-body{overflow:hidden;transition:max-height .3s ease}
+.schedule-tabs{display:flex;margin:0 1rem 8px;border:1px solid var(--border2);border-radius:8px;overflow:hidden}
+.sch-tab{flex:1;padding:6px 0;font-size:12px;border:none;background:transparent;color:var(--text3);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s;text-align:center}
+.sch-tab.active{background:var(--accent);color:var(--btn-text,#0f0e0c);font-weight:600}
+.sch-pane{display:none;padding:0 1rem}
+.sch-pane.active{display:block}
+.sch-day-block{margin-bottom:10px}
+.sch-day-label{display:flex;align-items:center;justify-content:space-between;font-size:11px;font-weight:600;color:var(--text3);margin-bottom:4px;letter-spacing:.06em}
+.sch-add-btn{width:18px;height:18px;border-radius:50%;border:1px solid var(--border2);background:transparent;color:var(--text3);font-size:14px;line-height:1;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;flex-shrink:0;padding:0}
+.sch-add-btn:hover{background:var(--accent);border-color:var(--accent);color:var(--btn-text,#0f0e0c)}
+.sch-row{display:flex;align-items:center;gap:4px;margin-bottom:3px;position:relative}
+.sch-name{flex:1;font-size:12px;padding:4px 7px;background:var(--surface2);border:1px solid var(--border2);border-radius:6px;color:var(--text);outline:none;font-family:'DM Sans',sans-serif;min-width:0}
+.sch-name::placeholder{color:var(--text3)}
+.sch-name:focus{border-color:var(--accent)}
+.sch-ep{width:52px;flex-shrink:0;font-size:12px;padding:4px 6px;background:var(--surface2);border:1px solid var(--border2);border-radius:6px;color:var(--text);outline:none;font-family:'DM Sans',sans-serif;text-align:center}
+.sch-ep::placeholder{color:var(--text3)}
+.sch-ep:focus{border-color:var(--accent)}
+.sch-del{border:none;background:transparent;color:var(--text3);cursor:pointer;font-size:14px;padding:0 2px;line-height:1;flex-shrink:0;transition:color .15s}
+.sch-del:hover{color:#e05050}
+.sch-saved-row{display:flex;align-items:center;gap:4px;padding:3px 0;font-size:12px;color:var(--text2);cursor:pointer;border-radius:4px;transition:background .12s;padding:3px 5px;margin:0 -5px}
+.sch-saved-row:hover{background:var(--surface2)}
+.sch-saved-name{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sch-saved-ep{font-size:11px;color:var(--text3);flex-shrink:0}
+
+/* PRESENCE (online users) */
+.presence-wrap{display:flex;align-items:center;gap:0;position:relative;cursor:pointer}
+.presence-avatar{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;border:2px solid var(--bg);position:relative;margin-left:-6px;transition:transform .15s;flex-shrink:0;font-family:'DM Sans',sans-serif;font-weight:600;color:#fff}
+.presence-avatar:first-child{margin-left:0}
+.presence-avatar:hover{transform:scale(1.2);z-index:10}
+.presence-tooltip{display:none;position:absolute;bottom:calc(100%+6px);left:50%;transform:translateX(-50%);background:var(--surface);border:1px solid var(--border2);border-radius:8px;padding:4px 8px;font-size:12px;color:var(--text2);white-space:nowrap;pointer-events:none;z-index:400;box-shadow:0 4px 16px rgba(0,0,0,.3)}
+.presence-avatar:hover .presence-tooltip{display:block}
+.presence-panel{display:none;position:absolute;top:calc(100%+8px);right:0;background:var(--surface);border:1px solid var(--border2);border-radius:12px;padding:10px 14px;z-index:300;min-width:160px;box-shadow:0 8px 24px rgba(0,0,0,.35)}
+.presence-panel.open{display:block}
+.presence-panel-title{font-size:11px;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px}
+.presence-panel-item{display:flex;align-items:center;gap:8px;padding:4px 0;font-size:13px;color:var(--text2)}
+.presence-panel-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
 </style>
 </head>
 <body>
@@ -284,7 +327,16 @@ select option{background:var(--bg);color:var(--text)}
     Baddest Females
   </div>
   <div class="header-right">
-    <div><span class="status-dot" id="status-dot"></span><span id="status-text">подключение…</span></div>
+    <div style="display:flex;align-items:center;gap:8px">
+      <span class="status-dot" id="status-dot"></span><span id="status-text">подключение…</span>
+      <div class="presence-wrap" id="presence-wrap" onclick="togglePresencePanel()">
+        <div id="presence-avatars" style="display:flex;align-items:center"></div>
+      </div>
+      <div class="presence-panel" id="presence-panel">
+        <div class="presence-panel-title">Сейчас онлайн</div>
+        <div id="presence-panel-list"></div>
+      </div>
+    </div>
     <div class="palette-wrap" id="palette-wrap">
       <button class="palette-btn" onclick="togglePaletteDropdown()">
         <div class="pal-swatch-btn" id="pal-swatch"></div>Цвет
@@ -331,6 +383,50 @@ select option{background:var(--bg);color:var(--text)}
       <div class="sidebar-label" onclick="toggleGroup('trash')">Корзина<div class="sidebar-label-right"><span class="sidebar-label-count" id="count-trash">0</span><span class="sidebar-label-arrow collapsed" id="arrow-trash">▾</span></div></div>
       <div class="group-content" id="drama-list-trash" style="max-height:0;overflow:hidden"></div>
     </div>
+
+    <!-- SCHEDULE -->
+    <div class="schedule-wrap">
+      <div class="schedule-header" onclick="toggleSchedule()">
+        <span class="schedule-title">Расписание</span>
+        <span class="schedule-arrow" id="sch-arrow">▾</span>
+      </div>
+      <div class="schedule-body" id="sch-body">
+        <div class="schedule-tabs">
+          <button class="sch-tab active" id="sch-tab-air" onclick="switchSchTab('air',this)">Сейчас</button>
+          <button class="sch-tab" id="sch-tab-soon" onclick="switchSchTab('soon',this)">Скоро</button>
+        </div>
+        <!-- AIR pane -->
+        <div class="sch-pane active" id="sch-pane-air">
+          <div class="sch-day-block">
+            <div class="sch-day-label">ПН-ВТ <button class="sch-add-btn" onclick="addSchRow('air','mn-tu')">+</button></div>
+            <div id="sch-air-mn-tu"></div>
+          </div>
+          <div class="sch-day-block">
+            <div class="sch-day-label">СР-ЧТ <button class="sch-add-btn" onclick="addSchRow('air','wd-th')">+</button></div>
+            <div id="sch-air-wd-th"></div>
+          </div>
+          <div class="sch-day-block">
+            <div class="sch-day-label">ПТ-ВС <button class="sch-add-btn" onclick="addSchRow('air','fr-su')">+</button></div>
+            <div id="sch-air-fr-su"></div>
+          </div>
+        </div>
+        <!-- SOON pane -->
+        <div class="sch-pane" id="sch-pane-soon">
+          <div class="sch-day-block">
+            <div class="sch-day-label">ПН-ВТ <button class="sch-add-btn" onclick="addSchRow('soon','mn-tu')">+</button></div>
+            <div id="sch-soon-mn-tu"></div>
+          </div>
+          <div class="sch-day-block">
+            <div class="sch-day-label">СР-ЧТ <button class="sch-add-btn" onclick="addSchRow('soon','wd-th')">+</button></div>
+            <div id="sch-soon-wd-th"></div>
+          </div>
+          <div class="sch-day-block">
+            <div class="sch-day-label">ПТ-ВС <button class="sch-add-btn" onclick="addSchRow('soon','fr-su')">+</button></div>
+            <div id="sch-soon-fr-su"></div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <main>
@@ -351,7 +447,6 @@ select option{background:var(--bg);color:var(--text)}
         <span class="reminder-icon">💬</span>
         <span class="reminder-text">Не забывай добавлять обращения между персонажами</span>
         <span class="reminder-arrow" onclick="goToPairs()">→ Обращения</span>
-        <button class="reminder-close" onclick="dismissReminder()">×</button>
       </div>
 
       <!-- CHARS -->
@@ -473,7 +568,7 @@ select option{background:var(--bg);color:var(--text)}
 </div>
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import{getDatabase,ref,onValue,set,remove,push,update}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+import{getDatabase,ref,onValue,set,remove,push,update,onDisconnect}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 const cfg={apiKey:"AIzaSyAg_UhVP2DRU_jrqJD-Or3Iy8ZEIQWaAIU",authDomain:"bfnames.firebaseapp.com",databaseURL:"https://bfnames-default-rtdb.europe-west1.firebasedatabase.app",projectId:"bfnames",storageBucket:"bfnames.firebasestorage.app",messagingSenderId:"1066954721078",appId:"1:1066954721078:web:fb729d5ccb8671db175597"};
 const db=getDatabase(initializeApp(cfg));
 
@@ -515,13 +610,10 @@ function checkReminder(){
   const hasPairs=Object.keys(d.pairs||{}).length>0;
   el.classList.toggle('show',hasChars&&!hasPairs);
 }
-window.dismissReminder=function(){
-  document.getElementById('reminder').classList.remove('show');
-};
 window.goToPairs=function(){
   const btn=document.getElementById('tab-pairs');
   if(btn)switchTab('pairs',btn);
-  dismissReminder();
+  document.getElementById('reminder').classList.remove('show');
 };
 
 // COLLAPSIBLE
@@ -1145,6 +1237,185 @@ window.toggleTheme=function(isLight){document.body.classList.toggle('light',isLi
   if(localStorage.getItem('dc_theme')==='light'){document.body.classList.add('light');const chk=document.getElementById('theme-chk');if(chk)chk.checked=true;}
   buildPaletteGrid();
 })();
+
+// ── SCHEDULE ──────────────────────────────────────────────────────────────────
+let schCollapsed = JSON.parse(localStorage.getItem('sch_collapsed')||'false');
+const SCH_DAYS = ['mn-tu','wd-th','fr-su'];
+
+function toggleSchedule(){
+  schCollapsed = !schCollapsed;
+  localStorage.setItem('sch_collapsed', JSON.stringify(schCollapsed));
+  applyScheduleCollapse();
+}
+function applyScheduleCollapse(){
+  const body = document.getElementById('sch-body');
+  const arrow = document.getElementById('sch-arrow');
+  if(!body||!arrow) return;
+  if(schCollapsed){
+    body.style.maxHeight='0';body.style.overflow='hidden';arrow.classList.add('collapsed');
+  } else {
+    body.style.maxHeight='none';body.style.overflow='visible';arrow.classList.remove('collapsed');
+  }
+}
+
+window.switchSchTab=function(tab,btn){
+  document.querySelectorAll('.sch-tab').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.sch-pane').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('sch-pane-'+tab).classList.add('active');
+};
+
+// Schedule data stored in Firebase at /schedule/{tab}/{day}/rows[]
+function schPath(tab,day){return `schedule/${tab}/${day}`;}
+
+let schState = {}; // {air:{}, soon:{}} — local rendered state
+
+onValue(ref(db,'schedule'), snap=>{
+  schState = snap.val()||{};
+  renderAllSchedule();
+}, ()=>{});
+
+function renderAllSchedule(){
+  ['air','soon'].forEach(tab=>{
+    SCH_DAYS.forEach(day=>{
+      const container=document.getElementById(`sch-${tab}-${day}`);
+      if(!container)return;
+      const rows=((schState[tab]||{})[day]||{}).rows||[];
+      const isAir=tab==='air';
+      container.innerHTML=rows.map((r,i)=>`
+        <div class="sch-saved-row" onclick="editSchRow('${tab}','${day}',${i})">
+          <span class="sch-saved-name">${r.name||'—'}</span>
+          <span class="sch-saved-ep">${isAir?(r.ep?'Сер. '+r.ep:''):(r.date||'')}</span>
+          <button class="sch-del" onclick="event.stopPropagation();deleteSchRow('${tab}','${day}',${i})" title="Удалить">×</button>
+        </div>`).join('');
+    });
+  });
+  applyScheduleCollapse();
+}
+
+window.addSchRow=function(tab,day){
+  const container=document.getElementById(`sch-${tab}-${day}`);
+  if(!container)return;
+  const isAir=tab==='air';
+  const rowDiv=document.createElement('div');
+  rowDiv.className='sch-row';
+  rowDiv.innerHTML=`
+    <input class="sch-name" placeholder="Название" id="sch-inp-name">
+    <input class="${isAir?'sch-ep':'sch-name'}" placeholder="${isAir?'Сер.':'Дата'}" id="sch-inp-extra" style="${isAir?'':'width:70px;flex:none'}">
+    <button class="sch-del" onclick="cancelSchRow(this)">×</button>`;
+  container.appendChild(rowDiv);
+  const nameInp=rowDiv.querySelector('#sch-inp-name');
+  const extraInp=rowDiv.querySelector('#sch-inp-extra');
+  function saveRow(){
+    const name=nameInp.value.trim();
+    if(!name){rowDiv.remove();return;}
+    const extra=extraInp.value.trim();
+    const rows=[...((schState[tab]||{})[day]||{}).rows||[]];
+    rows.push(isAir?{name,ep:extra}:{name,date:extra});
+    set(ref(db,schPath(tab,day)),{rows});
+    rowDiv.remove();
+  }
+  [nameInp,extraInp].forEach(inp=>{inp.addEventListener('keydown',e=>{if(e.key==='Enter')saveRow();if(e.key==='Escape')rowDiv.remove();});});
+  nameInp.focus();
+  // save on blur outside
+  rowDiv.addEventListener('focusout',e=>{if(!rowDiv.contains(e.relatedTarget))setTimeout(saveRow,150);});
+};
+
+window.editSchRow=function(tab,day,idx){
+  const rows=[...((schState[tab]||{})[day]||{}).rows||[]];
+  const r=rows[idx];if(!r)return;
+  const isAir=tab==='air';
+  const container=document.getElementById(`sch-${tab}-${day}`);
+  const savedRows=container.querySelectorAll('.sch-saved-row');
+  const target=savedRows[idx];if(!target)return;
+  const rowDiv=document.createElement('div');
+  rowDiv.className='sch-row';
+  rowDiv.innerHTML=`
+    <input class="sch-name" value="${(r.name||'').replace(/"/g,'&quot;')}" id="sch-edit-name">
+    <input class="${isAir?'sch-ep':'sch-name'}" value="${isAir?r.ep||'':r.date||''}" placeholder="${isAir?'Сер.':'Дата'}" id="sch-edit-extra" style="${isAir?'':'width:70px;flex:none'}">
+    <button class="sch-del" onclick="cancelSchRow(this)">×</button>`;
+  container.replaceChild(rowDiv,target);
+  function saveEdit(){
+    const name=rowDiv.querySelector('#sch-edit-name').value.trim();
+    const extra=rowDiv.querySelector('#sch-edit-extra').value.trim();
+    if(name)rows[idx]=isAir?{name,ep:extra}:{name,date:extra};
+    else rows.splice(idx,1);
+    set(ref(db,schPath(tab,day)),{rows});
+  }
+  rowDiv.querySelectorAll('input').forEach(inp=>{inp.addEventListener('keydown',e=>{if(e.key==='Enter')saveEdit();if(e.key==='Escape')renderAllSchedule();});});
+  rowDiv.querySelector('#sch-edit-name').focus();
+  rowDiv.addEventListener('focusout',e=>{if(!rowDiv.contains(e.relatedTarget))setTimeout(saveEdit,150);});
+};
+
+window.cancelSchRow=function(btn){btn.closest('.sch-row').remove();};
+
+window.deleteSchRow=function(tab,day,idx){
+  const rows=[...((schState[tab]||{})[day]||{}).rows||[]];
+  rows.splice(idx,1);
+  set(ref(db,schPath(tab,day)),{rows});
+};
+
+// init schedule collapse
+applyScheduleCollapse();
+
+// ── PRESENCE (online users) ───────────────────────────────────────────────────
+const ANIMALS=['🐱 Котик','🐶 Пёсик','🐼 Панда','🦊 Лиса','🐨 Коала','🐸 Лягушка','🦁 Лев','🐯 Тигр','🐺 Волк','🦋 Бабочка','🐧 Пингвин','🦄 Единорог'];
+const AVATAR_COLORS=['#e8739a','#3d9cf0','#4ec068','#a060f0','#f05840','#6888d0','#c87840','#3dd68c','#f0d060','#90ccff'];
+
+// Pick a stable animal name for this session
+let myPresenceKey=sessionStorage.getItem('presence_key');
+let myAnimal=sessionStorage.getItem('presence_animal');
+if(!myPresenceKey){
+  myPresenceKey=push(ref(db,'presence')).key;
+  myAnimal=ANIMALS[Math.floor(Math.random()*ANIMALS.length)];
+  sessionStorage.setItem('presence_key',myPresenceKey);
+  sessionStorage.setItem('presence_animal',myAnimal);
+}
+
+// Register presence — remove on disconnect
+const myPresRef=ref(db,`presence/${myPresenceKey}`);
+set(myPresRef,{animal:myAnimal,ts:Date.now()});
+onDisconnect(myPresRef).remove();
+
+// Listen to presence list
+onValue(ref(db,'presence'),snap=>{
+  const all=snap.val()||{};
+  // clean stale entries older than 30s
+  const now=Date.now();
+  Object.entries(all).forEach(([k,v])=>{if(now-v.ts>30000)remove(ref(db,`presence/${k}`));});
+  renderPresence(all);
+});
+
+// Heartbeat every 10s to keep presence alive
+setInterval(()=>{set(myPresRef,{animal:myAnimal,ts:Date.now()});},10000);
+
+function renderPresence(all){
+  const users=Object.entries(all).filter(([,v])=>Date.now()-v.ts<30000);
+  const wrap=document.getElementById('presence-avatars');
+  const list=document.getElementById('presence-panel-list');
+  if(!wrap||!list)return;
+  wrap.innerHTML=users.slice(0,5).map(([k,v],i)=>{
+    const emoji=v.animal.split(' ')[0];
+    const name=v.animal;
+    const isMe=k===myPresenceKey;
+    const col=AVATAR_COLORS[i%AVATAR_COLORS.length];
+    return `<div class="presence-avatar" style="background:${col}" title="${name}${isMe?' (ты)':''}">${emoji}<span class="presence-tooltip">${name}${isMe?' (ты)':''}</span></div>`;
+  }).join('');
+  if(users.length>5){wrap.innerHTML+=`<div class="presence-avatar" style="background:var(--text3)">+${users.length-5}</div>`;}
+  list.innerHTML=users.map(([k,v],i)=>{
+    const isMe=k===myPresenceKey;
+    const col=AVATAR_COLORS[i%AVATAR_COLORS.length];
+    return `<div class="presence-panel-item"><div class="presence-panel-dot" style="background:${col}"></div>${v.animal}${isMe?' <span style="color:var(--text3);font-size:11px">(ты)</span>':''}</div>`;
+  }).join('');
+}
+
+window.togglePresencePanel=function(){
+  document.getElementById('presence-panel').classList.toggle('open');
+};
+document.addEventListener('click',e=>{
+  const w=document.getElementById('presence-wrap');
+  if(w&&!w.contains(e.target))document.getElementById('presence-panel')?.classList.remove('open');
+});
 </script>
 </body>
 </html>
