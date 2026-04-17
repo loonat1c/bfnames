@@ -286,31 +286,32 @@ select option{background:var(--bg);color:var(--text)}
 .sch-pane{display:none;padding:0 1rem}
 .sch-pane.active{display:block}
 .sch-day-block{margin-bottom:10px}
-.sch-day-label{display:flex;align-items:center;justify-content:space-between;font-size:11px;font-weight:600;color:var(--text3);margin-bottom:4px;letter-spacing:.06em}
+.sch-day-label{display:flex;align-items:center;justify-content:space-between;font-size:12px;font-weight:600;color:var(--text3);margin-bottom:6px;letter-spacing:.06em}
 .sch-add-btn{width:18px;height:18px;border-radius:50%;border:1px solid var(--border2);background:transparent;color:var(--text3);font-size:14px;line-height:1;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;flex-shrink:0;padding:0}
 .sch-add-btn:hover{background:var(--accent);border-color:var(--accent);color:var(--btn-text,#0f0e0c)}
 .sch-row{display:flex;align-items:center;gap:4px;margin-bottom:3px;position:relative}
-.sch-name{flex:1;font-size:12px;padding:4px 7px;background:var(--surface2);border:1px solid var(--border2);border-radius:6px;color:var(--text);outline:none;font-family:'DM Sans',sans-serif;min-width:0}
+.sch-name{flex:1;font-size:14px;padding:5px 8px;background:var(--surface2);border:1px solid var(--border2);border-radius:6px;color:var(--text);outline:none;font-family:'DM Sans',sans-serif;min-width:0}
 .sch-name::placeholder{color:var(--text3)}
 .sch-name:focus{border-color:var(--accent)}
-.sch-ep{width:52px;flex-shrink:0;font-size:12px;padding:4px 6px;background:var(--surface2);border:1px solid var(--border2);border-radius:6px;color:var(--text);outline:none;font-family:'DM Sans',sans-serif;text-align:center}
+.sch-ep{width:44px;flex-shrink:0;font-size:14px;padding:5px 6px;background:var(--surface2);border:1px solid var(--border2);border-radius:6px;color:var(--text);outline:none;font-family:'DM Sans',sans-serif;text-align:center}
 .sch-ep::placeholder{color:var(--text3)}
 .sch-ep:focus{border-color:var(--accent)}
 .sch-del{border:none;background:transparent;color:var(--text3);cursor:pointer;font-size:14px;padding:0 2px;line-height:1;flex-shrink:0;transition:color .15s}
 .sch-del:hover{color:#e05050}
-.sch-saved-row{display:flex;align-items:center;gap:4px;padding:3px 0;font-size:12px;color:var(--text2);cursor:pointer;border-radius:4px;transition:background .12s;padding:3px 5px;margin:0 -5px}
+.sch-saved-row{display:flex;align-items:center;gap:6px;padding:4px 6px;margin:0 -6px;font-size:14px;color:var(--text2);cursor:pointer;border-radius:6px;transition:background .12s;position:relative}
 .sch-saved-row:hover{background:var(--surface2)}
 .sch-saved-name{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.sch-saved-ep{font-size:11px;color:var(--text3);flex-shrink:0}
+.sch-saved-name[title]:hover::after{content:attr(title);position:absolute;left:0;top:calc(100% + 4px);background:var(--surface);border:1px solid var(--border2);border-radius:6px;padding:4px 8px;font-size:12px;color:var(--text2);white-space:nowrap;z-index:200;box-shadow:0 4px 12px rgba(0,0,0,.3);pointer-events:none}
+.sch-saved-ep{font-size:13px;color:var(--text3);flex-shrink:0}
+.sch-del{opacity:0;transition:opacity .15s,color .15s}
+.sch-saved-row:hover .sch-del{opacity:1}
 
 /* PRESENCE (online users) */
-.presence-wrap{display:flex;align-items:center;gap:0;position:relative;cursor:pointer}
-.presence-avatar{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;border:2px solid var(--bg);position:relative;margin-left:-6px;transition:transform .15s;flex-shrink:0;font-family:'DM Sans',sans-serif;font-weight:600;color:#fff}
+.presence-wrap{display:flex;align-items:center;gap:0;cursor:pointer}
+.presence-avatar{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;border:2px solid var(--bg);margin-left:-8px;transition:transform .15s;flex-shrink:0}
 .presence-avatar:first-child{margin-left:0}
-.presence-avatar:hover{transform:scale(1.2);z-index:10}
-.presence-tooltip{display:none;position:absolute;bottom:calc(100%+6px);left:50%;transform:translateX(-50%);background:var(--surface);border:1px solid var(--border2);border-radius:8px;padding:4px 8px;font-size:12px;color:var(--text2);white-space:nowrap;pointer-events:none;z-index:400;box-shadow:0 4px 16px rgba(0,0,0,.3)}
-.presence-avatar:hover .presence-tooltip{display:block}
-.presence-panel{display:none;position:absolute;top:calc(100%+8px);right:0;background:var(--surface);border:1px solid var(--border2);border-radius:12px;padding:10px 14px;z-index:300;min-width:160px;box-shadow:0 8px 24px rgba(0,0,0,.35)}
+.presence-avatar:hover{transform:scale(1.15);z-index:10}
+.presence-panel{display:none;position:fixed;background:var(--surface);border:1px solid var(--border2);border-radius:12px;padding:10px 14px;z-index:300;min-width:160px;box-shadow:0 8px 24px rgba(0,0,0,.35)}
 .presence-panel.open{display:block}
 .presence-panel-title{font-size:11px;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px}
 .presence-panel-item{display:flex;align-items:center;gap:8px;padding:4px 0;font-size:13px;color:var(--text2)}
@@ -327,11 +328,11 @@ select option{background:var(--bg);color:var(--text)}
     Baddest Females
   </div>
   <div class="header-right">
-    <div style="display:flex;align-items:center;gap:8px">
-      <span class="status-dot" id="status-dot"></span><span id="status-text">подключение…</span>
-      <div class="presence-wrap" id="presence-wrap" onclick="togglePresencePanel()">
+    <div style="display:flex;align-items:center;gap:8px;position:relative">
+      <div class="presence-wrap" id="presence-wrap" onclick="togglePresencePanel(event)">
         <div id="presence-avatars" style="display:flex;align-items:center"></div>
       </div>
+      <span class="status-dot" id="status-dot"></span><span id="status-text">подключение…</span>
       <div class="presence-panel" id="presence-panel">
         <div class="presence-panel-title">Сейчас онлайн</div>
         <div id="presence-panel-list"></div>
@@ -387,7 +388,7 @@ select option{background:var(--bg);color:var(--text)}
     <!-- SCHEDULE -->
     <div class="schedule-wrap">
       <div class="schedule-header" onclick="toggleSchedule()">
-        <span class="schedule-title">Расписание</span>
+        <span class="schedule-title">Расписание <span id="sch-updated-badge" style="display:none;font-size:10px;color:var(--text3);border:1px solid var(--border2);border-radius:5px;padding:1px 6px;letter-spacing:.04em;vertical-align:middle">Обновлено</span></span>
         <span class="schedule-arrow" id="sch-arrow">▾</span>
       </div>
       <div class="schedule-body" id="sch-body">
@@ -603,12 +604,9 @@ function checkReminder(){
   const el=document.getElementById('reminder');
   if(!state.currentDrama){el.classList.remove('show');return;}
   const d=drama();
-  // only show for ongoing dramas
+  // show for ongoing dramas always (regardless of whether pairs exist)
   if(d.status==='done'||d.status==='trash'){el.classList.remove('show');return;}
-  // show if drama has chars but no pairs (permanent, no dismissal)
-  const hasChars=Object.keys(d.chars||{}).length>0;
-  const hasPairs=Object.keys(d.pairs||{}).length>0;
-  el.classList.toggle('show',hasChars&&!hasPairs);
+  el.classList.add('show');
 }
 window.goToPairs=function(){
   const btn=document.getElementById('tab-pairs');
@@ -1239,8 +1237,21 @@ window.toggleTheme=function(isLight){document.body.classList.toggle('light',isLi
 })();
 
 // ── SCHEDULE ──────────────────────────────────────────────────────────────────
-let schCollapsed = JSON.parse(localStorage.getItem('sch_collapsed')||'false');
+let schCollapsed = JSON.parse(localStorage.getItem('sch_collapsed')||'true');
 const SCH_DAYS = ['mn-tu','wd-th','fr-su'];
+
+function markSchUpdated(){
+  const today=new Date().toDateString();
+  localStorage.setItem('sch_updated',today);
+  renderSchUpdatedBadge();
+}
+function renderSchUpdatedBadge(){
+  const badge=document.getElementById('sch-updated-badge');
+  if(!badge)return;
+  const stored=localStorage.getItem('sch_updated');
+  const today=new Date().toDateString();
+  badge.style.display=(stored===today)?'inline-flex':'none';
+}
 
 function toggleSchedule(){
   schCollapsed = !schCollapsed;
@@ -1285,7 +1296,7 @@ function renderAllSchedule(){
       container.innerHTML=rows.map((r,i)=>`
         <div class="sch-saved-row" onclick="editSchRow('${tab}','${day}',${i})">
           <span class="sch-saved-name">${r.name||'—'}</span>
-          <span class="sch-saved-ep">${isAir?(r.ep?'Сер. '+r.ep:''):(r.date||'')}</span>
+          <span class="sch-saved-ep">${isAir?(r.ep||''):(r.date||'')}</span>
           <button class="sch-del" onclick="event.stopPropagation();deleteSchRow('${tab}','${day}',${i})" title="Удалить">×</button>
         </div>`).join('');
     });
@@ -1301,24 +1312,33 @@ window.addSchRow=function(tab,day){
   rowDiv.className='sch-row';
   rowDiv.innerHTML=`
     <input class="sch-name" placeholder="Название" id="sch-inp-name">
-    <input class="${isAir?'sch-ep':'sch-name'}" placeholder="${isAir?'Сер.':'Дата'}" id="sch-inp-extra" style="${isAir?'':'width:70px;flex:none'}">
+    <input class="${isAir?'sch-ep':'sch-name'}" placeholder="${isAir?'#':'Дата'}" id="sch-inp-extra" style="${isAir?'':'width:70px;flex:none'}">
     <button class="sch-del" onclick="cancelSchRow(this)">×</button>`;
   container.appendChild(rowDiv);
   const nameInp=rowDiv.querySelector('#sch-inp-name');
   const extraInp=rowDiv.querySelector('#sch-inp-extra');
+  let done=false;
   function saveRow(){
+    if(done)return;done=true;
     const name=nameInp.value.trim();
     if(!name){rowDiv.remove();return;}
     const extra=extraInp.value.trim();
     const rows=[...((schState[tab]||{})[day]||{}).rows||[]];
     rows.push(isAir?{name,ep:extra}:{name,date:extra});
+    markSchUpdated();
     set(ref(db,schPath(tab,day)),{rows});
     rowDiv.remove();
   }
-  [nameInp,extraInp].forEach(inp=>{inp.addEventListener('keydown',e=>{if(e.key==='Enter')saveRow();if(e.key==='Escape')rowDiv.remove();});});
+  [nameInp,extraInp].forEach(inp=>{
+    inp.addEventListener('keydown',e=>{
+      if(e.key==='Enter'){e.preventDefault();saveRow();}
+      if(e.key==='Escape'){done=true;rowDiv.remove();}
+    });
+  });
   nameInp.focus();
-  // save on blur outside
-  rowDiv.addEventListener('focusout',e=>{if(!rowDiv.contains(e.relatedTarget))setTimeout(saveRow,150);});
+  rowDiv.addEventListener('focusout',e=>{
+    if(!rowDiv.contains(e.relatedTarget))setTimeout(saveRow,100);
+  });
 };
 
 window.editSchRow=function(tab,day,idx){
@@ -1332,19 +1352,27 @@ window.editSchRow=function(tab,day,idx){
   rowDiv.className='sch-row';
   rowDiv.innerHTML=`
     <input class="sch-name" value="${(r.name||'').replace(/"/g,'&quot;')}" id="sch-edit-name">
-    <input class="${isAir?'sch-ep':'sch-name'}" value="${isAir?r.ep||'':r.date||''}" placeholder="${isAir?'Сер.':'Дата'}" id="sch-edit-extra" style="${isAir?'':'width:70px;flex:none'}">
+    <input class="${isAir?'sch-ep':'sch-name'}" value="${isAir?r.ep||'':r.date||''}" placeholder="${isAir?'#':'Дата'}" id="sch-edit-extra" style="${isAir?'':'width:70px;flex:none'}">
     <button class="sch-del" onclick="cancelSchRow(this)">×</button>`;
   container.replaceChild(rowDiv,target);
+  let done=false;
   function saveEdit(){
+    if(done)return;done=true;
     const name=rowDiv.querySelector('#sch-edit-name').value.trim();
     const extra=rowDiv.querySelector('#sch-edit-extra').value.trim();
     if(name)rows[idx]=isAir?{name,ep:extra}:{name,date:extra};
     else rows.splice(idx,1);
+    markSchUpdated();
     set(ref(db,schPath(tab,day)),{rows});
   }
-  rowDiv.querySelectorAll('input').forEach(inp=>{inp.addEventListener('keydown',e=>{if(e.key==='Enter')saveEdit();if(e.key==='Escape')renderAllSchedule();});});
+  rowDiv.querySelectorAll('input').forEach(inp=>{
+    inp.addEventListener('keydown',e=>{
+      if(e.key==='Enter'){e.preventDefault();saveEdit();}
+      if(e.key==='Escape'){done=true;renderAllSchedule();}
+    });
+  });
   rowDiv.querySelector('#sch-edit-name').focus();
-  rowDiv.addEventListener('focusout',e=>{if(!rowDiv.contains(e.relatedTarget))setTimeout(saveEdit,150);});
+  rowDiv.addEventListener('focusout',e=>{if(!rowDiv.contains(e.relatedTarget))setTimeout(saveEdit,100);});
 };
 
 window.cancelSchRow=function(btn){btn.closest('.sch-row').remove();};
@@ -1352,11 +1380,13 @@ window.cancelSchRow=function(btn){btn.closest('.sch-row').remove();};
 window.deleteSchRow=function(tab,day,idx){
   const rows=[...((schState[tab]||{})[day]||{}).rows||[]];
   rows.splice(idx,1);
+  markSchUpdated();
   set(ref(db,schPath(tab,day)),{rows});
 };
 
 // init schedule collapse
 applyScheduleCollapse();
+renderSchUpdatedBadge();
 
 // ── PRESENCE (online users) ───────────────────────────────────────────────────
 const ANIMALS=['🐱 Котик','🐶 Пёсик','🐼 Панда','🦊 Лиса','🐨 Коала','🐸 Лягушка','🦁 Лев','🐯 Тигр','🐺 Волк','🦋 Бабочка','🐧 Пингвин','🦄 Единорог'];
@@ -1396,12 +1426,11 @@ function renderPresence(all){
   if(!wrap||!list)return;
   wrap.innerHTML=users.slice(0,5).map(([k,v],i)=>{
     const emoji=v.animal.split(' ')[0];
-    const name=v.animal;
     const isMe=k===myPresenceKey;
     const col=AVATAR_COLORS[i%AVATAR_COLORS.length];
-    return `<div class="presence-avatar" style="background:${col}" title="${name}${isMe?' (ты)':''}">${emoji}<span class="presence-tooltip">${name}${isMe?' (ты)':''}</span></div>`;
+    return `<div class="presence-avatar" style="background:${col}" title="${v.animal}${isMe?' (ты)':''}">${emoji}</div>`;
   }).join('');
-  if(users.length>5){wrap.innerHTML+=`<div class="presence-avatar" style="background:var(--text3)">+${users.length-5}</div>`;}
+  if(users.length>5){wrap.innerHTML+=`<div class="presence-avatar" style="background:var(--surface2);font-size:11px;color:var(--text3)">+${users.length-5}</div>`;}
   list.innerHTML=users.map(([k,v],i)=>{
     const isMe=k===myPresenceKey;
     const col=AVATAR_COLORS[i%AVATAR_COLORS.length];
@@ -1409,8 +1438,19 @@ function renderPresence(all){
   }).join('');
 }
 
-window.togglePresencePanel=function(){
-  document.getElementById('presence-panel').classList.toggle('open');
+window.togglePresencePanel=function(e){
+  e.stopPropagation();
+  const panel=document.getElementById('presence-panel');
+  const isOpen=panel.classList.contains('open');
+  panel.classList.toggle('open');
+  if(!isOpen){
+    // position panel at cursor
+    const x=e.clientX, y=e.clientY;
+    const pw=170, ph=120;
+    const left=Math.min(x, window.innerWidth-pw-8);
+    const top=Math.min(y+8, window.innerHeight-ph-8);
+    panel.style.left=left+'px';panel.style.top=top+'px';
+  }
 };
 document.addEventListener('click',e=>{
   const w=document.getElementById('presence-wrap');
