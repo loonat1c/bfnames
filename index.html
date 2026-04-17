@@ -279,7 +279,7 @@ select option{background:var(--bg);color:var(--text)}
 .schedule-title:hover{color:var(--text2)}
 .schedule-arrow{font-size:10px;color:var(--text3);transition:transform .2s;display:inline-block}
 .schedule-arrow.collapsed{transform:rotate(-90deg)}
-.schedule-body{overflow:hidden;transition:max-height .3s ease}
+.schedule-body{overflow:hidden;transition:max-height .3s ease;max-height:0px}
 .schedule-tabs{display:flex;margin:0 1rem 8px;border:1px solid var(--border2);border-radius:8px;overflow:hidden}
 .sch-tab{flex:1;padding:6px 0;font-size:12px;border:none;background:transparent;color:var(--text3);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s;text-align:center}
 .sch-tab.active{background:var(--accent);color:var(--btn-text,#0f0e0c);font-weight:600}
@@ -1253,19 +1253,31 @@ function renderSchUpdatedBadge(){
   badge.style.display=(stored===today)?'inline-flex':'none';
 }
 
-function toggleSchedule(){
+window.toggleSchedule=function(){
   schCollapsed = !schCollapsed;
   localStorage.setItem('sch_collapsed', JSON.stringify(schCollapsed));
   applyScheduleCollapse();
-}
+};
 function applyScheduleCollapse(){
   const body = document.getElementById('sch-body');
   const arrow = document.getElementById('sch-arrow');
   if(!body||!arrow) return;
   if(schCollapsed){
-    body.style.maxHeight='0';body.style.overflow='hidden';arrow.classList.add('collapsed');
+    body.style.maxHeight='0px';
+    body.style.overflow='hidden';
+    arrow.classList.add('collapsed');
   } else {
-    body.style.maxHeight='none';body.style.overflow='visible';arrow.classList.remove('collapsed');
+    // need actual height — temporarily remove overflow to measure
+    body.style.overflow='visible';
+    body.style.maxHeight='none';
+    const h2=body.scrollHeight;
+    body.style.maxHeight='0px';
+    // force reflow then animate
+    body.getBoundingClientRect();
+    body.style.maxHeight=h2+'px';
+    arrow.classList.remove('collapsed');
+    // after transition, set to none so dynamic content can grow
+    setTimeout(()=>{if(!schCollapsed){body.style.maxHeight='none';body.style.overflow='visible';}},320);
   }
 }
 
