@@ -17,7 +17,7 @@
   --btn-text:#0f0e0c;--radius:12px;--radius-lg:16px;--sidebar-w:300px;
 }
 body.light{--bg:#f2efe8;--surface:#fff;--btn-text:#fffef8;--surface2:#e8e4da;--border:rgba(0,0,0,.10);--border2:rgba(0,0,0,.20);--text:#18160f;--text2:#3a3830;--text3:#706c66;--accent:#8c5e18;--accent2:#5c3c08;--ty-bg:#d4f5e4;--ty-text:#145c38;--vy-bg:#d4e8fc;--vy-text:#0f3d82;--pin-bg:rgba(160,110,0,.10);--pin-border:rgba(160,110,0,.35);--pin-text:#7a5000}
-body.palette-sakura{--btn-text:#0f0e0c;--bg:#1a0f14;--surface:#261520;--surface2:#32202b;--border:rgba(255,200,220,.09);--border2:rgba(255,200,220,.20);--text:#f5e6ed;--text2:#d8b8c8;--text3:#a87888;--accent:#e8739a;--accent2:#f5b8cf;--ty-bg:#1a2618;--ty-text:#5dd68a;--vy-bg:#1a1030;--vy-text:#8baaf5;--pin-bg:rgba(255,220,180,.10);--pin-border:rgba(255,180,100,.4);--pin-text:#f5c080}
+body.palette-sakura{--btn-text:#0f0e0c;--bg:#1a0f14;--surface:#261520;--surface2:#32202b;--border:rgba(255,200,220,.09);--border2:rgba(255,200,220,.20);--text:#f5e6ed;--text2:#d8b8c8;--text3:#a87888;--accent:#e8739a;--accent2:#f5b8cf;--ty-bg:#1a2618;--ty-text:#5dd68a;--vy-bg:#1a1030;--vy-text:#8baaf5;--pin-bg:rgba(232,115,154,.12);--pin-border:rgba(232,115,154,.55);--pin-text:#f0a0c0}
 body.palette-sakura.light{--btn-text:#fff0f5;--bg:#fdf0f5;--surface:#fff;--surface2:#f5e0ec;--border:rgba(180,60,100,.10);--border2:rgba(180,60,100,.22);--text:#2a0f1c;--text2:#501030;--text3:#904868;--accent:#c0305a;--accent2:#8a1a38;--ty-bg:#d8f5e4;--ty-text:#0f5c30;--vy-bg:#dce8fd;--vy-text:#0f3882;--pin-bg:rgba(180,80,20,.10);--pin-border:rgba(180,80,20,.35);--pin-text:#8a3800}
 body.palette-ocean{--btn-text:#0f0e0c;--bg:#080e18;--surface:#101828;--surface2:#182030;--border:rgba(80,160,255,.09);--border2:rgba(80,160,255,.20);--text:#e0eeff;--text2:#a8c8e8;--text3:#6890b0;--accent:#3d9cf0;--accent2:#90ccff;--ty-bg:#0b2018;--ty-text:#3dd68c;--vy-bg:#0b1830;--vy-text:#5ba8f5;--pin-bg:rgba(100,200,255,.10);--pin-border:rgba(80,180,255,.4);--pin-text:#80d8ff}
 body.palette-ocean.light{--btn-text:#f0f8ff;--bg:#eef4fc;--surface:#fff;--surface2:#daeaf8;--border:rgba(20,80,160,.10);--border2:rgba(20,80,160,.22);--text:#081428;--text2:#0c2848;--text3:#386898;--accent:#0a5abf;--accent2:#063a88;--ty-bg:#d4f5e6;--ty-text:#0a5030;--vy-bg:#d4e8fc;--vy-text:#0f3d82;--pin-bg:rgba(0,60,140,.08);--pin-border:rgba(0,60,140,.3);--pin-text:#003880}
@@ -211,9 +211,9 @@ select option{background:var(--bg);color:var(--text)}
 .speech-sel{font-size:14px;padding:7px 12px}
 
 /* PAIRS */
-.pairs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:8px}
+.pairs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:8px}
 .pair-item{display:flex;align-items:flex-start;gap:12px;padding:14px 18px;background:var(--surface2);border-radius:var(--radius);font-size:15px;height:100%}
-.pair-body{flex:1}
+.pair-body{flex:1;min-width:0;word-break:break-word}
 .pair-row{display:flex;align-items:center;gap:8px;margin-bottom:7px;flex-wrap:wrap}
 .pair-row:last-child{margin-bottom:0}
 .pair-arrow{color:var(--text3);font-size:13px}
@@ -282,6 +282,7 @@ select option{background:var(--bg);color:var(--text)}
 .schedule-arrow{font-size:10px;color:var(--text3);transition:transform .2s;display:inline-block}
 .schedule-arrow.collapsed{transform:rotate(-90deg)}
 .schedule-body{overflow:hidden;transition:max-height .25s ease;max-height:600px}
+.sch-mode-edit .sch-day-label .sch-add-btn{display:none}
 .schedule-body.collapsed{max-height:0}
 .schedule-tabs{display:flex;margin:8px 1rem 8px;border:1px solid var(--border2);border-radius:8px;overflow:hidden}
 .sch-tab{flex:1;padding:6px 0;font-size:12px;border:none;background:transparent;color:var(--text3);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s;text-align:center}
@@ -303,14 +304,18 @@ select option{background:var(--bg);color:var(--text)}
 .sch-row-del{border:none;background:transparent;color:var(--text3);cursor:pointer;font-size:15px;padding:0 3px;line-height:1;flex-shrink:0;transition:color .15s}
 .sch-row-del:hover{color:#e05050}
 /* saved row */
-.sch-saved-row{display:grid;grid-template-columns:1fr 44px;align-items:center;gap:6px;padding:4px 6px;margin:0 -6px;font-size:14px;color:var(--text2);cursor:pointer;border-radius:6px;transition:background .12s;position:relative}
-.sch-saved-row:hover{background:var(--surface2)}
-.sch-saved-row.editing{grid-template-columns:1fr 44px 20px;background:var(--surface2)}
+/* view mode row */
+.sch-saved-row{display:grid;grid-template-columns:1fr 44px 20px;align-items:center;gap:4px;padding:4px 0;font-size:14px;color:var(--text2);border-radius:6px}
 .sch-saved-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .sch-saved-ep{font-size:13px;color:var(--text3);text-align:right;white-space:nowrap}
-.sch-saved-del{display:none;border:none;background:transparent;color:var(--text3);cursor:pointer;font-size:15px;padding:0;line-height:1;transition:color .15s}
-.sch-saved-row.editing .sch-saved-del{display:block}
-.sch-saved-del:hover{color:#e05050}
+.sch-saved-del{border:none;background:transparent;color:transparent;cursor:pointer;font-size:15px;padding:0;line-height:1}
+/* edit mode */
+.sch-editing .sch-saved-row{display:none}
+.sch-edit-row{display:grid;grid-template-columns:1fr 44px 20px;align-items:center;gap:4px;margin-bottom:4px}
+.sch-edit-del{border:none;background:transparent;color:var(--text3);cursor:pointer;font-size:15px;padding:0;line-height:1;transition:color .15s}
+.sch-edit-del:hover{color:#e05050}
+.sch-save-bar{padding:8px 1rem 4px;display:none}
+.sch-editing-mode .sch-save-bar{display:block}
 
 /* PRESENCE (online users) */
 .presence-wrap{display:flex;align-items:center;gap:0;cursor:pointer}
@@ -393,12 +398,17 @@ select option{background:var(--bg);color:var(--text)}
 
     <!-- SCHEDULE -->
     <div class="schedule-wrap">
-      <div class="schedule-header" onclick="toggleSchedule()">
-        <div class="schedule-header-left">
+      <div class="schedule-header">
+        <div class="schedule-header-left" onclick="toggleSchedule()" style="flex:1;display:flex;align-items:center;gap:8px">
           <span class="schedule-arrow" id="sch-arrow">▾</span>
           <span class="schedule-title">Расписание</span>
+          <span id="sch-updated-badge" style="display:none;font-size:10px;color:var(--text3);border:1px solid var(--border2);border-radius:5px;padding:1px 6px;letter-spacing:.04em">Обновлено</span>
         </div>
-        <span id="sch-updated-badge" style="display:none;font-size:10px;color:var(--text3);border:1px solid var(--border2);border-radius:5px;padding:1px 6px;letter-spacing:.04em">Обновлено</span>
+        <div id="sch-action-btns" style="display:flex;gap:6px;padding-right:2px">
+          <button id="sch-edit-btn" class="sch-add-btn" onclick="schEnterEditMode()" title="Редактировать" style="width:auto;padding:0 8px;border-radius:8px;font-size:12px">✎</button>
+          <button id="sch-save-btn" class="btn-sm" onclick="schSaveAll()" style="display:none;font-size:12px;padding:4px 10px">Сохранить</button>
+          <button id="sch-cancel-btn" class="btn-ghost btn-sm" onclick="schCancelAll()" style="display:none;font-size:12px;padding:4px 10px">Отмена</button>
+        </div>
       </div>
       <div class="schedule-body" id="sch-body">
         <div class="schedule-tabs">
@@ -408,31 +418,37 @@ select option{background:var(--bg);color:var(--text)}
         <!-- AIR pane -->
         <div class="sch-pane active" id="sch-pane-air">
           <div class="sch-day-block">
-            <div class="sch-day-label">ПН-ВТ <button class="sch-add-btn" onclick="addSchRow('air','mn-tu')">+</button></div>
+            <div class="sch-day-label">ПН-ВТ</div>
             <div id="sch-air-mn-tu"></div>
           </div>
           <div class="sch-day-block">
-            <div class="sch-day-label">СР-ЧТ <button class="sch-add-btn" onclick="addSchRow('air','wd-th')">+</button></div>
+            <div class="sch-day-label">СР-ЧТ</div>
             <div id="sch-air-wd-th"></div>
           </div>
           <div class="sch-day-block">
-            <div class="sch-day-label">ПТ-ВС <button class="sch-add-btn" onclick="addSchRow('air','fr-su')">+</button></div>
+            <div class="sch-day-label">ПТ-ВС</div>
             <div id="sch-air-fr-su"></div>
+          </div>
+          <div class="sch-save-bar" id="sch-save-bar-air">
+            <button class="btn-sm" style="width:100%" onclick="schAddNewRow('air')">+ Добавить строку</button>
           </div>
         </div>
         <!-- SOON pane -->
         <div class="sch-pane" id="sch-pane-soon">
           <div class="sch-day-block">
-            <div class="sch-day-label">ПН-ВТ <button class="sch-add-btn" onclick="addSchRow('soon','mn-tu')">+</button></div>
+            <div class="sch-day-label">ПН-ВТ</div>
             <div id="sch-soon-mn-tu"></div>
           </div>
           <div class="sch-day-block">
-            <div class="sch-day-label">СР-ЧТ <button class="sch-add-btn" onclick="addSchRow('soon','wd-th')">+</button></div>
+            <div class="sch-day-label">СР-ЧТ</div>
             <div id="sch-soon-wd-th"></div>
           </div>
           <div class="sch-day-block">
-            <div class="sch-day-label">ПТ-ВС <button class="sch-add-btn" onclick="addSchRow('soon','fr-su')">+</button></div>
+            <div class="sch-day-label">ПТ-ВС</div>
             <div id="sch-soon-fr-su"></div>
+          </div>
+          <div class="sch-save-bar" id="sch-save-bar-soon">
+            <button class="btn-sm" style="width:100%;margin-bottom:6px" onclick="schAddNewRow('soon')">+ Добавить строку</button>
           </div>
         </div>
       </div>
@@ -1206,49 +1222,49 @@ window.searchPickerClick=function(key){
   renderSearchPicker();
 };
 
+function charPhotoPlaceholder(){
+  return '<div style="width:80px;height:80px;border-radius:50%;border:2px solid var(--border2);background:var(--surface2);display:flex;align-items:center;justify-content:center;flex-direction:column"><span style="font-size:24px">🐾</span><span style="font-size:10px;color:var(--text3);margin-top:2px">нет фото</span></div>';
+}
+function charPhotoCard(k){
+  const c=getChar(k);const photo=c&&c.photo?c.photo:'';const name=charName(k);
+  const imgEl=photo?('<img src="'+photo+'" alt="" style="width:80px;height:80px;object-fit:cover;border-radius:50%;border:2px solid var(--border2);display:block" onerror="this.outerHTML=charPhotoPlaceholder()">'):charPhotoPlaceholder();
+  return '<div style="text-align:center;min-width:90px"><div style="margin:0 auto 8px;width:80px">'+imgEl+'</div><div style="font-size:13px;color:var(--text2);white-space:nowrap">'+gIcon(c?c.gender:'m')+name+'</div></div>';
+}
+
 window.renderResult=function(){
   const ra=document.getElementById('result-area');
   if(!ra) return;
   if(searchSel.length<2){ra.innerHTML='';return;}
   const ak=searchSel[0],bk=searchSel[1];
+
+  // Always show photo cards
+  const photoRow=`<div style="display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:20px;flex-wrap:wrap">
+    ${charPhotoCard(ak)}
+    <span style="font-size:24px;color:var(--text3)">↔</span>
+    ${charPhotoCard(bk)}
+  </div>`;
+
   const pairs=Object.values(drama().pairs||{});
   const p=pairs.find(x=>(x.a===ak&&x.b===bk)||(x.a===bk&&x.b===ak));
+
   if(!p){
     ra.innerHTML=`<div class="result-card" style="text-align:center">
-      <div style="font-size:15px;color:var(--text3);margin-bottom:12px">Обращение между <b style="color:var(--text)">${charName(ak)}</b> и <b style="color:var(--text)">${charName(bk)}</b> не задано</div>
+      ${photoRow}
+      <div style="font-size:15px;color:var(--text3);margin-bottom:14px">Обращение не задано</div>
       <button class="btn" onclick="goFillPair('${ak}','${bk}')">→ Заполнить в Обращениях</button>
     </div>`;
     return;
   }
   const fwd=p.a===ak?{s:p.speech,r:p.speechRev}:{s:p.speechRev,r:p.speech};
   const sym=fwd.s===fwd.r&&fwd.s!=='—';
-  let rows=sym
-    ?`<div class="result-row">${charTag(ak)}<span style="color:var(--text3);margin:0 6px">↔</span>${charTag(bk)}: ${badge(fwd.s)}</div>`
-    :`<div class="result-row">${charTag(ak)}<span style="color:var(--text3);margin:0 6px">→</span>${charTag(bk)}: ${badge(fwd.s)}</div>
-     <div class="result-row">${charTag(bk)}<span style="color:var(--text3);margin:0 6px">→</span>${charTag(ak)}: ${badge(fwd.r)}</div>`;
-  function charPhoto(k){
-    const c=getChar(k);
-    const photo=c&&c.photo?c.photo:null;
-    const name=charName(k);
-    if(photo){
-      return `<div style="text-align:center">
-        <img src="${photo}" alt="${name}" style="width:80px;height:80px;object-fit:cover;border-radius:50%;border:2px solid var(--border2);display:block;margin:0 auto 6px" onerror="this.style.display='none';this.nextSibling.style.display='flex'">
-        <div style="display:none;width:80px;height:80px;border-radius:50%;border:2px solid var(--border2);background:var(--surface2);align-items:center;justify-content:center;flex-direction:column;margin:0 auto 6px;font-size:20px">🐾<div style="font-size:10px;color:var(--text3);margin-top:2px">нет фото</div></div>
-        <div style="font-size:13px;color:var(--text2)">${gIcon(c?c.gender:'m')}${name}</div>
-      </div>`;
-    }
-    return `<div style="text-align:center">
-      <div style="width:80px;height:80px;border-radius:50%;border:2px solid var(--border2);background:var(--surface2);display:flex;align-items:center;justify-content:center;flex-direction:column;margin:0 auto 6px">
-        <span style="font-size:24px">🐾</span>
-        <span style="font-size:10px;color:var(--text3);margin-top:2px">нет фото</span>
-      </div>
-      <div style="font-size:13px;color:var(--text2)">${gIcon(c?c.gender:'m')}${name}</div>
-    </div>`;
-  }
+  let speechHtml=sym
+    ?`<div style="text-align:center;font-size:16px">${badge(fwd.s)}</div>`
+    :`<div style="text-align:center;font-size:15px;margin-bottom:6px">${gIcon(getChar(ak)?.gender||'m')}${charName(ak)} → ${charName(bk)}: ${badge(fwd.s)}</div>
+      <div style="text-align:center;font-size:15px">${gIcon(getChar(bk)?.gender||'m')}${charName(bk)} → ${charName(ak)}: ${badge(fwd.r)}</div>`;
   ra.innerHTML=`<div class="result-card">
-    <div style="display:flex;gap:24px;justify-content:center;margin-bottom:16px;flex-wrap:wrap">${charPhoto(ak)}${charPhoto(bk)}</div>
-    ${rows}
-    ${p.note?`<div style="font-size:14px;color:var(--text3);margin-top:10px">${p.note}</div>`:''}
+    ${photoRow}
+    ${speechHtml}
+    ${p.note?`<div style="font-size:14px;color:var(--text3);margin-top:12px;text-align:center">${p.note}</div>`:''}
   </div>`;
 };
 
@@ -1326,175 +1342,156 @@ window.switchSchTab=function(tab,btn){
   document.getElementById('sch-pane-'+tab).classList.add('active');
 };
 
-// Schedule — simple state-driven render
-// schEdit = {tab, day, idx} where idx=-1 means new row
+// SCHEDULE — edit-all mode
 function schPath(tab,day){return `schedule/${tab}/${day}`;}
 let schState={};
-let schEdit=null; // currently open editor: {tab,day,idx,name,ep}
+let schEditMode=false;    // currently in edit mode?
+let schEdits={};          // {tab_day: [{name,ep/date},...]} pending edits
+let schActiveTab='air';   // which tab is currently visible
 
 onValue(ref(db,'schedule'),snap=>{
   schState=snap.val()||{};
-  // Don't re-render if user is actively editing — they'll see updated data after saving
-  if(!schEdit) renderAllSchedule();
-  else {
-    // Only re-render days that are NOT currently being edited
-    ['air','soon'].forEach(tab=>{
-      SCH_DAYS.forEach(day=>{
-        if(schEdit.tab===tab&&schEdit.day===day) return; // skip active editor
-        renderSchDay(tab,day);
-      });
-    });
-    applyScheduleCollapse();
-  }
+  if(!schEditMode) renderAllSchedule();
 },()=>{});
 
 function renderAllSchedule(){
   ['air','soon'].forEach(tab=>{
-    SCH_DAYS.forEach(day=>renderSchDay(tab,day));
+    SCH_DAYS.forEach(day=>renderSchDayView(tab,day));
   });
   applyScheduleCollapse();
 }
 
-function renderSchDay(tab,day){
+function renderSchDayView(tab,day){
   const container=document.getElementById(`sch-${tab}-${day}`);
   if(!container)return;
   const rows=((schState[tab]||{})[day]||{}).rows||[];
   const isAir=tab==='air';
-  const isEditing=(schEdit&&schEdit.tab===tab&&schEdit.day===day);
-  let html='';
-  rows.forEach((r,i)=>{
-    if(isEditing&&schEdit.idx===i){
-      const nameVal=(schEdit.nameVal!==undefined?schEdit.nameVal:(r.name||'')).replace(/"/g,'&quot;');
-      const epVal=(schEdit.epVal!==undefined?schEdit.epVal:(isAir?(r.ep||''):(r.date||''))).replace(/"/g,'&quot;');
-      html+=`<div class="sch-row">
-        <input class="sch-name-inp" id="sch-ei-name" value="${nameVal}" placeholder="Название">
-        <input class="sch-ep-inp" id="sch-ei-ep" value="${epVal}" placeholder="${isAir?'#':'Дата'}">
-        <button class="sch-row-del" onclick="schCancelEdit()">×</button>
-      </div>`;
-    } else {
-      html+=`<div class="sch-saved-row" onclick="schStartEdit('${tab}','${day}',${i})">
+  if(schEditMode){
+    // render edit rows
+    const editRows=schEdits[tab+'_'+day]||rows.map(r=>({...r}));
+    container.innerHTML=editRows.map((r,i)=>`
+      <div class="sch-edit-row">
+        <input class="sch-name-inp" data-tab="${tab}" data-day="${day}" data-idx="${i}" data-field="name" value="${(r.name||'').replace(/"/g,'&quot;')}" placeholder="Название">
+        <input class="${isAir?'sch-ep-inp':'sch-name-inp'}" data-tab="${tab}" data-day="${day}" data-idx="${i}" data-field="${isAir?'ep':'date'}" value="${isAir?(r.ep||''):(r.date||'')}" placeholder="${isAir?'#':'Дата'}">
+        <button class="sch-edit-del" onclick="schRemoveEditRow('${tab}','${day}',${i})">×</button>
+      </div>`).join('');
+  } else {
+    container.innerHTML=rows.map((r,i)=>`
+      <div class="sch-saved-row" onclick="schEnterEditMode()">
         <span class="sch-saved-name" title="${(r.name||'').replace(/"/g,'&quot;')}">${r.name||'—'}</span>
         <span class="sch-saved-ep">${isAir?(r.ep||''):(r.date||'')}</span>
-        <button class="sch-saved-del" onclick="event.stopPropagation();schDeleteRow('${tab}','${day}',${i})">×</button>
-      </div>`;
-    }
-  });
-  if(isEditing&&schEdit.idx===-1){
-    const nameVal=(schEdit.nameVal||'').replace(/"/g,'&quot;');
-    const epVal=(schEdit.epVal||'').replace(/"/g,'&quot;');
-    html+=`<div class="sch-row">
-      <input class="sch-name-inp" id="sch-ei-name" value="${nameVal}" placeholder="Название">
-      <input class="sch-ep-inp" id="sch-ei-ep" value="${epVal}" placeholder="${isAir?'#':'Дата'}">
-      <button class="sch-row-del" onclick="schCancelEdit()">×</button>
-    </div>`;
-  }
-  container.innerHTML=html;
-  if(isEditing){
-    const nameInp=container.querySelector('#sch-ei-name');
-    const epInp=container.querySelector('#sch-ei-ep');
-    if(nameInp){
-      // sync schEdit values on every keystroke so save always has fresh data
-      nameInp.addEventListener('input',()=>{if(schEdit)schEdit.nameVal=nameInp.value;});
-      epInp&&epInp.addEventListener('input',()=>{if(schEdit)schEdit.epVal=epInp.value;});
-      [nameInp,epInp].forEach(inp=>{if(!inp)return;
-        inp.addEventListener('keydown',e=>{
-          if(e.key==='Enter'){e.preventDefault();schSaveEdit();}
-          if(e.key==='Escape'){schCancelEdit();}
-        });
-      });
-      setTimeout(()=>nameInp.focus(),0);
-    }
+        <span></span>
+      </div>`).join('');
   }
 }
 
-window.schStartEdit=function(tab,day,idx){
-  if(schEdit){
-    // Capture current input values before saving
-    const prevContainer=document.getElementById(`sch-${schEdit.tab}-${schEdit.day}`);
-    if(prevContainer){
-      const ni=prevContainer.querySelector('#sch-ei-name');
-      const ei=prevContainer.querySelector('#sch-ei-ep');
-      if(ni)schEdit.nameVal=ni.value;
-      if(ei)schEdit.epVal=ei.value;
-    }
-    schSaveEdit();
-  }
-  schEdit={tab,day,idx};
-  renderSchDay(tab,day);
-};
-
-window.addSchRow=function(tab,day){
-  if(schEdit){
-    const prevContainer=document.getElementById(`sch-${schEdit.tab}-${schEdit.day}`);
-    if(prevContainer){
-      const ni=prevContainer.querySelector('#sch-ei-name');
-      const ei=prevContainer.querySelector('#sch-ei-ep');
-      if(ni)schEdit.nameVal=ni.value;
-      if(ei)schEdit.epVal=ei.value;
-    }
-    schSaveEdit();
-  }
-  schEdit={tab,day,idx:-1};
-  renderSchDay(tab,day);
-};
-
-window.schSaveEdit=function(){
-  if(!schEdit)return;
-  const {tab,day,idx}=schEdit;
-  // Try DOM first, fall back to stored values in schEdit
-  const container=document.getElementById(`sch-${tab}-${day}`);
-  const nameInp=container?container.querySelector('#sch-ei-name'):null;
-  const epInp=container?container.querySelector('#sch-ei-ep'):null;
-  const name=(nameInp?nameInp.value:(schEdit.nameVal||'')).trim();
-  const ep=(epInp?epInp.value:(schEdit.epVal||'')).trim();
-  const isAir=tab==='air';
-  const savedEdit=schEdit;
-  schEdit=null;
-  if(!name){if(container)renderSchDay(tab,day);return;}
-  const rows=[...((schState[tab]||{})[day]||{}).rows||[]];
-  if(idx===-1){rows.push(isAir?{name,ep}:{name,date:ep});}
-  else{rows[idx]=isAir?{name,ep}:{name,date:ep};}
-  markSchUpdated();
-  set(ref(db,schPath(tab,day)),{rows});
-};
-
-window.schCancelEdit=function(){
-  if(!schEdit)return;
-  const {tab,day}=schEdit;
-  schEdit=null;
-  renderSchDay(tab,day);
-};
-
-window.editSchRow=function(tab,day,idx){schStartEdit(tab,day,idx);};
-
-window.schDeleteRow=function(tab,day,idx){
-  const rows=((schState[tab]||{})[day]||{}).rows||[];
-  const r=rows[idx];
-  showConfirm('Удалить строку?',`«${r?r.name||'':''}»`,()=>{
-    const newRows=[...((schState[tab]||{})[day]||{}).rows||[]];
-    newRows.splice(idx,1);
-    markSchUpdated();
-    set(ref(db,schPath(tab,day)),{rows:newRows});
+window.schEnterEditMode=function(){
+  schEditMode=true;
+  // copy current state into edits
+  schEdits={};
+  ['air','soon'].forEach(tab=>{
+    SCH_DAYS.forEach(day=>{
+      const rows=((schState[tab]||{})[day]||{}).rows||[];
+      schEdits[tab+'_'+day]=rows.map(r=>({...r}));
+    });
+  });
+  // show save/cancel, hide edit btn, show save bars
+  document.getElementById('sch-edit-btn').style.display='none';
+  document.getElementById('sch-save-btn').style.display='';
+  document.getElementById('sch-cancel-btn').style.display='';
+  document.getElementById('sch-save-bar-air').style.display='block';
+  document.getElementById('sch-save-bar-soon').style.display='block';
+  ['air','soon'].forEach(tab=>{SCH_DAYS.forEach(day=>renderSchDayView(tab,day));});
+  // wire up input events for real-time sync into schEdits
+  document.querySelectorAll('.sch-name-inp,.sch-ep-inp').forEach(inp=>{
+    inp.addEventListener('input',()=>schSyncInputs());
+    inp.addEventListener('keydown',e=>{if(e.key==='Enter')e.preventDefault();});
   });
 };
-window.deleteSchRow=window.schDeleteRow;
 
-// Close editor on click outside schedule
-document.addEventListener('mousedown',e=>{
-  if(!schEdit)return;
-  const body=document.getElementById('sch-body');
-  if(body&&!body.contains(e.target)){
-    // Capture current values before DOM might change
-    const container=document.getElementById(`sch-${schEdit.tab}-${schEdit.day}`);
-    if(container){
-      const ni=container.querySelector('#sch-ei-name');
-      const ei=container.querySelector('#sch-ei-ep');
-      if(ni)schEdit.nameVal=ni.value;
-      if(ei)schEdit.epVal=ei.value;
-    }
-    schSaveEdit();
-  }
-});
+function schSyncInputs(){
+  document.querySelectorAll('[data-tab][data-day][data-idx]').forEach(inp=>{
+    const {tab,day,idx,field}=inp.dataset;
+    const key=tab+'_'+day;
+    if(!schEdits[key])return;
+    if(schEdits[key][parseInt(idx)])
+      schEdits[key][parseInt(idx)][field]=inp.value;
+  });
+}
+
+window.schAddNewRow=function(tab){
+  schSyncInputs();
+  SCH_DAYS.forEach(day=>{
+    if(!schEdits[tab+'_'+day])schEdits[tab+'_'+day]=[];
+  });
+  // add to first day by default — actually add to all visible days
+  // Simpler: ask which day. Even simpler: add a row to mn-tu of current tab
+  const day='mn-tu';
+  const isAir=tab==='air';
+  schEdits[tab+'_'+day].push(isAir?{name:'',ep:''}:{name:'',date:''});
+  ['air','soon'].forEach(t=>{SCH_DAYS.forEach(d=>renderSchDayView(t,d));});
+  // re-wire inputs
+  document.querySelectorAll('.sch-name-inp,.sch-ep-inp').forEach(inp=>{
+    inp.addEventListener('input',()=>schSyncInputs());
+    inp.addEventListener('keydown',e=>{if(e.key==='Enter')e.preventDefault();});
+  });
+};
+
+window.schRemoveEditRow=function(tab,day,idx){
+  schSyncInputs();
+  if(schEdits[tab+'_'+day])schEdits[tab+'_'+day].splice(parseInt(idx),1);
+  ['air','soon'].forEach(t=>{SCH_DAYS.forEach(d=>renderSchDayView(t,d));});
+  document.querySelectorAll('.sch-name-inp,.sch-ep-inp').forEach(inp=>{
+    inp.addEventListener('input',()=>schSyncInputs());
+  });
+};
+
+window.schSaveAll=function(){
+  schSyncInputs();
+  ['air','soon'].forEach(tab=>{
+    SCH_DAYS.forEach(day=>{
+      const rows=(schEdits[tab+'_'+day]||[]).filter(r=>r.name&&r.name.trim());
+      // normalize
+      const isAir=tab==='air';
+      const clean=rows.map(r=>isAir?{name:r.name.trim(),ep:(r.ep||'').trim()}:{name:r.name.trim(),date:(r.date||'').trim()});
+      set(ref(db,schPath(tab,day)),{rows:clean});
+    });
+  });
+  markSchUpdated();
+  schEditMode=false;schEdits={};
+  document.getElementById('sch-edit-btn').style.display='';
+  document.getElementById('sch-save-btn').style.display='none';
+  document.getElementById('sch-cancel-btn').style.display='none';
+  document.getElementById('sch-save-bar-air').style.display='none';
+  document.getElementById('sch-save-bar-soon').style.display='none';
+};
+
+window.schCancelAll=function(){
+  schEditMode=false;schEdits={};
+  document.getElementById('sch-edit-btn').style.display='';
+  document.getElementById('sch-save-btn').style.display='none';
+  document.getElementById('sch-cancel-btn').style.display='none';
+  document.getElementById('sch-save-bar-air').style.display='none';
+  document.getElementById('sch-save-bar-soon').style.display='none';
+  renderAllSchedule();
+};
+
+window.switchSchTab=function(tab,btn){
+  document.querySelectorAll('.sch-tab').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.sch-pane').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('sch-pane-'+tab).classList.add('active');
+  schActiveTab=tab;
+};
+
+// Unused stubs to avoid errors from old HTML references
+window.addSchRow=function(){};
+window.editSchRow=function(){};
+window.deleteSchRow=function(){};
+window.schDeleteRow=function(){};
+window.schStartEdit=function(){};
+window.schSaveEdit=function(){};
+window.schCancelEdit=function(){};
 
 // init schedule collapse
 applyScheduleCollapse();
