@@ -173,7 +173,7 @@ select option{background:var(--bg);color:var(--text)}
 /* photo tooltip */
 .char-photo-tip{display:none;position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);background:var(--surface);border:1px solid var(--border2);border-radius:10px;padding:4px;z-index:100;box-shadow:0 4px 20px rgba(0,0,0,.4);pointer-events:none}
 .char-photo-tip img{width:100px;height:100px;object-fit:cover;border-radius:8px;display:block}
-.char-tag:hover .char-photo-tip{display:block}
+.char-tag:hover .char-photo-tip,.char-tag-inline:hover .char-photo-tip{display:block}
 /* ring delete */
 .del-ring-wrap{position:relative;width:22px;height:22px;flex-shrink:0;cursor:pointer}
 .del-ring-bg{position:absolute;inset:0;border-radius:50%;border:2px solid rgba(176,48,48,.2)}
@@ -211,9 +211,10 @@ select option{background:var(--bg);color:var(--text)}
 .speech-sel{font-size:14px;padding:7px 12px}
 
 /* PAIRS */
-.pair-item{display:flex;align-items:flex-start;gap:12px;padding:14px 18px;background:var(--surface2);border-radius:var(--radius);margin-bottom:8px;font-size:15px}
+.pairs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:8px}
+.pair-item{display:flex;align-items:flex-start;gap:12px;padding:14px 18px;background:var(--surface2);border-radius:var(--radius);font-size:15px;height:100%}
 .pair-body{flex:1}
-.pair-row{display:flex;align-items:center;gap:8px;margin-bottom:4px;flex-wrap:wrap}
+.pair-row{display:flex;align-items:center;gap:8px;margin-bottom:7px;flex-wrap:wrap}
 .pair-row:last-child{margin-bottom:0}
 .pair-arrow{color:var(--text3);font-size:13px}
 .pair-note{font-size:13px;color:var(--text3);margin-top:6px}
@@ -1024,7 +1025,11 @@ window.pickerClick=function(key){
 
 // PAIRS
 function badge(s){const c=s==='ты'?'ty':s==='вы'?'vy':'dash';return `<span class="badge ${c}">${s}</span>`;}
-function charTag(k){const c=getChar(k);if(!c)return k;return `${gIcon(c.gender)}${c.name}`;}
+function charTag(k){
+  const c=getChar(k);if(!c)return k;
+  const photo=c.photo?`<span class="char-photo-tip"><img src="${c.photo}" alt="" onerror="this.parentNode.style.display='none'"></span>`:'';
+  return `<span class="char-tag-inline" style="display:inline-flex;align-items:center;gap:4px;position:relative;cursor:default">${photo}${gIcon(c.gender)}${c.name}</span>`;
+}
 
 function renderPairs(){
   const rawPairs=Object.entries(drama().pairs||{});
@@ -1106,13 +1111,29 @@ function renderPairs(){
     html+=`<div class="pair-item"><div class="pair-body">${body}${p.note?`<div class="pair-note">${p.note}</div>`:''}</div><button class="del-btn" onclick="removePair('${p.k}')">×</button></div>`;
   });
 
-  w.innerHTML=html;
+  w.innerHTML=`<div class="pairs-grid">${html}</div>`;
 }
 
 
 window.addPair=function(){
   if(dramaIsLocked()){showLockedMsg();return;}
   if(pickerSel.length<2){alert('Выбери хотя бы двух персонажей');return;}
+  // If exactly 2 selected, check if pair already exists
+  if(pickerSel.length===2){
+    const [a,b]=pickerSel;
+    const existingPair=Object.values(drama().pairs||{}).find(p=>(p.a===a&&p.b===b)||(p.a===b&&p.b===a));
+    if(existingPair){
+      // redirect to search with these two preselected
+      searchSel=[a,b];
+      const btn=document.getElementById('tab-search')||document.querySelector('.tab:nth-child(3)');
+      document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
+      document.querySelectorAll('.pane').forEach(p=>p.classList.remove('active'));
+      if(btn){btn.classList.add('active');}
+      document.getElementById('pane-search')?.classList.add('active');
+      renderSearchPicker();
+      return;
+    }
+  }
   const note=document.getElementById('note-input')?.value.trim()||'';
   const pairs=drama().pairs||{};
   const savedKeys=[];
@@ -1205,8 +1226,27 @@ window.renderResult=function(){
     ?`<div class="result-row">${charTag(ak)}<span style="color:var(--text3);margin:0 6px">↔</span>${charTag(bk)}: ${badge(fwd.s)}</div>`
     :`<div class="result-row">${charTag(ak)}<span style="color:var(--text3);margin:0 6px">→</span>${charTag(bk)}: ${badge(fwd.s)}</div>
      <div class="result-row">${charTag(bk)}<span style="color:var(--text3);margin:0 6px">→</span>${charTag(ak)}: ${badge(fwd.r)}</div>`;
+  function charPhoto(k){
+    const c=getChar(k);
+    const photo=c&&c.photo?c.photo:null;
+    const name=charName(k);
+    if(photo){
+      return `<div style="text-align:center">
+        <img src="${photo}" alt="${name}" style="width:80px;height:80px;object-fit:cover;border-radius:50%;border:2px solid var(--border2);display:block;margin:0 auto 6px" onerror="this.style.display='none';this.nextSibling.style.display='flex'">
+        <div style="display:none;width:80px;height:80px;border-radius:50%;border:2px solid var(--border2);background:var(--surface2);align-items:center;justify-content:center;flex-direction:column;margin:0 auto 6px;font-size:20px">🐾<div style="font-size:10px;color:var(--text3);margin-top:2px">нет фото</div></div>
+        <div style="font-size:13px;color:var(--text2)">${gIcon(c?c.gender:'m')}${name}</div>
+      </div>`;
+    }
+    return `<div style="text-align:center">
+      <div style="width:80px;height:80px;border-radius:50%;border:2px solid var(--border2);background:var(--surface2);display:flex;align-items:center;justify-content:center;flex-direction:column;margin:0 auto 6px">
+        <span style="font-size:24px">🐾</span>
+        <span style="font-size:10px;color:var(--text3);margin-top:2px">нет фото</span>
+      </div>
+      <div style="font-size:13px;color:var(--text2)">${gIcon(c?c.gender:'m')}${name}</div>
+    </div>`;
+  }
   ra.innerHTML=`<div class="result-card">
-    <div class="result-title">${charName(ak)} — ${charName(bk)}</div>
+    <div style="display:flex;gap:24px;justify-content:center;margin-bottom:16px;flex-wrap:wrap">${charPhoto(ak)}${charPhoto(bk)}</div>
     ${rows}
     ${p.note?`<div style="font-size:14px;color:var(--text3);margin-top:10px">${p.note}</div>`:''}
   </div>`;
@@ -1294,7 +1334,18 @@ let schEdit=null; // currently open editor: {tab,day,idx,name,ep}
 
 onValue(ref(db,'schedule'),snap=>{
   schState=snap.val()||{};
-  renderAllSchedule();
+  // Don't re-render if user is actively editing — they'll see updated data after saving
+  if(!schEdit) renderAllSchedule();
+  else {
+    // Only re-render days that are NOT currently being edited
+    ['air','soon'].forEach(tab=>{
+      SCH_DAYS.forEach(day=>{
+        if(schEdit.tab===tab&&schEdit.day===day) return; // skip active editor
+        renderSchDay(tab,day);
+      });
+    });
+    applyScheduleCollapse();
+  }
 },()=>{});
 
 function renderAllSchedule(){
@@ -1313,10 +1364,11 @@ function renderSchDay(tab,day){
   let html='';
   rows.forEach((r,i)=>{
     if(isEditing&&schEdit.idx===i){
-      // render as editor
+      const nameVal=(schEdit.nameVal!==undefined?schEdit.nameVal:(r.name||'')).replace(/"/g,'&quot;');
+      const epVal=(schEdit.epVal!==undefined?schEdit.epVal:(isAir?(r.ep||''):(r.date||''))).replace(/"/g,'&quot;');
       html+=`<div class="sch-row">
-        <input class="sch-name-inp" id="sch-ei-name" value="${(r.name||'').replace(/"/g,'&quot;')}" placeholder="Название">
-        <input class="sch-ep-inp" id="sch-ei-ep" value="${isAir?(r.ep||''):(r.date||'')}" placeholder="${isAir?'#':'Дата'}">
+        <input class="sch-name-inp" id="sch-ei-name" value="${nameVal}" placeholder="Название">
+        <input class="sch-ep-inp" id="sch-ei-ep" value="${epVal}" placeholder="${isAir?'#':'Дата'}">
         <button class="sch-row-del" onclick="schCancelEdit()">×</button>
       </div>`;
     } else {
@@ -1327,41 +1379,61 @@ function renderSchDay(tab,day){
       </div>`;
     }
   });
-  // new row editor at bottom
   if(isEditing&&schEdit.idx===-1){
+    const nameVal=(schEdit.nameVal||'').replace(/"/g,'&quot;');
+    const epVal=(schEdit.epVal||'').replace(/"/g,'&quot;');
     html+=`<div class="sch-row">
-      <input class="sch-name-inp" id="sch-ei-name" placeholder="Название">
-      <input class="sch-ep-inp" id="sch-ei-ep" placeholder="${isAir?'#':'Дата'}">
+      <input class="sch-name-inp" id="sch-ei-name" value="${nameVal}" placeholder="Название">
+      <input class="sch-ep-inp" id="sch-ei-ep" value="${epVal}" placeholder="${isAir?'#':'Дата'}">
       <button class="sch-row-del" onclick="schCancelEdit()">×</button>
     </div>`;
   }
   container.innerHTML=html;
-  // if this container has an active editor, hook up events and focus
   if(isEditing){
     const nameInp=container.querySelector('#sch-ei-name');
     const epInp=container.querySelector('#sch-ei-ep');
     if(nameInp){
+      // sync schEdit values on every keystroke so save always has fresh data
+      nameInp.addEventListener('input',()=>{if(schEdit)schEdit.nameVal=nameInp.value;});
+      epInp&&epInp.addEventListener('input',()=>{if(schEdit)schEdit.epVal=epInp.value;});
       [nameInp,epInp].forEach(inp=>{if(!inp)return;
         inp.addEventListener('keydown',e=>{
           if(e.key==='Enter'){e.preventDefault();schSaveEdit();}
           if(e.key==='Escape'){schCancelEdit();}
         });
       });
-      // Focus without triggering other events
       setTimeout(()=>nameInp.focus(),0);
     }
   }
 }
 
 window.schStartEdit=function(tab,day,idx){
-  // Save any previous edit first
-  if(schEdit)schSaveEdit();
+  if(schEdit){
+    // Capture current input values before saving
+    const prevContainer=document.getElementById(`sch-${schEdit.tab}-${schEdit.day}`);
+    if(prevContainer){
+      const ni=prevContainer.querySelector('#sch-ei-name');
+      const ei=prevContainer.querySelector('#sch-ei-ep');
+      if(ni)schEdit.nameVal=ni.value;
+      if(ei)schEdit.epVal=ei.value;
+    }
+    schSaveEdit();
+  }
   schEdit={tab,day,idx};
   renderSchDay(tab,day);
 };
 
 window.addSchRow=function(tab,day){
-  if(schEdit)schSaveEdit();
+  if(schEdit){
+    const prevContainer=document.getElementById(`sch-${schEdit.tab}-${schEdit.day}`);
+    if(prevContainer){
+      const ni=prevContainer.querySelector('#sch-ei-name');
+      const ei=prevContainer.querySelector('#sch-ei-ep');
+      if(ni)schEdit.nameVal=ni.value;
+      if(ei)schEdit.epVal=ei.value;
+    }
+    schSaveEdit();
+  }
   schEdit={tab,day,idx:-1};
   renderSchDay(tab,day);
 };
@@ -1369,22 +1441,22 @@ window.addSchRow=function(tab,day){
 window.schSaveEdit=function(){
   if(!schEdit)return;
   const {tab,day,idx}=schEdit;
+  // Try DOM first, fall back to stored values in schEdit
   const container=document.getElementById(`sch-${tab}-${day}`);
-  if(!container){schEdit=null;return;}
-  const nameInp=container.querySelector('#sch-ei-name');
-  const epInp=container.querySelector('#sch-ei-ep');
-  const name=nameInp?nameInp.value.trim():'';
-  const ep=epInp?epInp.value.trim():'';
+  const nameInp=container?container.querySelector('#sch-ei-name'):null;
+  const epInp=container?container.querySelector('#sch-ei-ep'):null;
+  const name=(nameInp?nameInp.value:(schEdit.nameVal||'')).trim();
+  const ep=(epInp?epInp.value:(schEdit.epVal||'')).trim();
   const isAir=tab==='air';
+  const savedEdit=schEdit;
   schEdit=null;
-  if(!name){renderSchDay(tab,day);return;}
+  if(!name){if(container)renderSchDay(tab,day);return;}
   const rows=[...((schState[tab]||{})[day]||{}).rows||[]];
   if(idx===-1){rows.push(isAir?{name,ep}:{name,date:ep});}
   else{rows[idx]=isAir?{name,ep}:{name,date:ep};}
   markSchUpdated();
   set(ref(db,schPath(tab,day)),{rows});
 };
-window.schSaveEdit=window.schSaveEdit; // ensure accessible
 
 window.schCancelEdit=function(){
   if(!schEdit)return;
@@ -1412,6 +1484,14 @@ document.addEventListener('mousedown',e=>{
   if(!schEdit)return;
   const body=document.getElementById('sch-body');
   if(body&&!body.contains(e.target)){
+    // Capture current values before DOM might change
+    const container=document.getElementById(`sch-${schEdit.tab}-${schEdit.day}`);
+    if(container){
+      const ni=container.querySelector('#sch-ei-name');
+      const ei=container.querySelector('#sch-ei-ep');
+      if(ni)schEdit.nameVal=ni.value;
+      if(ei)schEdit.epVal=ei.value;
+    }
     schSaveEdit();
   }
 });
@@ -1429,9 +1509,16 @@ let myPresenceKey=sessionStorage.getItem('presence_key');
 let myAnimal=sessionStorage.getItem('presence_animal');
 if(!myPresenceKey){
   myPresenceKey=push(ref(db,'presence')).key;
+  // Pick animal not already in use — will be refined on first presence snapshot
   myAnimal=ANIMALS[Math.floor(Math.random()*ANIMALS.length)];
   sessionStorage.setItem('presence_key',myPresenceKey);
   sessionStorage.setItem('presence_animal',myAnimal);
+}
+
+function pickUniqueAnimal(usedAnimals){
+  const available=ANIMALS.filter(a=>!usedAnimals.includes(a));
+  const pool=available.length>0?available:ANIMALS;
+  return pool[Math.floor(Math.random()*pool.length)];
 }
 
 // Register presence — remove on disconnect
@@ -1440,11 +1527,21 @@ set(myPresRef,{animal:myAnimal,ts:Date.now()});
 onDisconnect(myPresRef).remove();
 
 // Listen to presence list
+let presenceInitialized=false;
 onValue(ref(db,'presence'),snap=>{
   const all=snap.val()||{};
-  // clean stale entries older than 30s
   const now=Date.now();
   Object.entries(all).forEach(([k,v])=>{if(now-v.ts>30000)remove(ref(db,`presence/${k}`));});
+  // On first snapshot, check if our animal is already used by someone else
+  if(!presenceInitialized){
+    presenceInitialized=true;
+    const others=Object.entries(all).filter(([k])=>k!==myPresenceKey).map(([,v])=>v.animal);
+    if(others.includes(myAnimal)){
+      myAnimal=pickUniqueAnimal(others);
+      sessionStorage.setItem('presence_animal',myAnimal);
+      set(myPresRef,{animal:myAnimal,ts:Date.now()});
+    }
+  }
   renderPresence(all);
 });
 
