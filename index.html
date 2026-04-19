@@ -313,14 +313,14 @@ select option{background:var(--bg);color:var(--text)}
 
 /* PRESENCE (online users) */
 .presence-wrap{display:flex;align-items:center;gap:0;cursor:pointer}
-.presence-avatar{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;border:2px solid var(--bg);margin-left:-8px;transition:transform .15s;flex-shrink:0}
+.presence-avatar{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;border:2px solid var(--bg);margin-left:-10px;transition:transform .15s;flex-shrink:0}
 .presence-avatar:first-child{margin-left:0}
 .presence-avatar:hover{transform:scale(1.15);z-index:10}
 .presence-panel{display:none;position:fixed;background:var(--surface);border:1px solid var(--border2);border-radius:12px;padding:10px 14px;z-index:300;min-width:160px;box-shadow:0 8px 24px rgba(0,0,0,.35)}
 .presence-panel.open{display:block}
 .presence-panel-title{font-size:11px;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px}
-.presence-panel-item{display:flex;align-items:center;gap:8px;padding:4px 0;font-size:13px;color:var(--text2)}
-.presence-panel-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.presence-panel-item{display:flex;align-items:center;gap:8px;padding:5px 0;font-size:15px;color:var(--text2)}
+.presence-panel-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0}
 </style>
 </head>
 <body>
@@ -1286,164 +1286,135 @@ window.switchSchTab=function(tab,btn){
   document.getElementById('sch-pane-'+tab).classList.add('active');
 };
 
-// Schedule data stored in Firebase at /schedule/{tab}/{day}/rows[]
+// Schedule — simple state-driven render
+// schEdit = {tab, day, idx} where idx=-1 means new row
 function schPath(tab,day){return `schedule/${tab}/${day}`;}
+let schState={};
+let schEdit=null; // currently open editor: {tab,day,idx,name,ep}
 
-let schState = {}; // {air:{}, soon:{}} — local rendered state
-
-onValue(ref(db,'schedule'), snap=>{
-  schState = snap.val()||{};
+onValue(ref(db,'schedule'),snap=>{
+  schState=snap.val()||{};
   renderAllSchedule();
-}, ()=>{});
+},()=>{});
 
 function renderAllSchedule(){
-  activeEditor=null;
   ['air','soon'].forEach(tab=>{
-    SCH_DAYS.forEach(day=>{
-      const container=document.getElementById(`sch-${tab}-${day}`);
-      if(!container)return;
-      const rows=((schState[tab]||{})[day]||{}).rows||[];
-      const isAir=tab==='air';
-      container.innerHTML=rows.map((r,i)=>`
-        <div class="sch-saved-row" onclick="editSchRow('${tab}','${day}',${i})">
-          <span class="sch-saved-name" title="${(r.name||'').replace(/"/g,'&quot;')}">${r.name||'—'}</span>
-          <span class="sch-saved-ep">${isAir?(r.ep||''):(r.date||'')}</span>
-          <button class="sch-saved-del" onclick="event.stopPropagation();deleteSchRow('${tab}','${day}',${i})" title="Удалить">×</button>
-        </div>`).join('');
-    });
+    SCH_DAYS.forEach(day=>renderSchDay(tab,day));
   });
   applyScheduleCollapse();
 }
 
-// Single active editor tracker
-let activeEditor=null; // {save:fn, cancel:fn}
-
-function saveActiveEditor(){
-  if(activeEditor){const fn=activeEditor.save;activeEditor=null;fn();}
-}
-function cancelActiveEditor(){
-  if(activeEditor){const fn=activeEditor.cancel;activeEditor=null;fn();}
-}
-
-function makeSchEditor(tab,day,idx,r){
-  // r=null for new row
-  const isNew=r===null;
-  const isAir=tab==='air';
+function renderSchDay(tab,day){
   const container=document.getElementById(`sch-${tab}-${day}`);
   if(!container)return;
-
-  // Close any existing editor first (save it)
-  if(activeEditor){const fn=activeEditor.save;activeEditor=null;fn();}
-
-  const rows=[...((schState[tab]||{})[day]||{}).rows||[]];
-
-  if(isNew){
-    // Append edit row at bottom
-    const rowDiv=document.createElement('div');
-    rowDiv.className='sch-row';
-    rowDiv.dataset.editor='1';
-    rowDiv.innerHTML=`<input class="sch-name-inp" placeholder="Название"><input class="${isAir?'sch-ep-inp':'sch-name-inp'}" placeholder="${isAir?'#':'Дата'}" style="${isAir?'':'width:70px;flex:none'}"><button class="sch-row-del" title="Отмена">×</button>`;
-    container.appendChild(rowDiv);
-    const nameInp=rowDiv.querySelectorAll('input')[0];
-    const extraInp=rowDiv.querySelectorAll('input')[1];
-    const delBtn=rowDiv.querySelector('.sch-row-del');
-
-    function doSave(){
-      rowDiv.remove();
-      const name=nameInp.value.trim();
-      if(!name)return;
-      rows.push(isAir?{name,ep:extraInp.value.trim()}:{name,date:extraInp.value.trim()});
-      markSchUpdated();
-      set(ref(db,schPath(tab,day)),{rows});
+  const rows=((schState[tab]||{})[day]||{}).rows||[];
+  const isAir=tab==='air';
+  const isEditing=(schEdit&&schEdit.tab===tab&&schEdit.day===day);
+  let html='';
+  rows.forEach((r,i)=>{
+    if(isEditing&&schEdit.idx===i){
+      // render as editor
+      html+=`<div class="sch-row">
+        <input class="sch-name-inp" id="sch-ei-name" value="${(r.name||'').replace(/"/g,'&quot;')}" placeholder="Название">
+        <input class="sch-ep-inp" id="sch-ei-ep" value="${isAir?(r.ep||''):(r.date||'')}" placeholder="${isAir?'#':'Дата'}">
+        <button class="sch-row-del" onclick="schCancelEdit()">×</button>
+      </div>`;
+    } else {
+      html+=`<div class="sch-saved-row" onclick="schStartEdit('${tab}','${day}',${i})">
+        <span class="sch-saved-name" title="${(r.name||'').replace(/"/g,'&quot;')}">${r.name||'—'}</span>
+        <span class="sch-saved-ep">${isAir?(r.ep||''):(r.date||'')}</span>
+        <button class="sch-saved-del" onclick="event.stopPropagation();schDeleteRow('${tab}','${day}',${i})">×</button>
+      </div>`;
     }
-    function doCancel(){rowDiv.remove();}
-    activeEditor={save:doSave,cancel:doCancel};
-    delBtn.onclick=e=>{e.preventDefault();cancelActiveEditor();};
-    rowDiv.querySelectorAll('input').forEach(inp=>{
-      inp.onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();saveActiveEditor();}if(e.key==='Escape')cancelActiveEditor();};
-    });
-    nameInp.focus();
-    // on click outside entire schedule save
-    setTimeout(()=>{
-      function outsideClick(e){
-        if(!container.contains(e.target)&&!e.target.closest('.sch-add-btn')){
-          document.removeEventListener('mousedown',outsideClick);
-          if(activeEditor)saveActiveEditor();
-        }
-      }
-      document.addEventListener('mousedown',outsideClick);
-    },50);
-  } else {
-    // In-place edit existing saved row
-    const r2=rows[idx];if(!r2)return;
-    const savedRows=container.querySelectorAll('.sch-saved-row');
-    const target=savedRows[idx];if(!target)return;
-
-    // Switch to editing mode: show inputs inside the saved row
-    target.classList.add('editing');
-    const nameSpan=target.querySelector('.sch-saved-name');
-    const epSpan=target.querySelector('.sch-saved-ep');
-    const delBtn=target.querySelector('.sch-saved-del');
-
-    const origName=nameSpan.textContent;
-    const origEp=epSpan.textContent;
-
-    const nameInp=document.createElement('input');
-    nameInp.className='sch-name-inp';nameInp.value=r2.name||'';nameInp.style.cssText='flex:1;min-width:0';
-    const epInp=document.createElement('input');
-    epInp.className=isAir?'sch-ep-inp':'sch-name-inp';
-    epInp.value=isAir?(r2.ep||''):(r2.date||'');
-    epInp.placeholder=isAir?'#':'Дата';
-    if(!isAir)epInp.style.cssText='width:70px;flex:none';
-
-    // Replace spans with inputs
-    nameSpan.replaceWith(nameInp);
-    epSpan.replaceWith(epInp);
-
-    function doSave(){
-      const name=nameInp.value.trim();
-      if(name)rows[idx]=isAir?{name,ep:epInp.value.trim()}:{name,date:epInp.value.trim()};
-      else rows.splice(idx,1);
-      markSchUpdated();
-      set(ref(db,schPath(tab,day)),{rows});
-    }
-    function doCancel(){renderAllSchedule();}
-    activeEditor={save:doSave,cancel:doCancel};
-
-    delBtn.onclick=e=>{
-      e.stopPropagation();
-      showConfirm('Удалить строку из расписания?',`«${r2.name||''}»`,()=>{
-        rows.splice(idx,1);markSchUpdated();set(ref(db,schPath(tab,day)),{rows});
+  });
+  // new row editor at bottom
+  if(isEditing&&schEdit.idx===-1){
+    html+=`<div class="sch-row">
+      <input class="sch-name-inp" id="sch-ei-name" placeholder="Название">
+      <input class="sch-ep-inp" id="sch-ei-ep" placeholder="${isAir?'#':'Дата'}">
+      <button class="sch-row-del" onclick="schCancelEdit()">×</button>
+    </div>`;
+  }
+  container.innerHTML=html;
+  // if this container has an active editor, hook up events and focus
+  if(isEditing){
+    const nameInp=container.querySelector('#sch-ei-name');
+    const epInp=container.querySelector('#sch-ei-ep');
+    if(nameInp){
+      [nameInp,epInp].forEach(inp=>{if(!inp)return;
+        inp.addEventListener('keydown',e=>{
+          if(e.key==='Enter'){e.preventDefault();schSaveEdit();}
+          if(e.key==='Escape'){schCancelEdit();}
+        });
       });
-    };
-    [nameInp,epInp].forEach(inp=>{
-      inp.onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();saveActiveEditor();}if(e.key==='Escape')cancelActiveEditor();};
-    });
-    nameInp.focus();
-    setTimeout(()=>{
-      function outsideClick(e){
-        if(!target.contains(e.target)){
-          document.removeEventListener('mousedown',outsideClick);
-          if(activeEditor)saveActiveEditor();
-        }
-      }
-      document.addEventListener('mousedown',outsideClick);
-    },50);
+      // Focus without triggering other events
+      setTimeout(()=>nameInp.focus(),0);
+    }
   }
 }
 
-window.addSchRow=function(tab,day){makeSchEditor(tab,day,null,null);};
-window.editSchRow=function(tab,day,idx){
-  const rows=((schState[tab]||{})[day]||{}).rows||[];
-  makeSchEditor(tab,day,idx,rows[idx]||null);
+window.schStartEdit=function(tab,day,idx){
+  // Save any previous edit first
+  if(schEdit)schSaveEdit();
+  schEdit={tab,day,idx};
+  renderSchDay(tab,day);
 };
-window.deleteSchRow=function(tab,day,idx){
+
+window.addSchRow=function(tab,day){
+  if(schEdit)schSaveEdit();
+  schEdit={tab,day,idx:-1};
+  renderSchDay(tab,day);
+};
+
+window.schSaveEdit=function(){
+  if(!schEdit)return;
+  const {tab,day,idx}=schEdit;
+  const container=document.getElementById(`sch-${tab}-${day}`);
+  if(!container){schEdit=null;return;}
+  const nameInp=container.querySelector('#sch-ei-name');
+  const epInp=container.querySelector('#sch-ei-ep');
+  const name=nameInp?nameInp.value.trim():'';
+  const ep=epInp?epInp.value.trim():'';
+  const isAir=tab==='air';
+  schEdit=null;
+  if(!name){renderSchDay(tab,day);return;}
   const rows=[...((schState[tab]||{})[day]||{}).rows||[]];
+  if(idx===-1){rows.push(isAir?{name,ep}:{name,date:ep});}
+  else{rows[idx]=isAir?{name,ep}:{name,date:ep};}
+  markSchUpdated();
+  set(ref(db,schPath(tab,day)),{rows});
+};
+window.schSaveEdit=window.schSaveEdit; // ensure accessible
+
+window.schCancelEdit=function(){
+  if(!schEdit)return;
+  const {tab,day}=schEdit;
+  schEdit=null;
+  renderSchDay(tab,day);
+};
+
+window.editSchRow=function(tab,day,idx){schStartEdit(tab,day,idx);};
+
+window.schDeleteRow=function(tab,day,idx){
+  const rows=((schState[tab]||{})[day]||{}).rows||[];
   const r=rows[idx];
-  showConfirm('Удалить строку из расписания?',`«${r?r.name||'':''}»`,()=>{
-    rows.splice(idx,1);markSchUpdated();set(ref(db,schPath(tab,day)),{rows});
+  showConfirm('Удалить строку?',`«${r?r.name||'':''}»`,()=>{
+    const newRows=[...((schState[tab]||{})[day]||{}).rows||[]];
+    newRows.splice(idx,1);
+    markSchUpdated();
+    set(ref(db,schPath(tab,day)),{rows:newRows});
   });
 };
+window.deleteSchRow=window.schDeleteRow;
+
+// Close editor on click outside schedule
+document.addEventListener('mousedown',e=>{
+  if(!schEdit)return;
+  const body=document.getElementById('sch-body');
+  if(body&&!body.contains(e.target)){
+    schSaveEdit();
+  }
+});
 
 // init schedule collapse
 applyScheduleCollapse();
