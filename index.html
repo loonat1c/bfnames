@@ -304,17 +304,14 @@ select option{background:var(--bg);color:var(--text)}
 .sch-row-del{border:none;background:transparent;color:var(--text3);cursor:pointer;font-size:15px;padding:0 3px;line-height:1;flex-shrink:0;transition:color .15s}
 .sch-row-del:hover{color:#e05050}
 /* saved row */
-/* schedule rows */
-.sch-saved-row{display:grid;grid-template-columns:1fr 44px 18px;align-items:center;gap:4px;padding:4px 0;font-size:14px;color:var(--text2);cursor:pointer;border-radius:6px;transition:background .12s}
+/* saved row — 2 cols: name | ep, right edge aligns with + button */
+.sch-saved-row{display:grid;grid-template-columns:1fr 18px;align-items:center;gap:4px;padding:4px 0;font-size:14px;color:var(--text2);cursor:pointer;border-radius:6px;transition:background .12s}
 .sch-saved-row:hover{background:var(--surface2);padding-left:4px;margin-left:-4px}
 .sch-saved-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .sch-saved-ep{font-size:13px;color:var(--text3);text-align:right;white-space:nowrap}
-.sch-saved-del{border:none;background:transparent;color:transparent;cursor:pointer;font-size:15px;padding:0;line-height:1;transition:color .15s}
-.sch-saved-row:hover .sch-saved-del{color:var(--text3)}
-.sch-saved-row:hover .sch-saved-del:hover{color:#e05050}
-/* edit row */
+/* edit row — 3 cols: name | ep | del; del occupies same 18px as + button */
 .sch-row{display:grid;grid-template-columns:1fr 44px 18px;align-items:center;gap:4px;margin-bottom:3px}
-.sch-row-del{border:none;background:transparent;color:var(--text3);cursor:pointer;font-size:15px;padding:0;line-height:1;transition:color .15s}
+.sch-row-del{border:none;background:transparent;color:var(--text3);cursor:pointer;font-size:15px;padding:0;line-height:1;transition:color .15s;width:18px;text-align:center}
 .sch-row-del:hover{color:#e05050}
 
 /* PRESENCE (online users) */
@@ -1364,7 +1361,6 @@ function schRenderDay(tab,day){
     <div class="sch-saved-row" onclick="schEditRow(event,'${tab}','${day}',${i})">
       <span class="sch-saved-name" title="${(r.name||'').replace(/"/g,'&quot;')}">${r.name||'—'}</span>
       <span class="sch-saved-ep">${isAir?r.ep||'':r.date||''}</span>
-      <button class="sch-saved-del" onclick="event.stopPropagation();schDeleteRow('${tab}','${day}',${i})">×</button>
     </div>`).join('');
 }
 
@@ -1386,7 +1382,6 @@ function schRenderEditRow(tab,day,idx){
       html+=`<div class="sch-saved-row" onclick="schEditRow(event,'${tab}','${day}',${i})">
         <span class="sch-saved-name" title="${(row.name||'').replace(/"/g,'&quot;')}">${row.name||'—'}</span>
         <span class="sch-saved-ep">${isAir?row.ep||'':row.date||''}</span>
-        <button class="sch-saved-del" onclick="event.stopPropagation();schDeleteRow('${tab}','${day}',${i})">×</button>
       </div>`;
     }
   });
