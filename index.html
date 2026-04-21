@@ -295,10 +295,10 @@ select option{background:var(--bg);color:var(--text)}
 .sch-add-btn:hover{background:var(--accent);border-color:var(--accent);color:var(--btn-text,#0f0e0c)}
 /* edit row */
 .sch-row{display:flex;align-items:center;gap:4px;margin-bottom:3px}
-.sch-name-inp{flex:1;font-size:14px;padding:5px 8px;background:var(--surface2);border:1px solid var(--border2);border-radius:6px;color:var(--text);outline:none;font-family:'DM Sans',sans-serif;min-width:0}
+.sch-name-inp{flex:1;min-width:0;font-size:14px;padding:5px 8px;background:var(--surface2);border:1px solid var(--border2);border-radius:6px;color:var(--text);outline:none;font-family:'DM Sans',sans-serif;min-width:0}
 .sch-name-inp::placeholder{color:var(--text3)}
 .sch-name-inp:focus{border-color:var(--accent)}
-.sch-ep-inp{width:44px;flex-shrink:0;font-size:14px;padding:5px 6px;background:var(--surface2);border:1px solid var(--border2);border-radius:6px;color:var(--text);outline:none;font-family:'DM Sans',sans-serif;text-align:center}
+.sch-ep-inp{width:40px;flex-shrink:0;font-size:14px;padding:5px 6px;background:var(--surface2);border:1px solid var(--border2);border-radius:6px;color:var(--text);outline:none;font-family:'DM Sans',sans-serif;text-align:center}
 .sch-ep-inp::placeholder{color:var(--text3)}
 .sch-ep-inp:focus{border-color:var(--accent)}
 .sch-row-del{border:none;background:transparent;color:var(--text3);cursor:pointer;font-size:15px;padding:0 3px;line-height:1;flex-shrink:0;transition:color .15s}
@@ -310,7 +310,7 @@ select option{background:var(--bg);color:var(--text)}
 .sch-saved-name{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .sch-saved-ep{font-size:13px;color:var(--text3);white-space:nowrap;flex-shrink:0}
 /* edit row — 3 cols: name | ep | del; del occupies same 18px as + button */
-.sch-row{display:grid;grid-template-columns:1fr 44px 18px;align-items:center;gap:4px;margin-bottom:3px}
+.sch-row{display:flex;align-items:center;gap:4px;margin-bottom:3px}
 .sch-row-del{border:none;background:transparent;color:var(--text3);cursor:pointer;font-size:15px;padding:0;line-height:1;transition:color .15s;width:18px;text-align:center}
 .sch-row-del:hover{color:#e05050}
 
@@ -1444,10 +1444,12 @@ function schRenderEditRow(tab,day,idx){
 function schEditRowHTML(tab,day,idx,r,isAir){
   const nv=(r.name||'').replace(/"/g,'&quot;');
   const ev=isAir?(r.ep||''):(r.date||'');
+  const isNew=idx===-1;
+  const delBtn=isNew?'':`<button class="sch-row-del" onclick="event.stopPropagation();schDeleteRow('${tab}','${day}',${idx})" title="Удалить">×</button>`;
   return `<div class="sch-row" data-edit="1">
     <input class="sch-name-inp sch-active-name" value="${nv}" placeholder="Название">
     <input class="sch-ep-inp sch-active-ep" value="${ev}" placeholder="${isAir?'#':'Дата'}">
-    <button class="sch-row-del" onclick="schCancelEdit(event,'${tab}','${day}')">×</button>
+    ${delBtn}
   </div>`;
 }
 
