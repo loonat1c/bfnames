@@ -6,20 +6,30 @@
 <title>Трекер переводов — Baddest Females</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
+/* ── PALETTE VARIABLES ─────────────────────────────────────────────── */
 :root{
   --bg:#111009;--surface:#1c1b18;--surface2:#262420;
   --border:rgba(255,255,255,.09);--border2:rgba(255,255,255,.18);
   --text:#f2ede4;--text2:#c8c2b8;--text3:#8a8480;
   --accent:#d4a853;--accent2:#f0d898;--btn-text:#0f0e0c;
   --radius:12px;--radius-lg:16px;
-  --c-sergey:#5ba8f5;--c-yaroslavna:#e8739a;--c-victoria:#4ec068;--c-kristina:#a060f0;
 }
-body.light{
-  --bg:#f2efe8;--surface:#fff;--surface2:#e8e4da;
-  --border:rgba(0,0,0,.10);--border2:rgba(0,0,0,.20);
-  --text:#18160f;--text2:#3a3830;--text3:#706c66;
-  --accent:#8c5e18;--accent2:#5c3c08;--btn-text:#fff8f0;
-}
+body.light{--bg:#f2efe8;--surface:#fff;--surface2:#e8e4da;--border:rgba(0,0,0,.10);--border2:rgba(0,0,0,.20);--text:#18160f;--text2:#3a3830;--text3:#706c66;--accent:#8c5e18;--accent2:#5c3c08;--btn-text:#fff8f0}
+body.palette-sakura{--bg:#1a0f14;--surface:#261520;--surface2:#32202b;--border:rgba(255,200,220,.09);--border2:rgba(255,200,220,.20);--text:#f5e6ed;--text2:#d8b8c8;--text3:#a87888;--accent:#e8739a;--accent2:#f5b8cf;--btn-text:#0f0e0c}
+body.palette-sakura.light{--bg:#fdf0f5;--surface:#fff;--surface2:#f5e0ec;--border:rgba(180,60,100,.10);--border2:rgba(180,60,100,.22);--text:#2a0f1c;--text2:#501030;--text3:#904868;--accent:#c0305a;--accent2:#8a1a38;--btn-text:#fff0f5}
+body.palette-ocean{--bg:#080e18;--surface:#101828;--surface2:#182030;--border:rgba(80,160,255,.09);--border2:rgba(80,160,255,.20);--text:#e0eeff;--text2:#a8c8e8;--text3:#6890b0;--accent:#3d9cf0;--accent2:#90ccff;--btn-text:#0f0e0c}
+body.palette-ocean.light{--bg:#eef4fc;--surface:#fff;--surface2:#daeaf8;--border:rgba(20,80,160,.10);--border2:rgba(20,80,160,.22);--text:#081428;--text2:#0c2848;--text3:#386898;--accent:#0a5abf;--accent2:#063a88;--btn-text:#f0f8ff}
+body.palette-forest{--bg:#080f0a;--surface:#101a12;--surface2:#182418;--border:rgba(80,200,100,.09);--border2:rgba(80,200,100,.18);--text:#e2f0e4;--text2:#a8c8a8;--text3:#689870;--accent:#4ec068;--accent2:#a0e0a8;--btn-text:#0f0e0c}
+body.palette-forest.light{--bg:#eef6ee;--surface:#fff;--surface2:#daeeda;--border:rgba(20,100,40,.10);--border2:rgba(20,100,40,.22);--text:#081408;--text2:#0a3010;--text3:#306840;--accent:#1a7030;--accent2:#0a4820;--btn-text:#f0fff4}
+body.palette-violet{--bg:#0e080f;--surface:#181020;--surface2:#22182e;--border:rgba(160,100,255,.09);--border2:rgba(160,100,255,.20);--text:#f0e8ff;--text2:#c8a8e8;--text3:#9870b0;--accent:#a060f0;--accent2:#d0a8ff;--btn-text:#0f0e0c}
+body.palette-violet.light{--bg:#f4f0fc;--surface:#fff;--surface2:#ece4f8;--border:rgba(80,20,160,.10);--border2:rgba(80,20,160,.22);--text:#180828;--text2:#280848;--text3:#603888;--accent:#6020c0;--accent2:#3a0890;--btn-text:#f8f0ff}
+body.palette-rose{--bg:#140a0a;--surface:#201010;--surface2:#2c1818;--border:rgba(255,120,100,.09);--border2:rgba(255,120,100,.20);--text:#fff0ee;--text2:#e8c0b0;--text3:#b08878;--accent:#f05840;--accent2:#ffb0a0;--btn-text:#0f0e0c}
+body.palette-rose.light{--bg:#fdf2f0;--surface:#fff;--surface2:#f8e0dc;--border:rgba(180,40,20,.10);--border2:rgba(180,40,20,.22);--text:#280808;--text2:#480808;--text3:#904838;--accent:#c02808;--accent2:#880c00;--btn-text:#fff5f0}
+body.palette-slate{--bg:#090c12;--surface:#111620;--surface2:#1a2030;--border:rgba(100,140,200,.09);--border2:rgba(100,140,200,.20);--text:#e8eef8;--text2:#a8b8d0;--text3:#687898;--accent:#6888d0;--accent2:#a8c0f0;--btn-text:#0f0e0c}
+body.palette-slate.light{--bg:#f0f2f8;--surface:#fff;--surface2:#dce4f0;--border:rgba(40,60,120,.10);--border2:rgba(40,60,120,.22);--text:#080c20;--text2:#0c1840;--text3:#385878;--accent:#2840a0;--accent2:#0c2070;--btn-text:#f0f4ff}
+body.palette-copper{--bg:#110d08;--surface:#1c1410;--surface2:#281e16;--border:rgba(200,120,60,.09);--border2:rgba(200,120,60,.20);--text:#f8ece0;--text2:#d8b888;--text3:#a08858;--accent:#c87840;--accent2:#f0b880;--btn-text:#0f0e0c}
+body.palette-copper.light{--bg:#faf4ec;--surface:#fff;--surface2:#f0e4d0;--border:rgba(140,70,20,.10);--border2:rgba(140,70,20,.22);--text:#200c00;--text2:#400c00;--text3:#805828;--accent:#a04808;--accent2:#702800;--btn-text:#fff8f0}
+
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
 
@@ -28,8 +38,8 @@ header{border-bottom:1px solid var(--border);padding:0 1.5rem;display:flex;align
 .logo{font-family:'DM Serif Display',serif;font-size:20px;color:var(--accent);display:flex;align-items:center;gap:12px}
 .back-btn{font-size:13px;padding:6px 12px;border:1px solid var(--border2);border-radius:8px;background:transparent;color:var(--text2);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s;text-decoration:none;display:inline-flex;align-items:center;gap:5px}
 .back-btn:hover{border-color:var(--accent);color:var(--text)}
-.header-right{display:flex;align-items:center;gap:12px}
-.toggle-switch{position:relative;width:38px;height:22px;cursor:pointer}
+.header-right{display:flex;align-items:center;gap:10px}
+.toggle-switch{position:relative;width:38px;height:22px;cursor:pointer;flex-shrink:0}
 .toggle-switch input{display:none}
 .toggle-track{position:absolute;inset:0;background:var(--surface2);border:1px solid var(--border2);border-radius:11px;transition:background .2s}
 .toggle-switch input:checked+.toggle-track{background:var(--accent)}
@@ -37,142 +47,154 @@ header{border-bottom:1px solid var(--border);padding:0 1.5rem;display:flex;align
 .toggle-switch input:checked~.toggle-thumb{transform:translateX(16px);background:#fff}
 .toggle-icon{font-size:14px;color:var(--text2)}
 .theme-toggle{display:flex;align-items:center;gap:6px}
+/* palette picker */
+.palette-wrap{position:relative}
+.palette-btn{display:flex;align-items:center;gap:6px;padding:5px 11px;border:1px solid var(--border2);border-radius:20px;background:transparent;color:var(--text2);font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s}
+.palette-btn:hover{border-color:var(--accent);color:var(--text)}
+.pal-swatch{width:12px;height:12px;border-radius:50%;flex-shrink:0}
+.palette-dropdown{display:none;position:absolute;top:calc(100% + 8px);right:0;background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius-lg);padding:12px;z-index:300;min-width:190px;box-shadow:0 8px 32px rgba(0,0,0,.4)}
+.palette-dropdown.open{display:block}
+.palette-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}
+.pal-item{display:flex;flex-direction:column;align-items:center;cursor:pointer}
+.pal-dot{width:28px;height:28px;border-radius:50%;border:2px solid transparent;transition:transform .15s,border-color .15s}
+.pal-dot:hover{transform:scale(1.15)}
+.pal-dot.active{border-color:var(--text)}
+.pal-dot-label{font-size:10px;color:var(--text3);margin-top:3px;text-align:center}
 
 /* LOGIN SCREEN */
 #login-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:calc(100vh - 64px);gap:24px;padding:2rem}
 .login-title{font-family:'DM Serif Display',serif;font-size:32px;color:var(--text);text-align:center}
 .login-sub{font-size:16px;color:var(--text3);text-align:center}
-.login-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;max-width:400px;width:100%}
-.login-card{padding:20px;border:2px solid var(--border2);border-radius:var(--radius-lg);cursor:pointer;text-align:center;transition:all .2s;background:var(--surface)}
-.login-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.3)}
-.login-card .avatar{width:56px;height:56px;border-radius:50%;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:700;color:#fff}
-.login-card .name{font-size:16px;font-weight:600;color:var(--text)}
-.login-card .role{font-size:12px;color:var(--text3);margin-top:3px}
+.login-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;max-width:440px;width:100%}
+.login-card{padding:22px;border:2px solid var(--border2);border-radius:var(--radius-lg);cursor:pointer;text-align:center;transition:all .2s;background:var(--surface)}
+.login-card:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(0,0,0,.35)}
+.login-card .lc-avatar{width:62px;height:62px;border-radius:50%;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-size:28px;color:#fff}
+.login-card .lc-name{font-size:17px;font-weight:600;color:var(--text)}
+.login-card .lc-role{font-size:13px;color:var(--text3);margin-top:4px}
 
-/* MAIN APP */
+/* APP LAYOUT */
 #app{display:none}
-.app-layout{display:flex;gap:0;height:calc(100vh - 64px)}
-
-/* SIDEBAR */
-.sidebar{width:280px;flex-shrink:0;border-right:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto;background:var(--bg)}
-.sidebar-section{padding:1rem}
+.app-layout{display:flex;height:calc(100vh - 64px)}
+.sidebar{width:270px;flex-shrink:0;border-right:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto;background:var(--bg)}
+.sidebar-section{padding:.9rem 1rem;flex-shrink:0}
 .sidebar-section+.sidebar-section{border-top:1px solid var(--border)}
-.section-title{font-size:11px;letter-spacing:.09em;color:var(--text3);text-transform:uppercase;margin-bottom:12px;font-weight:500}
+.section-title{font-size:11px;letter-spacing:.09em;color:var(--text3);text-transform:uppercase;margin-bottom:10px;font-weight:500}
 .user-badge{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--surface);border-radius:var(--radius);margin-bottom:8px}
-.user-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.user-dot{width:11px;height:11px;border-radius:50%;flex-shrink:0}
 .user-name{font-size:14px;font-weight:600;color:var(--text)}
-.user-name-small{font-size:12px;color:var(--text3)}
-.switch-user-btn{font-size:12px;padding:5px 10px;border:1px solid var(--border2);border-radius:8px;background:transparent;color:var(--text3);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s;width:100%}
-.switch-user-btn:hover{border-color:var(--accent);color:var(--text)}
-
-/* NAV */
-.nav-item{display:flex;align-items:center;gap:8px;padding:9px 12px;border-radius:10px;cursor:pointer;font-size:14px;color:var(--text2);transition:all .15s;border:none;background:transparent;font-family:'DM Sans',sans-serif;width:100%;text-align:left}
+.user-sub{font-size:12px;color:var(--text3)}
+.switch-btn{font-size:13px;padding:6px 12px;border:1px solid var(--border2);border-radius:8px;background:transparent;color:var(--text3);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s;width:100%}
+.switch-btn:hover{border-color:var(--accent);color:var(--text)}
+.nav-item{display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:10px;cursor:pointer;font-size:14px;color:var(--text2);transition:all .15s;border:none;background:transparent;font-family:'DM Sans',sans-serif;width:100%;text-align:left;margin-bottom:2px}
 .nav-item:hover{background:var(--surface);color:var(--text)}
 .nav-item.active{background:var(--surface2);color:var(--accent2)}
-.nav-icon{font-size:16px;flex-shrink:0}
-
-/* STATS SIDEBAR */
-.stat-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border);font-size:13px}
+.nav-icon{font-size:15px;flex-shrink:0}
+.stat-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--border);font-size:13px}
 .stat-row:last-child{border-bottom:none}
-.stat-label{color:var(--text3)}
-.stat-value{font-weight:600;color:var(--text)}
-.stat-dot{width:8px;height:8px;border-radius:50%;margin-right:6px;flex-shrink:0;display:inline-block}
+.stat-label{color:var(--text3);display:flex;align-items:center;gap:5px}
+.stat-value{font-weight:600;color:var(--text);font-size:13px}
+.stat-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;display:inline-block}
 
 /* MAIN CONTENT */
 .main-content{flex:1;overflow-y:auto;padding:1.5rem 2rem;min-width:0}
+.page-title{font-family:'DM Serif Display',serif;font-size:26px;color:var(--text);margin-bottom:1.25rem}
 
-/* CALENDAR HEADER */
-.cal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;flex-wrap:wrap;gap:12px}
-.cal-nav{display:flex;align-items:center;gap:12px}
+/* CALENDAR */
+.cal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;flex-wrap:wrap;gap:10px}
+.cal-nav{display:flex;align-items:center;gap:10px}
 .cal-title{font-family:'DM Serif Display',serif;font-size:26px;color:var(--text)}
-.cal-btn{width:32px;height:32px;border-radius:50%;border:1px solid var(--border2);background:transparent;color:var(--text2);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.cal-btn{width:34px;height:34px;border-radius:50%;border:1px solid var(--border2);background:transparent;color:var(--text2);cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;transition:all .15s}
 .cal-btn:hover{border-color:var(--accent);color:var(--accent)}
-.cal-today-btn{padding:6px 14px;border:1px solid var(--border2);border-radius:8px;background:transparent;color:var(--text2);cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;transition:all .15s}
+.cal-today-btn{padding:7px 15px;border:1px solid var(--border2);border-radius:8px;background:transparent;color:var(--text2);cursor:pointer;font-family:'DM Sans',sans-serif;font-size:14px;transition:all .15s}
 .cal-today-btn:hover{border-color:var(--accent);color:var(--text)}
-
-/* CALENDAR GRID */
 .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
-.cal-day-header{text-align:center;font-size:12px;font-weight:600;color:var(--text3);padding:6px 0;letter-spacing:.06em;text-transform:uppercase}
-.cal-day{min-height:110px;border:1px solid var(--border);border-radius:10px;padding:8px;position:relative;background:var(--surface);transition:border-color .15s,background .15s;overflow:hidden;vertical-align:top}
+.cal-day-header{text-align:center;font-size:13px;font-weight:600;color:var(--text3);padding:6px 0;letter-spacing:.05em;text-transform:uppercase}
+.cal-day{min-height:120px;border:1px solid var(--border);border-radius:10px;padding:9px;position:relative;background:var(--surface);transition:border-color .15s;overflow:hidden}
 .cal-day:hover{border-color:var(--border2)}
 .cal-day.today{border-color:var(--accent);background:rgba(212,168,83,.04)}
-.cal-day.other-month{opacity:.35}
-.cal-day-num{font-size:13px;font-weight:600;color:var(--text3);margin-bottom:5px;line-height:1}
+.cal-day.other-month{opacity:.3}
+.cal-day-num{font-size:14px;font-weight:600;color:var(--text3);margin-bottom:6px;line-height:1}
 .cal-day.today .cal-day-num{color:var(--accent)}
-.add-entry-btn{position:absolute;top:6px;right:6px;width:20px;height:20px;border-radius:50%;border:1px solid var(--border2);background:var(--surface2);color:var(--text3);font-size:14px;line-height:1;display:none;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;padding:0;font-family:inherit}
+.add-entry-btn{position:absolute;top:7px;right:7px;width:24px;height:24px;border-radius:50%;border:1px solid var(--border2);background:var(--surface2);color:var(--text3);font-size:17px;line-height:1;display:none;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;padding:0;font-family:inherit}
 .cal-day:hover .add-entry-btn{display:flex}
 .add-entry-btn:hover{background:var(--accent);border-color:var(--accent);color:var(--btn-text)}
 
 /* ENTRIES */
-.entry-chip{border-radius:6px;padding:3px 6px;margin-bottom:3px;font-size:11px;line-height:1.35;cursor:pointer;position:relative;transition:filter .15s;word-break:break-word}
+.entry-chip{border-radius:7px;padding:5px 8px;margin-bottom:4px;font-size:13px;line-height:1.4;cursor:pointer;position:relative;transition:filter .15s;word-break:break-word}
 .entry-chip:hover{filter:brightness(1.15)}
-.entry-chip .ep-actions{display:none;position:absolute;top:2px;right:2px;gap:2px}
+.ep-actions{display:none;position:absolute;top:3px;right:3px;gap:2px}
 .entry-chip:hover .ep-actions{display:flex}
-.ep-btn{border:none;background:rgba(0,0,0,.3);color:#fff;cursor:pointer;font-size:10px;padding:1px 4px;border-radius:3px;line-height:1.4;transition:background .12s}
-.ep-btn:hover{background:rgba(0,0,0,.5)}
-.entry-project{font-weight:600;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%;padding-right:36px}
-.entry-meta{font-size:10px;opacity:.8;display:block;padding-right:36px}
+.ep-btn{border:none;background:rgba(0,0,0,.35);color:#fff;cursor:pointer;font-size:11px;padding:2px 5px;border-radius:4px;line-height:1.4;transition:background .12s;font-family:'DM Sans',sans-serif}
+.ep-btn:hover{background:rgba(0,0,0,.55)}
+.entry-project{font-weight:600;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%;padding-right:42px;font-size:13px}
+.entry-meta{font-size:12px;opacity:.85;display:block;padding-right:46px}
 
-/* MODAL */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:500;display:flex;align-items:center;justify-content:center;padding:1rem}
-.modal{background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius-lg);padding:1.75rem;max-width:460px;width:100%;max-height:90vh;overflow-y:auto}
-.modal-title{font-family:'DM Serif Display',serif;font-size:20px;color:var(--text);margin-bottom:16px}
-.modal-field{margin-bottom:14px}
-.modal-field label{display:block;font-size:13px;color:var(--text3);margin-bottom:5px}
-.modal-field input,.modal-field select{width:100%;padding:10px 13px;font-size:15px;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--radius);color:var(--text);outline:none;font-family:'DM Sans',sans-serif;transition:border-color .15s}
-.modal-field input:focus,.modal-field select:focus{border-color:var(--accent)}
-.modal-field select option{background:var(--bg)}
-.modal-btns{display:flex;gap:10px;justify-content:flex-end;margin-top:18px}
-.btn{padding:10px 20px;font-size:15px;border-radius:var(--radius);background:var(--accent);color:var(--btn-text);border:none;cursor:pointer;font-weight:600;font-family:'DM Sans',sans-serif;transition:opacity .15s}
+/* FORMS & BUTTONS */
+.btn{padding:10px 20px;font-size:15px;border-radius:var(--radius);background:var(--accent);color:var(--btn-text);border:none;cursor:pointer;font-weight:600;font-family:'DM Sans',sans-serif;transition:opacity .15s;white-space:nowrap}
 .btn:hover{opacity:.85}
 .btn-ghost{background:transparent;color:var(--text2);border:1px solid var(--border2);font-weight:400}
 .btn-ghost:hover{background:var(--surface2);opacity:1}
 .btn-danger{background:#b03030;color:#fff;border:none}
+.btn-sm{padding:7px 13px;font-size:13px;border-radius:8px}
+input,select{padding:10px 13px;font-size:15px;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--radius);color:var(--text);outline:none;font-family:'DM Sans',sans-serif;transition:border-color .15s}
+input:focus,select:focus{border-color:var(--accent)}
+input::placeholder{color:var(--text3)}
+select option{background:var(--bg);color:var(--text)}
 
-/* STATS PAGE */
-.stats-page{display:none}
-.stats-page.active{display:block}
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:500;display:flex;align-items:center;justify-content:center;padding:1rem}
+.modal{background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius-lg);padding:1.75rem;max-width:480px;width:100%;max-height:90vh;overflow-y:auto}
+.modal-title{font-family:'DM Serif Display',serif;font-size:20px;color:var(--text);margin-bottom:16px}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:13px;color:var(--text3);margin-bottom:5px}
+.field input,.field select{width:100%}
+.modal-btns{display:flex;gap:10px;justify-content:flex-end;margin-top:18px}
+.seg-wrap{display:flex;border:1px solid var(--border2);border-radius:10px;overflow:hidden}
+.seg-opt{padding:9px 16px;font-size:14px;border:none;background:transparent;color:var(--text3);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s;white-space:nowrap}
+.seg-opt.active{background:var(--accent);color:var(--btn-text);font-weight:600}
+
+/* STATS */
 .date-range{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:1.5rem}
-.date-range input{padding:8px 12px;font-size:14px;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--radius);color:var(--text);outline:none;font-family:'DM Sans',sans-serif}
-.date-range input:focus{border-color:var(--accent)}
-.stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-bottom:1.5rem}
-.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem}
-.stat-card-title{font-size:12px;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px}
-.stat-card-value{font-family:'DM Serif Display',serif;font-size:32px;color:var(--text)}
-.stat-card-sub{font-size:12px;color:var(--text3);margin-top:4px}
-.stats-table{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
-.stats-table-header{display:grid;grid-template-columns:1fr 120px 80px 80px 80px;gap:0;background:var(--surface2);padding:10px 16px;font-size:12px;color:var(--text3);font-weight:600;letter-spacing:.06em;text-transform:uppercase}
-.stats-table-row{display:grid;grid-template-columns:1fr 120px 80px 80px 80px;gap:0;padding:10px 16px;border-top:1px solid var(--border);font-size:14px;color:var(--text2);align-items:center}
-.stats-table-row:hover{background:var(--surface2)}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin-bottom:1.25rem}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.1rem}
+.sc-title{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px}
+.sc-value{font-family:'DM Serif Display',serif;font-size:28px;color:var(--text)}
+.sc-sub{font-size:12px;color:var(--text3);margin-top:3px}
+.tbl{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);overflow-x:auto;margin-bottom:1rem}
+.tbl-head,.tbl-row{display:grid;align-items:center;padding:9px 14px;font-size:13px;gap:0}
+.tbl-head{background:var(--surface2);color:var(--text3);font-weight:600;letter-spacing:.05em;text-transform:uppercase;border-radius:var(--radius-lg) var(--radius-lg) 0 0}
+.tbl-row{border-top:1px solid var(--border);color:var(--text2)}
+.tbl-row:hover{background:var(--surface2)}
+.stats-cols{grid-template-columns:140px 70px 80px 70px 80px 70px 80px 70px 80px}
 
-/* HISTORY PAGE */
-.history-page{display:none}
-.history-page.active{display:block}
-.history-item{display:flex;gap:14px;padding:12px 0;border-bottom:1px solid var(--border);align-items:flex-start}
+/* HISTORY */
+.history-item{display:flex;gap:12px;padding:11px 0;border-bottom:1px solid var(--border);align-items:flex-start}
 .history-item:last-child{border-bottom:none}
-.history-time{font-size:12px;color:var(--text3);white-space:nowrap;min-width:100px;padding-top:2px}
-.history-desc{flex:1;font-size:14px;color:var(--text2);line-height:1.5}
-.history-desc b{color:var(--text);font-weight:500}
-.history-undo{font-size:13px;padding:5px 12px;border-radius:8px;background:transparent;border:1px solid var(--border2);color:var(--text3);cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;flex-shrink:0;transition:all .15s}
-.history-undo:hover{border-color:var(--accent);color:var(--accent)}
-.history-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-top:4px}
+.h-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-top:3px}
+.h-time{font-size:12px;color:var(--text3);white-space:nowrap;min-width:95px;padding-top:1px}
+.h-desc{flex:1;font-size:14px;color:var(--text2);line-height:1.5}
+.h-desc b{font-weight:500;color:var(--text)}
+.h-undo{font-size:13px;padding:5px 12px;border-radius:8px;background:transparent;border:1px solid var(--border2);color:var(--text3);cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;flex-shrink:0;transition:all .15s}
+.h-undo:hover{border-color:var(--accent);color:var(--accent)}
 
-/* BADGES */
-.user-color-chip{display:inline-flex;align-items:center;gap:5px;padding:2px 8px;border-radius:20px;font-size:12px;font-weight:600}
+/* PROJECTS PAGE */
+.projects-list{display:flex;flex-direction:column;gap:8px;margin-top:1rem}
+.project-item{display:flex;align-items:center;gap:12px;padding:13px 16px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);font-size:15px}
+.project-item.done{opacity:.55}
+.project-name{flex:1;font-weight:500;color:var(--text)}
+.project-type{font-size:12px;padding:2px 9px;border-radius:10px;font-weight:600;flex-shrink:0}
+.type-drama{background:rgba(91,168,245,.15);color:#5ba8f5}
+.type-show{background:rgba(78,192,104,.15);color:#4ec068}
+.project-status{font-size:12px;color:var(--text3);flex-shrink:0}
+.proj-btn{border:none;background:transparent;cursor:pointer;font-size:14px;padding:4px 6px;border-radius:6px;color:var(--text3);transition:all .15s;font-family:'DM Sans',sans-serif}
+.proj-btn:hover{background:var(--surface2);color:var(--text)}
+.add-project-bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:1rem}
 
-.empty{font-size:15px;color:var(--text3);padding:4px 0}
+.empty{font-size:15px;color:var(--text3);padding:6px 2px}
 #loading{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:999;font-family:'DM Serif Display',serif;font-size:15px;color:var(--text3)}
 
-@media(max-width:900px){
-  .sidebar{width:220px}
-  .stats-table-header,.stats-table-row{grid-template-columns:1fr 100px 60px 60px 60px;font-size:12px}
-}
-@media(max-width:700px){
-  .app-layout{flex-direction:column}
-  .sidebar{width:100%;height:auto;border-right:none;border-bottom:1px solid var(--border)}
-  .cal-day{min-height:60px}
-  .main-content{padding:1rem}
-}
+@media(max-width:860px){.sidebar{width:210px}.main-content{padding:1rem 1.25rem}}
+@media(max-width:700px){.app-layout{flex-direction:column}.sidebar{width:100%;height:auto;border-right:none;border-bottom:1px solid var(--border)}.cal-day{min-height:70px}.main-content{padding:1rem}}
 </style>
 </head>
 <body>
@@ -185,12 +207,13 @@ header{border-bottom:1px solid var(--border);padding:0 1.5rem;display:flex;align
   </div>
   <div class="header-right">
     <div id="header-user" style="display:none;align-items:center;gap:8px;font-size:13px;color:var(--text2)"></div>
+    <div class="palette-wrap" id="pal-wrap">
+      <button class="palette-btn" onclick="togglePalDd()"><div class="pal-swatch" id="pal-swatch"></div>Цвет</button>
+      <div class="palette-dropdown" id="pal-dd"><div class="palette-grid" id="pal-grid"></div></div>
+    </div>
     <div class="theme-toggle">
       <span class="toggle-icon">☽</span>
-      <label class="toggle-switch">
-        <input type="checkbox" id="theme-chk" onchange="toggleTheme(this.checked)">
-        <div class="toggle-track"></div><div class="toggle-thumb"></div>
-      </label>
+      <label class="toggle-switch"><input type="checkbox" id="theme-chk" onchange="toggleTheme(this.checked)"><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
       <span class="toggle-icon">☀</span>
     </div>
   </div>
@@ -209,15 +232,13 @@ header{border-bottom:1px solid var(--border);padding:0 1.5rem;display:flex;align
     <div class="sidebar">
       <div class="sidebar-section">
         <div class="section-title">Текущий пользователь</div>
-        <div class="user-badge">
-          <div class="user-dot" id="sb-dot"></div>
-          <div><div class="user-name" id="sb-name"></div><div class="user-name-small" id="sb-role"></div></div>
-        </div>
-        <button class="switch-user-btn" onclick="switchUser()">Сменить пользователя</button>
+        <div class="user-badge"><div class="user-dot" id="sb-dot"></div><div><div class="user-name" id="sb-name"></div><div class="user-sub" id="sb-role"></div></div></div>
+        <button class="switch-btn" onclick="switchUser()">Сменить пользователя</button>
       </div>
       <div class="sidebar-section">
         <div class="section-title">Навигация</div>
         <button class="nav-item active" id="nav-calendar" onclick="showPage('calendar')"><span class="nav-icon">📅</span>Календарь</button>
+        <button class="nav-item" id="nav-projects" onclick="showPage('projects')"><span class="nav-icon">🗂</span>Проекты</button>
         <button class="nav-item" id="nav-stats" onclick="showPage('stats')"><span class="nav-icon">📊</span>Статистика</button>
         <button class="nav-item" id="nav-history" onclick="showPage('history')"><span class="nav-icon">🕐</span>История</button>
       </div>
@@ -228,7 +249,7 @@ header{border-bottom:1px solid var(--border);padding:0 1.5rem;display:flex;align
     </div>
 
     <div class="main-content">
-      <!-- CALENDAR PAGE -->
+      <!-- CALENDAR -->
       <div id="page-calendar">
         <div class="cal-header">
           <div class="cal-nav">
@@ -241,27 +262,41 @@ header{border-bottom:1px solid var(--border);padding:0 1.5rem;display:flex;align
         <div class="cal-grid" id="cal-grid"></div>
       </div>
 
-      <!-- STATS PAGE -->
+      <!-- PROJECTS -->
+      <div id="page-projects" style="display:none">
+        <div class="page-title">Проекты</div>
+        <div class="add-project-bar">
+          <input id="proj-input" placeholder="Название проекта…" style="flex:1;min-width:180px" onkeydown="if(event.key==='Enter')addProject()">
+          <div class="seg-wrap" id="proj-type-seg">
+            <button class="seg-opt active" id="ptype-drama" onclick="setProjType('drama')">Дорама</button>
+            <button class="seg-opt" id="ptype-show" onclick="setProjType('show')">Шоу</button>
+          </div>
+          <button class="btn btn-sm" onclick="addProject()">Добавить</button>
+        </div>
+        <div class="projects-list" id="projects-list"></div>
+      </div>
+
+      <!-- STATS -->
       <div id="page-stats" style="display:none">
-        <h2 style="font-family:'DM Serif Display',serif;font-size:24px;margin-bottom:1.25rem">Статистика</h2>
+        <div class="page-title">Статистика</div>
         <div class="date-range">
           <span style="font-size:14px;color:var(--text3)">С</span>
           <input type="date" id="stats-from">
           <span style="font-size:14px;color:var(--text3)">По</span>
           <input type="date" id="stats-to">
-          <button class="btn" onclick="renderStats()">Показать</button>
+          <button class="btn btn-sm" onclick="renderStats()">Показать</button>
         </div>
         <div id="stats-content"></div>
       </div>
 
-      <!-- HISTORY PAGE -->
+      <!-- HISTORY -->
       <div id="page-history" style="display:none">
-        <h2 style="font-family:'DM Serif Display',serif;font-size:24px;margin-bottom:1.25rem">История изменений</h2>
+        <div class="page-title">История изменений</div>
         <div style="margin-bottom:1rem;display:flex;align-items:center;gap:10px">
           <span style="font-size:14px;color:var(--text3)">Месяц:</span>
-          <select id="history-month-sel" onchange="renderHistory()" style="padding:7px 11px;font-size:14px;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--radius);color:var(--text);outline:none;font-family:'DM Sans',sans-serif"></select>
+          <select id="history-month-sel" onchange="renderHistory()" style="padding:8px 12px;font-size:14px"></select>
         </div>
-        <div class="stats-table" style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1rem">
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1rem">
           <div id="history-list"><div class="empty">Нет изменений</div></div>
         </div>
       </div>
@@ -270,20 +305,15 @@ header{border-bottom:1px solid var(--border);padding:0 1.5rem;display:flex;align
 </div>
 
 <!-- ENTRY MODAL -->
-<div id="entry-modal" style="display:none" class="modal-overlay">
+<div id="entry-modal" class="modal-overlay" style="display:none">
   <div class="modal">
     <div class="modal-title" id="entry-modal-title">Добавить перевод</div>
-    <div class="modal-field">
-      <label>Название проекта</label>
-      <input id="ef-project" placeholder="Название дорамы / проекта">
+    <div class="field"><label>Название проекта</label>
+      <select id="ef-project" style="width:100%"><option value="">— выбрать проект —</option></select>
     </div>
-    <div class="modal-field">
-      <label>Номер эпизода</label>
-      <input id="ef-episode" type="number" min="1" placeholder="например, 5">
-    </div>
-    <div class="modal-field">
-      <label>Номер части</label>
-      <select id="ef-part">
+    <div class="field"><label>Номер эпизода</label><input id="ef-episode" type="number" min="1" placeholder="например, 5" style="width:100%"></div>
+    <div class="field"><label>Номер части</label>
+      <select id="ef-part" style="width:100%">
         <option value="всё">всё</option>
         <option value="1">1</option><option value="2">2</option><option value="3">3</option>
         <option value="4">4</option><option value="5">5</option><option value="6">6</option>
@@ -291,19 +321,16 @@ header{border-bottom:1px solid var(--border);padding:0 1.5rem;display:flex;align
         <option value="10">10</option>
       </select>
     </div>
-    <div class="modal-field">
-      <label>Количество строк</label>
-      <input id="ef-lines" type="number" min="1" placeholder="например, 120">
-    </div>
+    <div class="field"><label>Количество строк</label><input id="ef-lines" type="number" min="1" placeholder="например, 120" style="width:100%"></div>
     <div class="modal-btns">
       <button class="btn btn-ghost" onclick="closeEntryModal()">Отмена</button>
-      <button class="btn" id="entry-modal-save" onclick="saveEntry()">Сохранить</button>
+      <button class="btn" onclick="saveEntry()">Сохранить</button>
     </div>
   </div>
 </div>
 
 <!-- CONFIRM MODAL -->
-<div id="confirm-modal" style="display:none" class="modal-overlay">
+<div id="confirm-modal" class="modal-overlay" style="display:none">
   <div class="modal">
     <div class="modal-title" id="confirm-title">Подтвердить действие</div>
     <div style="font-size:15px;color:var(--text2);margin-bottom:1.5rem" id="confirm-text"></div>
@@ -317,16 +344,15 @@ header{border-bottom:1px solid var(--border);padding:0 1.5rem;display:flex;align
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import{getDatabase,ref,onValue,set,remove,push,update}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
-
 const cfg={apiKey:"AIzaSyAg_UhVP2DRU_jrqJD-Or3Iy8ZEIQWaAIU",authDomain:"bfnames.firebaseapp.com",databaseURL:"https://bfnames-default-rtdb.europe-west1.firebasedatabase.app",projectId:"bfnames",storageBucket:"bfnames.firebasestorage.app",messagingSenderId:"1066954721078",appId:"1:1066954721078:web:fb729d5ccb8671db175597"};
 const db=getDatabase(initializeApp(cfg));
 
-// ── USERS ────────────────────────────────────────────────────────────────────
+// ── USERS ───────────────────────────────────────────────────────────────────
 const USERS={
   sergey:{name:'Сергей',color:'#5ba8f5',emoji:'🦋',canEdit:true},
   yaroslavna:{name:'Ярославна',color:'#e8739a',emoji:'🌸',canEdit:true},
   victoria:{name:'Виктория',color:'#4ec068',emoji:'🌿',canEdit:true},
-  kristina:{name:'Кристина',color:'#a060f0',emoji:'✨',canEdit:false},
+  kristina:{name:'Кристина',color:'#a060f0',emoji:'✨',canEdit:false,role:'Редактор'},
 };
 const USER_KEYS=Object.keys(USERS);
 
@@ -335,76 +361,82 @@ let calYear=new Date().getFullYear();
 let calMonth=new Date().getMonth();
 let allEntries={};
 let allHistory={};
+let allProjects={};
 let editingEntryKey=null;
-let editingDate=null;
 let pendingDate=null;
+let newProjType='drama';
 
-// ── INIT ─────────────────────────────────────────────────────────────────────
+// ── FIREBASE LISTENERS ───────────────────────────────────────────────────────
 onValue(ref(db,'translations'),snap=>{
   allEntries=snap.val()||{};
   document.getElementById('loading').style.display='none';
-  if(currentUser) renderAll();
-  else showLogin();
-},e=>{document.getElementById('loading').style.display='none';console.error(e);showLogin();});
-
+  if(currentUser){renderCalendar();renderSidebarStats();}else showLogin();
+},()=>{document.getElementById('loading').style.display='none';showLogin();});
 onValue(ref(db,'tr_history'),snap=>{allHistory=snap.val()||{};});
+onValue(ref(db,'tr_projects'),snap=>{
+  allProjects=snap.val()||{};
+  if(currentUser){renderProjects();populateProjectSelect();}
+});
 
-// ── THEME ─────────────────────────────────────────────────────────────────────
+// ── PALETTE ──────────────────────────────────────────────────────────────────
+const PALETTES=[{id:'',color:'#d4a853',label:'Янтарь'},{id:'sakura',color:'#e8739a',label:'Сакура'},{id:'ocean',color:'#3d9cf0',label:'Океан'},{id:'forest',color:'#4ec068',label:'Лес'},{id:'violet',color:'#a060f0',label:'Фиолет'},{id:'rose',color:'#f05840',label:'Алый'},{id:'slate',color:'#6888d0',label:'Сталь'},{id:'copper',color:'#c87840',label:'Медь'}];
 (function(){
-  if(localStorage.getItem('tr_theme')==='light'){
-    document.body.classList.add('light');
-    const c=document.getElementById('theme-chk');if(c)c.checked=true;
-  }
+  const pal=localStorage.getItem('tr_palette')||'';
+  if(pal)document.body.classList.add('palette-'+pal);
+  const th=localStorage.getItem('tr_theme');
+  if(th==='light'){document.body.classList.add('light');const c=document.getElementById('theme-chk');if(c)c.checked=true;}
+  buildPalGrid();
 })();
+function buildPalGrid(){
+  const saved=localStorage.getItem('tr_palette')||'';
+  document.getElementById('pal-grid').innerHTML=PALETTES.map(p=>`<div class="pal-item" onclick="setPalette('${p.id}')"><div class="pal-dot${p.id===saved?' active':''}" data-pid="${p.id}" style="background:${p.color}"></div><div class="pal-dot-label">${p.label}</div></div>`).join('');
+  updateSwatch(saved);
+}
+function updateSwatch(pal){const p=PALETTES.find(x=>x.id===pal)||PALETTES[0];document.getElementById('pal-swatch').style.background=p.color;}
+window.setPalette=function(pal){PALETTES.forEach(p=>document.body.classList.remove('palette-'+p.id));if(pal)document.body.classList.add('palette-'+pal);localStorage.setItem('tr_palette',pal);document.querySelectorAll('.pal-dot').forEach(d=>d.classList.toggle('active',d.dataset.pid===pal));updateSwatch(pal);document.getElementById('pal-dd').classList.remove('open');};
+window.togglePalDd=()=>document.getElementById('pal-dd').classList.toggle('open');
+document.addEventListener('click',e=>{if(!document.getElementById('pal-wrap').contains(e.target))document.getElementById('pal-dd').classList.remove('open');});
 window.toggleTheme=function(l){document.body.classList.toggle('light',l);localStorage.setItem('tr_theme',l?'light':'dark');};
 
 // ── LOGIN ─────────────────────────────────────────────────────────────────────
 function showLogin(){
   document.getElementById('login-screen').style.display='flex';
   document.getElementById('app').style.display='none';
-  const grid=document.getElementById('login-grid');
-  grid.innerHTML=USER_KEYS.map(k=>{
+  document.getElementById('login-grid').innerHTML=USER_KEYS.map(k=>{
     const u=USERS[k];
-    return `<div class="login-card" onclick="login('${k}')" style="border-color:${u.color}22">
-      <div class="avatar" style="background:${u.color}">${u.emoji}</div>
-      <div class="name">${u.name}</div>
-      <div class="role">${u.canEdit?'Переводчик':'Только просмотр'}</div>
+    return `<div class="login-card" onclick="login('${k}')" style="border-color:${u.color}33">
+      <div class="lc-avatar" style="background:${u.color}">${u.emoji}</div>
+      <div class="lc-name">${u.name}</div>
+      <div class="lc-role">${k==='kristina'?'Редактор':u.canEdit?'Переводчик':'Только просмотр'}</div>
     </div>`;
   }).join('');
 }
-
-window.login=function(key){
-  currentUser=key;
-  sessionStorage.setItem('tr_user',key);
-  document.getElementById('login-screen').style.display='none';
-  document.getElementById('app').style.display='block';
-  renderAll();
-};
+window.login=function(k){currentUser=k;sessionStorage.setItem('tr_user',k);document.getElementById('login-screen').style.display='none';document.getElementById('app').style.display='block';renderAll();};
 window.switchUser=function(){currentUser=null;sessionStorage.removeItem('tr_user');showLogin();};
 
 // ── RENDER ALL ────────────────────────────────────────────────────────────────
 function renderAll(){
   const u=USERS[currentUser];
-  // header
   const hw=document.getElementById('header-user');
   hw.style.display='flex';
   hw.innerHTML=`<div style="width:10px;height:10px;border-radius:50%;background:${u.color}"></div><span>${u.name}</span>`;
-  // sidebar
   document.getElementById('sb-dot').style.background=u.color;
   document.getElementById('sb-name').textContent=u.name;
-  document.getElementById('sb-role').textContent=u.canEdit?'Переводчик':'Только просмотр';
+  document.getElementById('sb-role').textContent=currentUser==='kristina'?'Редактор':u.canEdit?'Переводчик':'Только просмотр';
   renderCalendar();
   renderSidebarStats();
+  populateProjectSelect();
 }
 
-// ── PAGE NAVIGATION ───────────────────────────────────────────────────────────
-window.showPage=function(page){
-  ['calendar','stats','history'].forEach(p=>{
-    document.getElementById('page-'+p).style.display=p===page?'block':'none';
-    document.getElementById('nav-'+p).classList.toggle('active',p===page);
+// ── PAGE NAV ──────────────────────────────────────────────────────────────────
+window.showPage=function(p){
+  ['calendar','projects','stats','history'].forEach(id=>{
+    document.getElementById('page-'+id).style.display=id===p?'block':'none';
+    document.getElementById('nav-'+id).classList.toggle('active',id===p);
   });
-  if(page==='stats')initStatsDefaults();
-  if(page==='history')renderHistory();
+  if(p==='stats')initStatsDefaults();
+  if(p==='history')renderHistory();
+  if(p==='projects')renderProjects();
 };
 
 // ── CALENDAR ──────────────────────────────────────────────────────────────────
@@ -413,84 +445,117 @@ const DAYS_RU=['Пн','Вт','Ср','Чт','Пт','Сб','Вс'];
 
 function renderCalendar(){
   document.getElementById('cal-title').textContent=MONTHS_RU[calMonth]+' '+calYear;
-  const grid=document.getElementById('cal-grid');
-
-  // day headers
-  let html=DAYS_RU.map(d=>`<div class="cal-day-header">${d}</div>`).join('');
-
-  // first day of month (Monday=0)
   const first=new Date(calYear,calMonth,1);
-  let startDow=(first.getDay()+6)%7; // 0=Mon
-
-  // days in month and prev month
+  const startDow=(first.getDay()+6)%7;
   const daysInMonth=new Date(calYear,calMonth+1,0).getDate();
   const daysInPrev=new Date(calYear,calMonth,0).getDate();
-
   const today=new Date();
-  const todayStr=`${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
-
-  // total cells
+  const todayStr=`${today.getFullYear()}-${p2(today.getMonth()+1)}-${p2(today.getDate())}`;
   const totalCells=Math.ceil((startDow+daysInMonth)/7)*7;
-
+  let html=DAYS_RU.map(d=>`<div class="cal-day-header">${d}</div>`).join('');
   for(let i=0;i<totalCells;i++){
-    let d,m,y,isOther=false;
-    if(i<startDow){d=daysInPrev-startDow+i+1;m=calMonth===0?11:calMonth-1;y=calMonth===0?calYear-1:calYear;isOther=true;}
-    else if(i>=startDow+daysInMonth){d=i-startDow-daysInMonth+1;m=calMonth===11?0:calMonth+1;y=calMonth===11?calYear+1:calYear;isOther=true;}
+    let d,m,y,other=false;
+    if(i<startDow){d=daysInPrev-startDow+i+1;m=calMonth===0?11:calMonth-1;y=calMonth===0?calYear-1:calYear;other=true;}
+    else if(i>=startDow+daysInMonth){d=i-startDow-daysInMonth+1;m=calMonth===11?0:calMonth+1;y=calMonth===11?calYear+1:calYear;other=true;}
     else{d=i-startDow+1;m=calMonth;y=calYear;}
-    const dateStr=`${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-    const isToday=dateStr===todayStr;
+    const ds=`${y}-${p2(m+1)}-${p2(d)}`;
+    const isToday=ds===todayStr;
     const canAdd=USERS[currentUser].canEdit;
-    html+=`<div class="cal-day${isOther?' other-month':''}${isToday?' today':''}">
+    html+=`<div class="cal-day${other?' other-month':''}${isToday?' today':''}">
       <div class="cal-day-num">${d}</div>
-      ${renderDayEntries(dateStr)}
-      ${canAdd?`<button class="add-entry-btn" onclick="openAddEntry(event,'${dateStr}')">+</button>`:''}
+      ${renderDayEntries(ds)}
+      ${canAdd?`<button class="add-entry-btn" onclick="openAddEntry(event,'${ds}')">+</button>`:''}
     </div>`;
   }
-  grid.innerHTML=html;
+  document.getElementById('cal-grid').innerHTML=html;
 }
 
-function renderDayEntries(dateStr){
-  const dayEntries=getDayEntries(dateStr);
-  if(!dayEntries.length)return'';
-  // Sort: current user first
-  dayEntries.sort((a,b)=>{
-    if(a.user===currentUser&&b.user!==currentUser)return -1;
-    if(b.user===currentUser&&a.user!==currentUser)return 1;
-    return 0;
-  });
+function renderDayEntries(ds){
+  const es=getDayEntries(ds);if(!es.length)return'';
+  es.sort((a,b)=>{if(a.user===currentUser&&b.user!==currentUser)return -1;if(b.user===currentUser&&a.user!==currentUser)return 1;return 0;});
   const canEdit=USERS[currentUser].canEdit;
-  return dayEntries.map(e=>{
-    const u=USERS[e.user]||{color:'#888',name:e.user};
-    const isOwn=e.user===currentUser;
-    const editBtn=isOwn&&canEdit?`<button class="ep-btn" onclick="openEditEntry(event,'${e.key}','${dateStr}')" title="Редактировать">✎</button>`:'';
-    const delBtn=isOwn&&canEdit?`<button class="ep-btn" style="background:rgba(176,48,48,.5)" onclick="confirmDeleteEntry(event,'${e.key}','${dateStr}')" title="Удалить">×</button>`:'';
-    const partStr=e.part==='всё'?'всё':'ч.'+e.part;
-    return `<div class="entry-chip" style="background:${u.color}22;border:1px solid ${u.color}55;color:${u.color}">
+  return es.map(e=>{
+    const u=USERS[e.user]||{color:'#888'};const isOwn=e.user===currentUser;
+    const eb=isOwn&&canEdit?`<button class="ep-btn" onclick="openEditEntry(event,'${e.key}','${ds}')">✎</button>`:'';
+    const db2=isOwn&&canEdit?`<button class="ep-btn" style="background:rgba(176,48,48,.5)" onclick="confirmDeleteEntry(event,'${e.key}','${ds}')">×</button>`:'';
+    const pt=e.part==='всё'?'всё':'ч.'+e.part;
+    return `<div class="entry-chip" style="background:${u.color}1a;border:1px solid ${u.color}44;color:${u.color}">
       <span class="entry-project" title="${e.project||''}">${e.project||'—'}</span>
-      <span class="entry-meta">Эп.${e.episode||'?'} ${partStr} · ${e.lines||0} стр.</span>
-      <div class="ep-actions">${editBtn}${delBtn}</div>
+      <span class="entry-meta">Эп.${e.episode||'?'} ${pt} · ${e.lines||0} стр.</span>
+      <div class="ep-actions">${eb}${db2}</div>
     </div>`;
   }).join('');
 }
 
-function getDayEntries(dateStr){
-  const result=[];
-  const key=dateStr.replace(/-/g,'_');
-  const day=(allEntries[key])||{};
-  Object.entries(day).forEach(([k,v])=>result.push({...v,key:`${key}/${k}`,dateKey:key,entryId:k}));
-  return result;
+function getDayEntries(ds){
+  const res=[],key=ds.replace(/-/g,'_'),day=allEntries[key]||{};
+  Object.entries(day).forEach(([k,v])=>res.push({...v,key:`${key}/${k}`,dateKey:key,entryId:k}));
+  return res;
 }
 
-window.calNav=function(dir){calMonth+=dir;if(calMonth>11){calMonth=0;calYear++;}else if(calMonth<0){calMonth=11;calYear--;}renderCalendar();renderSidebarStats();};
+window.calNav=function(d){calMonth+=d;if(calMonth>11){calMonth=0;calYear++;}else if(calMonth<0){calMonth=11;calYear--;}renderCalendar();renderSidebarStats();};
 window.calToday=function(){calYear=new Date().getFullYear();calMonth=new Date().getMonth();renderCalendar();renderSidebarStats();};
 
+// ── PROJECTS ──────────────────────────────────────────────────────────────────
+window.setProjType=function(t){
+  newProjType=t;
+  document.getElementById('ptype-drama').classList.toggle('active',t==='drama');
+  document.getElementById('ptype-show').classList.toggle('active',t==='show');
+};
+
+window.addProject=function(){
+  const name=document.getElementById('proj-input').value.trim();if(!name)return;
+  push(ref(db,'tr_projects'),{name,type:newProjType,status:'active',ts:Date.now()});
+  document.getElementById('proj-input').value='';
+};
+
+function renderProjects(){
+  const list=document.getElementById('projects-list');
+  const items=Object.entries(allProjects).sort((a,b)=>b[1].ts-a[1].ts);
+  if(!items.length){list.innerHTML='<div class="empty">Нет проектов. Добавь первый!</div>';return;}
+  const active=items.filter(([,p])=>p.status==='active');
+  const done=items.filter(([,p])=>p.status!=='active');
+  function mkItem([k,p]){
+    const typeLabel=p.type==='show'?'Шоу':'Дорама';
+    const typeCls=p.type==='show'?'type-show':'type-drama';
+    const canEdit=USERS[currentUser]?.canEdit;
+    const doneBtn=canEdit?`<button class="proj-btn" onclick="toggleProjectStatus('${k}')" title="${p.status==='active'?'Завершить':'Вернуть'}">${p.status==='active'?'✓':'↩'}</button>`:'';
+    const delBtn=canEdit?`<button class="proj-btn" onclick="confirmDeleteProject('${k}')" title="Удалить" style="color:#c05050">×</button>`:'';
+    return `<div class="project-item${p.status!=='active'?' done':''}">
+      <div class="project-name">${p.name}</div>
+      <span class="project-type ${typeCls}">${typeLabel}</span>
+      <span class="project-status">${p.status==='active'?'Текущий':'Завершён'}</span>
+      ${doneBtn}${delBtn}
+    </div>`;
+  }
+  list.innerHTML=(active.length?active.map(mkItem).join(''):'')+
+    (done.length?`<div style="font-size:12px;color:var(--text3);margin:12px 0 6px;letter-spacing:.06em;text-transform:uppercase">Завершённые</div>`+done.map(mkItem).join(''):'');
+}
+
+window.toggleProjectStatus=function(k){
+  const p=allProjects[k];if(!p)return;
+  update(ref(db,`tr_projects/${k}`),{status:p.status==='active'?'done':'active'});
+};
+
+window.confirmDeleteProject=function(k){
+  const p=allProjects[k];if(!p)return;
+  showConfirm('Удалить проект?',`«${p.name}» будет удалён без возможности восстановления.`,()=>remove(ref(db,`tr_projects/${k}`)));
+};
+
+function populateProjectSelect(){
+  const sel=document.getElementById('ef-project');
+  const cur=sel.value;
+  const active=Object.entries(allProjects).filter(([,p])=>p.status==='active').sort((a,b)=>a[1].name.localeCompare(b[1].name,'ru'));
+  sel.innerHTML='<option value="">— выбрать проект —</option>'+
+    active.map(([k,p])=>`<option value="${p.name}">${p.name} (${p.type==='show'?'Шоу':'Дорама'})</option>`).join('');
+  if(cur)sel.value=cur;
+}
+
 // ── ENTRY MODAL ───────────────────────────────────────────────────────────────
-window.openAddEntry=function(e,dateStr){
-  e.stopPropagation();
-  if(!USERS[currentUser].canEdit)return;
-  editingEntryKey=null;
-  pendingDate=dateStr;
-  document.getElementById('entry-modal-title').textContent='Добавить перевод — '+formatDateRu(dateStr);
+window.openAddEntry=function(e,ds){
+  e.stopPropagation();if(!USERS[currentUser].canEdit)return;
+  editingEntryKey=null;pendingDate=ds;
+  document.getElementById('entry-modal-title').textContent='Добавить перевод — '+fmtDate(ds);
   document.getElementById('ef-project').value='';
   document.getElementById('ef-episode').value='';
   document.getElementById('ef-part').value='всё';
@@ -499,22 +564,18 @@ window.openAddEntry=function(e,dateStr){
   setTimeout(()=>document.getElementById('ef-project').focus(),50);
 };
 
-window.openEditEntry=function(e,keyPath,dateStr){
-  e.stopPropagation();
-  if(!USERS[currentUser].canEdit)return;
-  const parts=keyPath.split('/');
-  const dateKey=parts[0],entryId=parts[1];
+window.openEditEntry=function(e,keyPath,ds){
+  e.stopPropagation();if(!USERS[currentUser].canEdit)return;
+  const[dateKey,entryId]=keyPath.split('/');
   const entry=(allEntries[dateKey]||{})[entryId];
   if(!entry||entry.user!==currentUser)return;
-  editingEntryKey=keyPath;
-  pendingDate=dateStr;
+  editingEntryKey=keyPath;pendingDate=ds;
   document.getElementById('entry-modal-title').textContent='Редактировать перевод';
   document.getElementById('ef-project').value=entry.project||'';
   document.getElementById('ef-episode').value=entry.episode||'';
   document.getElementById('ef-part').value=entry.part||'всё';
   document.getElementById('ef-lines').value=entry.lines||'';
   document.getElementById('entry-modal').style.display='flex';
-  setTimeout(()=>document.getElementById('ef-project').focus(),50);
 };
 
 window.closeEntryModal=function(){document.getElementById('entry-modal').style.display='none';editingEntryKey=null;pendingDate=null;};
@@ -522,121 +583,97 @@ document.getElementById('entry-modal').addEventListener('click',e=>{if(e.target=
 
 window.saveEntry=function(){
   const project=document.getElementById('ef-project').value.trim();
-  if(!project){document.getElementById('ef-project').focus();return;}
+  if(!project)return;
   const episode=document.getElementById('ef-episode').value.trim();
   const part=document.getElementById('ef-part').value;
   const lines=parseInt(document.getElementById('ef-lines').value)||0;
   const data={user:currentUser,project,episode,part,lines,ts:Date.now()};
-
   if(editingEntryKey){
-    // update
-    const parts=editingEntryKey.split('/');
-    const dateKey=parts[0],entryId=parts[1];
-    const oldEntry=(allEntries[dateKey]||{})[entryId]||{};
+    const[dk,eid]=editingEntryKey.split('/');
+    const old=(allEntries[dk]||{})[eid]||{};
     update(ref(db,`translations/${editingEntryKey}`),data);
-    logHistory('edit',pendingDate,{...data},{...oldEntry,key:editingEntryKey});
-  } else {
-    // add
-    const dateKey=pendingDate.replace(/-/g,'_');
-    const r=push(ref(db,`translations/${dateKey}`));
+    logHist('edit',pendingDate,{...data,key:editingEntryKey},{...old,key:editingEntryKey});
+  }else{
+    const dk=pendingDate.replace(/-/g,'_');
+    const r=push(ref(db,`translations/${dk}`));
     set(r,data);
-    logHistory('add',pendingDate,{...data,key:`${dateKey}/${r.key}`},{});
+    logHist('add',pendingDate,{...data,key:`${dk}/${r.key}`},{});
   }
   closeEntryModal();
 };
 
-// ── DELETE ────────────────────────────────────────────────────────────────────
-window.confirmDeleteEntry=function(e,keyPath,dateStr){
+// ── DELETE ENTRY ──────────────────────────────────────────────────────────────
+window.confirmDeleteEntry=function(e,keyPath,ds){
   e.stopPropagation();
-  const parts=keyPath.split('/');
-  const dateKey=parts[0],entryId=parts[1];
-  const entry=(allEntries[dateKey]||{})[entryId];
+  const[dk,eid]=keyPath.split('/');
+  const entry=(allEntries[dk]||{})[eid];
   if(!entry||entry.user!==currentUser)return;
-  showConfirm(
-    'Удалить запись?',
-    `«${entry.project}» — Эп.${entry.episode}, ч.${entry.part}, ${entry.lines} стр.`,
-    ()=>{
-      logHistory('delete',dateStr,{},{...entry,key:keyPath});
-      remove(ref(db,`translations/${keyPath}`));
-    }
-  );
+  showConfirm('Удалить запись?',`«${entry.project}» Эп.${entry.episode}, ч.${entry.part}, ${entry.lines} стр.`,()=>{
+    logHist('delete',ds,{},{...entry,key:keyPath});
+    remove(ref(db,`translations/${keyPath}`));
+  });
 };
 
-// ── CONFIRM MODAL ─────────────────────────────────────────────────────────────
-let _confirmOk=null;
-function showConfirm(title,text,onOk){
-  document.getElementById('confirm-title').textContent=title;
-  document.getElementById('confirm-text').textContent=text;
+// ── CONFIRM ───────────────────────────────────────────────────────────────────
+let _confOk=null;
+function showConfirm(t,txt,ok){
+  document.getElementById('confirm-title').textContent=t;
+  document.getElementById('confirm-text').textContent=txt;
   document.getElementById('confirm-modal').style.display='flex';
-  _confirmOk=onOk;
-  document.getElementById('confirm-ok').onclick=()=>{_confirmOk&&_confirmOk();closeConfirm();};
+  _confOk=ok;
+  document.getElementById('confirm-ok').onclick=()=>{_confOk&&_confOk();closeConfirm();};
 }
-window.closeConfirm=()=>{document.getElementById('confirm-modal').style.display='none';_confirmOk=null;};
+window.closeConfirm=()=>{document.getElementById('confirm-modal').style.display='none';_confOk=null;};
 document.getElementById('confirm-modal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeConfirm();});
 
 // ── HISTORY ───────────────────────────────────────────────────────────────────
-function logHistory(action,dateStr,newData,oldData){
-  const monthKey=dateStr.substring(0,7).replace('-','_');
-  const u=USERS[currentUser];
-  const desc=action==='add'?`Добавил(а) <b>${newData.project}</b> (эп.${newData.episode}, ч.${newData.part}, ${newData.lines} стр.)`
-    :action==='edit'?`Изменил(а) <b>${newData.project}</b> (эп.${newData.episode}, ч.${newData.part}, ${newData.lines} стр.)`
-    :`Удалил(а) <b>${oldData.project}</b>`;
-  push(ref(db,`tr_history/${monthKey}`),{user:currentUser,action,desc,dateStr,newData,oldData,ts:Date.now()});
+function logHist(action,ds,nd,od){
+  const mk=ds.substring(0,7).replace('-','_');
+  const desc=action==='add'?`Добавил(а) <b>${nd.project}</b> (эп.${nd.episode}, ч.${nd.part}, ${nd.lines} стр.)`
+    :action==='edit'?`Изменил(а) <b>${nd.project}</b> (эп.${nd.episode}, ч.${nd.part}, ${nd.lines} стр.)`
+    :`Удалил(а) <b>${od.project}</b>`;
+  push(ref(db,`tr_history/${mk}`),{user:currentUser,action,desc,ds,nd,od,ts:Date.now()});
 }
 
 window.renderHistory=function(){
   const sel=document.getElementById('history-month-sel');
-  // populate options
-  const now=new Date();
-  const opts=[];
-  for(let i=0;i<12;i++){
-    const d=new Date(now.getFullYear(),now.getMonth()-i,1);
-    const key=`${d.getFullYear()}_${String(d.getMonth()+1).padStart(2,'0')}`;
-    const label=MONTHS_RU[d.getMonth()]+' '+d.getFullYear();
-    opts.push(`<option value="${key}"${i===0?' selected':''}>${label}</option>`);
+  if(!sel.options.length){
+    const now=new Date();
+    let opts='';
+    for(let i=0;i<12;i++){
+      const d=new Date(now.getFullYear(),now.getMonth()-i,1);
+      const k=`${d.getFullYear()}_${p2(d.getMonth()+1)}`;
+      opts+=`<option value="${k}"${i===0?' selected':''}>${MONTHS_RU[d.getMonth()]} ${d.getFullYear()}</option>`;
+    }
+    sel.innerHTML=opts;
   }
-  if(!sel.options.length)sel.innerHTML=opts.join('');
-  const monthKey=sel.value;
-  const entries=Object.entries((allHistory[monthKey])||{}).sort((a,b)=>b[1].ts-a[1].ts);
+  const mk=sel.value;
+  const items=Object.entries(allHistory[mk]||{}).sort((a,b)=>b[1].t-a[1].t).sort((a,b)=>b[1].ts-a[1].ts);
   const list=document.getElementById('history-list');
-  if(!entries.length){list.innerHTML='<div class="empty">Нет изменений за этот месяц</div>';return;}
-  list.innerHTML=entries.map(([k,h])=>{
+  if(!items.length){list.innerHTML='<div class="empty">Нет изменений</div>';return;}
+  list.innerHTML=items.map(([k,h])=>{
     const u=USERS[h.user]||{name:h.user,color:'#888'};
     const d=new Date(h.ts);
-    const time=d.toLocaleDateString('ru',{day:'2-digit',month:'2-digit'})+' '+d.toLocaleTimeString('ru',{hour:'2-digit',minute:'2-digit'});
-    const canUndo=h.action!=='edit'||(h.user===currentUser&&USERS[currentUser].canEdit);
-    const undoBtn=canUndo&&USERS[currentUser].canEdit?`<button class="history-undo" onclick="undoHistory('${monthKey}','${k}')">↩ Отменить</button>`:'';
+    const t=d.toLocaleDateString('ru',{day:'2-digit',month:'2-digit'})+' '+d.toLocaleTimeString('ru',{hour:'2-digit',minute:'2-digit'});
+    const canUndo=USERS[currentUser]?.canEdit;
+    const ub=canUndo?`<button class="h-undo" onclick="undoHist('${mk}','${k}')">↩ Отменить</button>`:'';
     return `<div class="history-item">
-      <div class="history-dot" style="background:${u.color}"></div>
-      <div class="history-time">${time}</div>
-      <div class="history-desc"><b style="color:${u.color}">${u.name}</b>: ${h.desc}</div>
-      ${undoBtn}
+      <div class="h-dot" style="background:${u.color}"></div>
+      <div class="h-time">${t}</div>
+      <div class="h-desc"><b style="color:${u.color}">${u.name}</b>: ${h.desc}</div>
+      ${ub}
     </div>`;
   }).join('');
 };
 
-window.undoHistory=function(monthKey,hKey){
-  const h=(allHistory[monthKey]||{})[hKey];if(!h)return;
-  if(!USERS[currentUser].canEdit)return;
-  showConfirm('Откатить изменение?',`Действие будет отменено для записи «${(h.newData||h.oldData||{}).project||'—'}»`,()=>{
-    if(h.action==='add'){
-      // undo add = delete
-      if(h.newData&&h.newData.key) remove(ref(db,`translations/${h.newData.key}`));
-    } else if(h.action==='delete'){
-      // undo delete = restore
-      if(h.oldData&&h.oldData.key){
-        const parts=h.oldData.key.split('/');
-        const r={...h.oldData};delete r.key;
-        set(ref(db,`translations/${h.oldData.key}`),r);
-      }
-    } else if(h.action==='edit'){
-      // undo edit = restore old data
-      if(h.newData&&h.newData.key){
-        const r={...h.oldData};delete r.key;
-        update(ref(db,`translations/${h.newData.key}`),r);
-      }
-    }
-    remove(ref(db,`tr_history/${monthKey}/${hKey}`));
+window.undoHist=function(mk,hk){
+  const h=(allHistory[mk]||{})[hk];if(!h||!USERS[currentUser]?.canEdit)return;
+  const name=((h.nd||h.od)||{}).project||'—';
+  showConfirm('Откатить изменение?',`«${name}»`,()=>{
+    if(h.action==='add'&&h.nd?.key){remove(ref(db,`translations/${h.nd.key}`));}
+    else if(h.action==='delete'&&h.od?.key){const r={...h.od};delete r.key;set(ref(db,`translations/${h.od.key}`),r);}
+    else if(h.action==='edit'&&h.nd?.key){const r={...h.od};delete r.key;update(ref(db,`translations/${h.nd.key}`),r);}
+    remove(ref(db,`tr_history/${mk}/${hk}`));
   });
 };
 
@@ -653,89 +690,92 @@ window.renderStats=function(){
   const from=document.getElementById('stats-from').value;
   const to=document.getElementById('stats-to').value;
   if(!from||!to)return;
-
-  // gather entries in range
   const entries=[];
-  Object.entries(allEntries).forEach(([dateKey,day])=>{
-    const dateStr=dateKey.replace(/_/g,'-').replace(/(\d{4})-(\d{2})-(\d{2})/,'$1-$2-$3');
-    // dateKey is YYYY_MM_DD
-    const ds=dateKey.replace(/_/g,'-');
-    if(ds>=from&&ds<=to){
-      Object.values(day).forEach(e=>entries.push({...e,date:ds}));
-    }
+  Object.entries(allEntries).forEach(([dk,day])=>{
+    const ds=dk.replace(/_/g,'-');
+    if(ds>=from&&ds<=to)Object.values(day).forEach(e=>entries.push({...e,date:ds}));
   });
+  // project lookup
+  const projByName={};
+  Object.values(allProjects).forEach(p=>{projByName[p.name]={type:p.type};});
 
-  // totals
-  const totalLines=entries.reduce((s,e)=>s+(e.lines||0),0);
-  const totalParts=entries.filter(e=>e.part!=='всё').length+entries.filter(e=>e.part==='всё').length;
-
-  // by user
+  const tot={lines:0,parts:0,linesD:0,linesS:0,partsD:0,partsS:0};
+  const projSet=new Set();
   const byUser={};
-  USER_KEYS.forEach(k=>{byUser[k]={lines:0,parts:0,entries:0};});
+  USER_KEYS.forEach(k=>{byUser[k]={lines:0,parts:0,linesD:0,linesS:0,partsD:0,partsS:0,projects:new Set()};});
   entries.forEach(e=>{
-    if(byUser[e.user]){byUser[e.user].lines+=e.lines||0;byUser[e.user].parts++;byUser[e.user].entries++;}
+    const isD=(projByName[e.project]||{}).type!=='show';
+    const ls=e.lines||0,bu=byUser[e.user];
+    tot.lines+=ls;tot.parts++;projSet.add(e.project);
+    if(isD){tot.linesD+=ls;tot.partsD++;}else{tot.linesS+=ls;tot.partsS++;}
+    if(bu){bu.lines+=ls;bu.parts++;bu.projects.add(e.project);if(isD){bu.linesD+=ls;bu.partsD++;}else{bu.linesS+=ls;bu.partsS++;}}
   });
 
-  const content=document.getElementById('stats-content');
-  content.innerHTML=`
+  const sc=document.getElementById('stats-content');
+  sc.innerHTML=`
     <div class="stats-grid">
-      <div class="stat-card"><div class="stat-card-title">Всего строк</div><div class="stat-card-value">${totalLines.toLocaleString()}</div></div>
-      <div class="stat-card"><div class="stat-card-title">Записей</div><div class="stat-card-value">${entries.length}</div></div>
-      <div class="stat-card"><div class="stat-card-title">Переводчиков</div><div class="stat-card-value">${USER_KEYS.filter(k=>byUser[k].entries>0).length}</div></div>
+      <div class="stat-card"><div class="sc-title">Строк всего</div><div class="sc-value">${tot.lines.toLocaleString()}</div></div>
+      <div class="stat-card"><div class="sc-title">Частей всего</div><div class="sc-value">${tot.parts}</div></div>
+      <div class="stat-card"><div class="sc-title">Проектов</div><div class="sc-value">${projSet.size}</div></div>
+      <div class="stat-card"><div class="sc-title">Записей</div><div class="sc-value">${entries.length}</div></div>
     </div>
-    <div class="stats-table">
-      <div class="stats-table-header"><div>Переводчик</div><div>Строк</div><div>Записей</div></div>
+    <div class="tbl" style="margin-bottom:1rem">
+      <div class="tbl-head stats-cols">
+        <div>Переводчик</div><div>Проектов</div><div>Строк всего</div><div>Частей всего</div>
+        <div>Строк (д)</div><div>Частей (д)</div><div>Строк (ш)</div><div>Частей (ш)</div>
+        <div>Записей</div>
+      </div>
       ${USER_KEYS.sort((a,b)=>byUser[b].lines-byUser[a].lines).map(k=>{
         const u=USERS[k];const s=byUser[k];
-        return `<div class="stats-table-row">
-          <div style="display:flex;align-items:center;gap:8px"><div style="width:10px;height:10px;border-radius:50%;background:${u.color};flex-shrink:0"></div>${u.name}</div>
+        return `<div class="tbl-row stats-cols">
+          <div style="display:flex;align-items:center;gap:7px"><div style="width:9px;height:9px;border-radius:50%;background:${u.color}"></div>${u.name}</div>
+          <div>${s.projects.size}</div>
           <div style="font-weight:600">${s.lines.toLocaleString()}</div>
-          <div>${s.entries}</div>
+          <div>${s.parts}</div>
+          <div>${s.linesD.toLocaleString()}</div>
+          <div>${s.partsD}</div>
+          <div>${s.linesS.toLocaleString()}</div>
+          <div>${s.partsS}</div>
+          <div style="color:var(--text3)">${s.parts}</div>
         </div>`;
       }).join('')}
     </div>
-    ${entries.length>0?`
-    <div class="stats-table" style="margin-top:12px">
-      <div class="stats-table-header" style="grid-template-columns:1fr 120px 60px 60px 80px 80px"><div>Проект</div><div>Дата</div><div>Эп.</div><div>Часть</div><div>Строк</div><div>Автор</div></div>
+    ${entries.length?`
+    <div class="tbl">
+      <div class="tbl-head" style="grid-template-columns:1fr 90px 55px 55px 70px 100px"><div>Проект</div><div>Дата</div><div>Эп.</div><div>Часть</div><div>Строк</div><div>Автор</div></div>
       ${[...entries].sort((a,b)=>b.date.localeCompare(a.date)).map(e=>{
         const u=USERS[e.user]||{name:e.user,color:'#888'};
-        return `<div class="stats-table-row" style="grid-template-columns:1fr 120px 60px 60px 80px 80px">
-          <div style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${e.project||'—'}</div>
-          <div style="font-size:12px;color:var(--text3)">${formatDateRu(e.date)}</div>
-          <div>${e.episode||'—'}</div>
-          <div>${e.part}</div>
+        const isD=(projByName[e.project]||{}).type!=='show';
+        return `<div class="tbl-row" style="grid-template-columns:1fr 90px 55px 55px 70px 100px">
+          <div style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap"><span style="font-size:10px;padding:1px 5px;border-radius:4px;margin-right:5px;background:${isD?'rgba(91,168,245,.15)':'rgba(78,192,104,.15)'};color:${isD?'#5ba8f5':'#4ec068'}">${isD?'д':'ш'}</span>${e.project||'—'}</div>
+          <div style="font-size:12px;color:var(--text3)">${fmtDate(e.date)}</div>
+          <div>${e.episode||'—'}</div><div>${e.part}</div>
           <div style="font-weight:600">${e.lines||0}</div>
           <div style="color:${u.color};font-weight:600">${u.name}</div>
         </div>`;
       }).join('')}
-    </div>`:''}
-  `;
+    </div>`:''}`;
 };
 
 // ── SIDEBAR STATS ─────────────────────────────────────────────────────────────
 function renderSidebarStats(){
-  const monthKey=`${calYear}_${String(calMonth+1).padStart(2,'0')}`;
-  const byUser={};
-  USER_KEYS.forEach(k=>{byUser[k]={lines:0,parts:0};});
-  // gather this month's entries
-  Object.entries(allEntries).forEach(([dateKey,day])=>{
-    if(!dateKey.startsWith(monthKey)) return;
-    Object.values(day).forEach(e=>{
-      if(byUser[e.user]){byUser[e.user].lines+=e.lines||0;byUser[e.user].parts++;}
-    });
+  const mk=`${calYear}_${p2(calMonth+1)}`;
+  const bu={};USER_KEYS.forEach(k=>{bu[k]={lines:0};});
+  Object.entries(allEntries).forEach(([dk,day])=>{
+    if(!dk.startsWith(mk))return;
+    Object.values(day).forEach(e=>{if(bu[e.user])bu[e.user].lines+=e.lines||0;});
   });
   const el=document.getElementById('sidebar-stats');
-  el.innerHTML=USER_KEYS.filter(k=>byUser[k].parts>0).map(k=>{
-    const u=USERS[k];const s=byUser[k];
-    return `<div class="stat-row"><div class="stat-label"><span class="stat-dot" style="background:${u.color}"></span>${u.name}</div><div class="stat-value">${s.lines.toLocaleString()} стр.</div></div>`;
-  }).join('')||'<div class="empty" style="font-size:13px">Нет данных</div>';
+  const has=USER_KEYS.filter(k=>bu[k].lines>0);
+  el.innerHTML=has.length?has.map(k=>{
+    const u=USERS[k];
+    return `<div class="stat-row"><div class="stat-label"><span class="stat-dot" style="background:${u.color}"></span>${u.name}</div><div class="stat-value">${bu[k].lines.toLocaleString()} стр.</div></div>`;
+  }).join(''):'<div class="empty" style="font-size:13px">Нет данных</div>';
 }
 
 // ── HELPERS ───────────────────────────────────────────────────────────────────
-function formatDateRu(dateStr){
-  const d=new Date(dateStr+'T12:00:00');
-  return d.toLocaleDateString('ru',{day:'2-digit',month:'short'});
-}
+function p2(n){return String(n).padStart(2,'0');}
+function fmtDate(ds){return new Date(ds+'T12:00:00').toLocaleDateString('ru',{day:'2-digit',month:'short'});}
 </script>
 </body>
 </html>
