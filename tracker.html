@@ -511,8 +511,11 @@ function renderDayEntries(ds){
     const eb=isOwn&&canEdit?`<button class="ep-btn" onclick="openEditEntry(event,'${e.key}','${ds}')">✎</button>`:'';
     const db2=isOwn&&canEdit?`<button class="ep-btn" style="background:rgba(176,48,48,.5)" onclick="confirmDeleteEntry(event,'${e.key}','${ds}')">×</button>`:'';
     const pt=e.part==='всё'?'всё':'часть '+e.part;
+    const projType=(allProjects&&Object.values(allProjects).find(p=>p.name===e.project)||{}).type;
+    const isD=projType!=='show';
+    const typeBadge=`<span style="font-size:10px;padding:1px 4px;border-radius:3px;margin-right:3px;background:${isD?'rgba(91,168,245,.25)':'rgba(78,192,104,.25)'};color:${isD?'#5ba8f5':'#4ec068'};font-weight:600">${isD?'д':'ш'}</span>`;
     return `<div class="entry-chip" style="background:${u.color}1a;border:1px solid ${u.color}44;color:${u.color}">
-      <span class="entry-project" title="${e.project||''}">${e.project||'—'}</span>
+      <span class="entry-project" title="${e.project||''}">${typeBadge}${e.project||'—'}</span>
       <span class="entry-meta">Эпизод ${e.episode||'?'}, ${pt} · ${e.lines||0} стр.</span>
       <div class="ep-actions">${eb}${db2}</div>
     </div>`;
