@@ -712,9 +712,11 @@ window.undoHist=function(mk,hk){
 // ── STATS ─────────────────────────────────────────────────────────────────────
 function initStatsDefaults(){
   const now=new Date();
+  // Use local date to avoid UTC offset issues
+  function localDate(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
   const from=new Date(now.getFullYear(),now.getMonth(),1);
-  document.getElementById('stats-from').value=from.toISOString().split('T')[0];
-  document.getElementById('stats-to').value=now.toISOString().split('T')[0];
+  document.getElementById('stats-from').value=localDate(from);
+  document.getElementById('stats-to').value=localDate(now);
   renderStats();
 }
 
@@ -723,21 +725,29 @@ window.renderStats=function(){
   const to=document.getElementById('stats-to').value;
   if(!from||!to)return;
   const entries=[];
+  // Debug: log what keys we have
+  console.log('[Stats] allEntries keys:', Object.keys(allEntries));
+  console.log('[Stats] date range:', from, 'to', to);
   Object.entries(allEntries).forEach(([dk,day])=>{
     if(!day||typeof day!=='object')return;
     // dk format: YYYY_MM_DD → convert to YYYY-MM-DD for comparison
     const ds=dk.replace(/_/g,'-');
-    // only process if it looks like a date key (10 chars after replace)
-    if(ds.length!==10||!/^\d{4}-\d{2}-\d{2}$/.test(ds))return;
-    if(ds>=from&&ds<=to){
+    // skip if not a date-like key
+    if(!/^\d{4}-\d{1,2}-\d{1,2}$/.test(ds))return;
+    // zero-pad month and day for reliable string comparison
+    const dsParts=ds.split('-');
+    const dsPadded=dsParts[0]+'-'+dsParts[1].padStart(2,'0')+'-'+dsParts[2].padStart(2,'0');
+    if(dsPadded>=from&&dsPadded<=to){
       Object.values(day).forEach(e=>{
-        if(e&&typeof e==='object'&&e.user)entries.push({...e,date:ds});
+        if(e&&typeof e==='object'&&e.user)entries.push({...e,date:dsPadded});
       });
     }
   });
+  console.log('[Stats] matched entries:', entries.length, entries.map(e=>e.date+' '+e.project));
   // project lookup
   const projByName={};
   Object.values(allProjects).forEach(p=>{projByName[p.name]={type:p.type};});
+  console.log('[Stats] projects:', Object.keys(projByName));
 
   const tot={lines:0,parts:0,linesD:0,linesS:0,partsD:0,partsS:0};
   const projSet=new Set();
