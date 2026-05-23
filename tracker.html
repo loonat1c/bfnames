@@ -383,11 +383,27 @@ let pendingDate=null;
 let newProjType='drama';
 
 // ── FIREBASE LISTENERS ───────────────────────────────────────────────────────
+let appReady=false; // true after first translations snapshot
+
 onValue(ref(db,'translations'),snap=>{
   allEntries=snap.val()||{};
   document.getElementById('loading').style.display='none';
-  if(currentUser){renderCalendar();renderSidebarStats();}else showLogin();
+  if(!appReady){
+    appReady=true;
+    if(currentUser){
+      // restore session: show app
+      document.getElementById('login-screen').style.display='none';
+      document.getElementById('app').style.display='block';
+      renderAll();
+    } else {
+      showLogin();
+    }
+  } else {
+    // subsequent updates: just re-render calendar if user is logged in
+    if(currentUser){renderCalendar();renderSidebarStats();}
+  }
 },()=>{document.getElementById('loading').style.display='none';showLogin();});
+
 onValue(ref(db,'tr_history'),snap=>{allHistory=snap.val()||{};});
 onValue(ref(db,'tr_projects'),snap=>{
   allProjects=snap.val()||{};
@@ -708,8 +724,16 @@ window.renderStats=function(){
   if(!from||!to)return;
   const entries=[];
   Object.entries(allEntries).forEach(([dk,day])=>{
+    if(!day||typeof day!=='object')return;
+    // dk format: YYYY_MM_DD → convert to YYYY-MM-DD for comparison
     const ds=dk.replace(/_/g,'-');
-    if(ds>=from&&ds<=to)Object.values(day).forEach(e=>entries.push({...e,date:ds}));
+    // only process if it looks like a date key (10 chars after replace)
+    if(ds.length!==10||!/^\d{4}-\d{2}-\d{2}$/.test(ds))return;
+    if(ds>=from&&ds<=to){
+      Object.values(day).forEach(e=>{
+        if(e&&typeof e==='object'&&e.user)entries.push({...e,date:ds});
+      });
+    }
   });
   // project lookup
   const projByName={};
@@ -804,8 +828,8 @@ function renderSidebarStats(){
   const mk=`${calYear}_${p2(calMonth+1)}`;
   const bu={};USER_KEYS.forEach(k=>{bu[k]={lines:0};});
   Object.entries(allEntries).forEach(([dk,day])=>{
-    if(!dk.startsWith(mk))return;
-    Object.values(day).forEach(e=>{if(bu[e.user])bu[e.user].lines+=e.lines||0;});
+    if(!dk.startsWith(mk)||!day||typeof day!=='object')return;
+    Object.values(day).forEach(e=>{if(e&&e.user&&bu[e.user])bu[e.user].lines+=e.lines||0;});
   });
   const el=document.getElementById('sidebar-stats');
   const has=USER_KEYS.filter(k=>bu[k].lines>0);
