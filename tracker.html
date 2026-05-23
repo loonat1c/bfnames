@@ -165,7 +165,8 @@ select option{background:var(--bg);color:var(--text)}
 .tbl-head{background:var(--surface2);color:var(--text3);font-weight:600;letter-spacing:.05em;text-transform:uppercase;border-radius:var(--radius-lg) var(--radius-lg) 0 0}
 .tbl-row{border-top:1px solid var(--border);color:var(--text2)}
 .tbl-row:hover{background:var(--surface2)}
-.stats-cols{grid-template-columns:140px 70px 80px 70px 80px 70px 80px 70px 80px}
+.stats-cols{grid-template-columns:150px repeat(8,minmax(60px,1fr))}
+.stats-cols>div:not(:first-child){text-align:right}
 
 /* HISTORY */
 .history-item{display:flex;gap:12px;padding:11px 0;border-bottom:1px solid var(--border);align-items:flex-start}
@@ -444,7 +445,7 @@ const MONTHS_RU=['Январь','Февраль','Март','Апрель','Ма
 const DAYS_RU=['Пн','Вт','Ср','Чт','Пт','Сб','Вс'];
 
 function renderCalendar(){
-  document.getElementById('cal-title').textContent=MONTHS_RU[calMonth]+' '+calYear;
+  document.getElementById('cal-title').innerHTML='<b>'+MONTHS_RU[calMonth]+'</b> <b>'+calYear+'</b>';
   const first=new Date(calYear,calMonth,1);
   const startDow=(first.getDay()+6)%7;
   const daysInMonth=new Date(calYear,calMonth+1,0).getDate();
@@ -478,10 +479,10 @@ function renderDayEntries(ds){
     const u=USERS[e.user]||{color:'#888'};const isOwn=e.user===currentUser;
     const eb=isOwn&&canEdit?`<button class="ep-btn" onclick="openEditEntry(event,'${e.key}','${ds}')">✎</button>`:'';
     const db2=isOwn&&canEdit?`<button class="ep-btn" style="background:rgba(176,48,48,.5)" onclick="confirmDeleteEntry(event,'${e.key}','${ds}')">×</button>`:'';
-    const pt=e.part==='всё'?'всё':'ч.'+e.part;
+    const pt=e.part==='всё'?'всё':'часть '+e.part;
     return `<div class="entry-chip" style="background:${u.color}1a;border:1px solid ${u.color}44;color:${u.color}">
       <span class="entry-project" title="${e.project||''}">${e.project||'—'}</span>
-      <span class="entry-meta">Эп.${e.episode||'?'} ${pt} · ${e.lines||0} стр.</span>
+      <span class="entry-meta">Эпизод ${e.episode||'?'}, ${pt} · ${e.lines||0} стр.</span>
       <div class="ep-actions">${eb}${db2}</div>
     </div>`;
   }).join('');
@@ -518,7 +519,7 @@ function renderProjects(){
   function mkItem([k,p]){
     const typeLabel=p.type==='show'?'Шоу':'Дорама';
     const typeCls=p.type==='show'?'type-show':'type-drama';
-    const canEdit=USERS[currentUser]?.canEdit;
+    const canEdit=USERS[currentUser]?.canEdit||(currentUser==='kristina');
     const doneBtn=canEdit?`<button class="proj-btn" onclick="toggleProjectStatus('${k}')" title="${p.status==='active'?'Завершить':'Вернуть'}">${p.status==='active'?'✓':'↩'}</button>`:'';
     const delBtn=canEdit?`<button class="proj-btn" onclick="confirmDeleteProject('${k}')" title="Удалить" style="color:#c05050">×</button>`:'';
     return `<div class="project-item${p.status!=='active'?' done':''}">
@@ -706,10 +707,12 @@ window.renderStats=function(){
   entries.forEach(e=>{
     const isD=(projByName[e.project]||{}).type!=='show';
     const ls=e.lines||0,bu=byUser[e.user];
-    tot.lines+=ls;tot.parts++;projSet.add(e.project);
+    const isBig=!isD&&(ls>500||e.part==='всё');
+    tot.lines+=ls;tot.parts+=1;projSet.add(e.project);
     if(isD){tot.linesD+=ls;tot.partsD++;}else{tot.linesS+=ls;tot.partsS++;}
-    if(bu){bu.lines+=ls;bu.parts++;bu.projects.add(e.project);if(isD){bu.linesD+=ls;bu.partsD++;}else{bu.linesS+=ls;bu.partsS++;}}
+    if(bu){bu.lines+=ls;bu.parts++;bu.projects.add(e.project);if(isD){bu.linesD+=ls;bu.partsD++;}else{bu.linesS+=ls;bu.partsS++;if(isBig){if(!bu.bigShow)bu.bigShow=[];bu.bigShow.push(e);}}}
   });
+  window._bigShowByUser=Object.fromEntries(USER_KEYS.map(k=>[k,(byUser[k]?.bigShow||[])]));
 
   const sc=document.getElementById('stats-content');
   sc.innerHTML=`
@@ -725,36 +728,60 @@ window.renderStats=function(){
         <div>Строк (д)</div><div>Частей (д)</div><div>Строк (ш)</div><div>Частей (ш)</div>
         <div>Записей</div>
       </div>
-      ${USER_KEYS.sort((a,b)=>byUser[b].lines-byUser[a].lines).map(k=>{
+      ${USER_KEYS.filter(k=>k!=='kristina').sort((a,b)=>byUser[b].lines-byUser[a].lines).map(k=>{
         const u=USERS[k];const s=byUser[k];
         return `<div class="tbl-row stats-cols">
-          <div style="display:flex;align-items:center;gap:7px"><div style="width:9px;height:9px;border-radius:50%;background:${u.color}"></div>${u.name}</div>
+          <div style="display:flex;align-items:center;gap:7px;text-align:left"><div style="width:9px;height:9px;border-radius:50%;background:${u.color};flex-shrink:0"></div>${u.name}</div>
           <div>${s.projects.size}</div>
           <div style="font-weight:600">${s.lines.toLocaleString()}</div>
           <div>${s.parts}</div>
           <div>${s.linesD.toLocaleString()}</div>
           <div>${s.partsD}</div>
           <div>${s.linesS.toLocaleString()}</div>
-          <div>${s.partsS}</div>
-          <div style="color:var(--text3)">${s.parts}</div>
+          <div style='display:flex;align-items:center;justify-content:flex-end;gap:4px'>${s.partsS}${s.bigShow&&s.bigShow.length>0?`<span title='Есть части с большим количеством строк!' onclick='showBigShowPopup(window._bigShowByUser["${k}"])' style='cursor:pointer;color:#f0a030;font-size:14px;flex-shrink:0'>⚠️</span>`:''}</div>
+          <div>${s.parts}</div>
         </div>`;
       }).join('')}
     </div>
     ${entries.length?`
     <div class="tbl">
-      <div class="tbl-head" style="grid-template-columns:1fr 90px 55px 55px 70px 100px"><div>Проект</div><div>Дата</div><div>Эп.</div><div>Часть</div><div>Строк</div><div>Автор</div></div>
+      <div class="tbl-head" style="grid-template-columns:1fr 90px 55px 55px 70px 110px"><div>Проект</div><div style='text-align:right'>Дата</div><div style='text-align:right'>Эп.</div><div style='text-align:right'>Часть</div><div style='text-align:right'>Строк</div><div style='text-align:right'>Автор</div></div>
       ${[...entries].sort((a,b)=>b.date.localeCompare(a.date)).map(e=>{
         const u=USERS[e.user]||{name:e.user,color:'#888'};
         const isD=(projByName[e.project]||{}).type!=='show';
-        return `<div class="tbl-row" style="grid-template-columns:1fr 90px 55px 55px 70px 100px">
+        return `<div class="tbl-row" style="grid-template-columns:1fr 90px 55px 55px 70px 110px">
           <div style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap"><span style="font-size:10px;padding:1px 5px;border-radius:4px;margin-right:5px;background:${isD?'rgba(91,168,245,.15)':'rgba(78,192,104,.15)'};color:${isD?'#5ba8f5':'#4ec068'}">${isD?'д':'ш'}</span>${e.project||'—'}</div>
-          <div style="font-size:12px;color:var(--text3)">${fmtDate(e.date)}</div>
-          <div>${e.episode||'—'}</div><div>${e.part}</div>
-          <div style="font-weight:600">${e.lines||0}</div>
-          <div style="color:${u.color};font-weight:600">${u.name}</div>
+          <div style="font-size:12px;color:var(--text3);text-align:right">${fmtDate(e.date)}</div>
+          <div style='text-align:right'>${e.episode||'—'}</div><div style='text-align:right'>${e.part}</div>
+          <div style="font-weight:600;text-align:right">${e.lines||0}</div>
+          <div style="color:${u.color};font-weight:600;text-align:right">${u.name}</div>
         </div>`;
       }).join('')}
     </div>`:''}`;
+};
+
+// ── BIG SHOW POPUP ────────────────────────────────────────────────────────────
+window.showBigShowPopup=function(entries){
+  if(!entries||!entries.length){alert('Нет записей с большим объёмом');return;}
+  let rows='';
+  entries.forEach(e=>{
+    const u=USERS[e.user]||{name:e.user,color:'#888'};
+    rows+='<div class="tbl-row" style="grid-template-columns:1fr 90px 55px 55px 70px 110px">'
+      +'<div style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+( e.project||'—')+'</div>'
+      +'<div style="font-size:12px;color:var(--text3);text-align:right">'+fmtDate(e.date)+'</div>'
+      +'<div style="text-align:right">'+(e.episode||'—')+'</div>'
+      +'<div style="text-align:right">'+e.part+'</div>'
+      +'<div style="font-weight:600;text-align:right">'+(e.lines||0)+'</div>'
+      +'<div style="color:'+u.color+';font-weight:600;text-align:right">'+u.name+'</div>'
+      +'</div>';
+  });
+  document.getElementById('bigshow-list').innerHTML=
+    '<div class="tbl" style="margin:0">'
+    +'<div class="tbl-head" style="grid-template-columns:1fr 90px 55px 55px 70px 110px;font-size:12px">'
+    +'<div>Проект</div><div style="text-align:right">Дата</div><div style="text-align:right">Эп.</div>'
+    +'<div style="text-align:right">Часть</div><div style="text-align:right">Строк</div><div style="text-align:right">Автор</div></div>'
+    +rows+'</div>';
+  document.getElementById('bigshow-modal').style.display='flex';
 };
 
 // ── SIDEBAR STATS ─────────────────────────────────────────────────────────────
@@ -777,5 +804,14 @@ function renderSidebarStats(){
 function p2(n){return String(n).padStart(2,'0');}
 function fmtDate(ds){return new Date(ds+'T12:00:00').toLocaleDateString('ru',{day:'2-digit',month:'short'});}
 </script>
+<!-- BIG SHOW PARTS POPUP -->
+<div id="bigshow-modal" style="display:none" class="modal-overlay">
+  <div class="modal" style="max-width:560px">
+    <div class="modal-title">⚠️ Части шоу с большим объёмом</div>
+    <div style="font-size:14px;color:var(--text3);margin-bottom:14px">Записи, где часть шоу содержит более 500 строк или выбрано «всё»:</div>
+    <div id="bigshow-list"></div>
+    <div class="modal-btns"><button class="btn btn-ghost" onclick="document.getElementById('bigshow-modal').style.display='none'">Закрыть</button></div>
+  </div>
+</div>
 </body>
 </html>
