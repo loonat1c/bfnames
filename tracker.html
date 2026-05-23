@@ -88,7 +88,7 @@ header{border-bottom:1px solid var(--border);padding:0 1.5rem;display:flex;align
 .nav-item{display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:10px;cursor:pointer;font-size:14px;color:var(--text2);transition:all .15s;border:none;background:transparent;font-family:'DM Sans',sans-serif;width:100%;text-align:left;margin-bottom:2px}
 .nav-item:hover{background:var(--surface);color:var(--text)}
 .nav-item.active{background:var(--surface2);color:var(--accent2)}
-.nav-icon{font-size:15px;flex-shrink:0}
+.nav-icon{font-size:15px;flex-shrink:0;width:22px;text-align:center;display:inline-block}
 .stat-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--border);font-size:13px}
 .stat-row:last-child{border-bottom:none}
 .stat-label{color:var(--text3);display:flex;align-items:center;gap:5px}
@@ -357,7 +357,22 @@ const USERS={
 };
 const USER_KEYS=Object.keys(USERS);
 
-let currentUser=sessionStorage.getItem('tr_user')||null;
+// Auth with 1-hour expiry via localStorage
+function getStoredUser(){
+  try{
+    const raw=localStorage.getItem('tr_auth');
+    if(!raw)return null;
+    const {user,exp}=JSON.parse(raw);
+    if(Date.now()>exp){localStorage.removeItem('tr_auth');return null;}
+    return user;
+  }catch(e){return null;}
+}
+function storeUser(k){
+  const exp=Date.now()+60*60*1000; // 1 hour
+  localStorage.setItem('tr_auth',JSON.stringify({user:k,exp}));
+}
+function clearStoredUser(){localStorage.removeItem('tr_auth');}
+let currentUser=getStoredUser();
 let calYear=new Date().getFullYear();
 let calMonth=new Date().getMonth();
 let allEntries={};
@@ -412,8 +427,8 @@ function showLogin(){
     </div>`;
   }).join('');
 }
-window.login=function(k){currentUser=k;sessionStorage.setItem('tr_user',k);document.getElementById('login-screen').style.display='none';document.getElementById('app').style.display='block';renderAll();};
-window.switchUser=function(){currentUser=null;sessionStorage.removeItem('tr_user');showLogin();};
+window.login=function(k){currentUser=k;storeUser(k);document.getElementById('login-screen').style.display='none';document.getElementById('app').style.display='block';renderAll();};
+window.switchUser=function(){currentUser=null;clearStoredUser();showLogin();};
 
 // ── RENDER ALL ────────────────────────────────────────────────────────────────
 function renderAll(){
@@ -445,7 +460,7 @@ const MONTHS_RU=['Январь','Февраль','Март','Апрель','Ма
 const DAYS_RU=['Пн','Вт','Ср','Чт','Пт','Сб','Вс'];
 
 function renderCalendar(){
-  document.getElementById('cal-title').innerHTML='<b>'+MONTHS_RU[calMonth]+'</b> <b>'+calYear+'</b>';
+  document.getElementById('cal-title').textContent=MONTHS_RU[calMonth]+' '+calYear;
   const first=new Date(calYear,calMonth,1);
   const startDow=(first.getDay()+6)%7;
   const daysInMonth=new Date(calYear,calMonth+1,0).getDate();
