@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Трекер переводов — Baddest Females</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 /* ── PALETTE VARIABLES ─────────────────────────────────────────────── */
 :root{
@@ -175,7 +175,7 @@ select option{background:var(--bg);color:var(--text)}
 .tbl-head{background:var(--surface2);color:var(--text3);font-weight:600;letter-spacing:.05em;text-transform:uppercase;border-radius:var(--radius-lg) var(--radius-lg) 0 0}
 .tbl-row{border-top:1px solid var(--border);color:var(--text2)}
 .tbl-row:hover{background:var(--surface2)}
-.stats-cols{grid-template-columns:150px repeat(8,minmax(60px,1fr))}
+.stats-cols{grid-template-columns:140px repeat(8,minmax(55px,1fr));min-width:700px}
 .stats-cols>div:not(:first-child){text-align:right}
 
 /* HISTORY */
@@ -300,13 +300,21 @@ select option{background:var(--bg);color:var(--text)}
       <!-- STATS -->
       <div id="page-stats" style="display:none">
         <div class="page-title">Статистика</div>
-        <div style="display:flex;flex-wrap:wrap;align-items:flex-start;gap:12px;margin-bottom:1.5rem">
-          <div class="date-range" style="margin:0">
+        <div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:1.25rem">
           <span style="font-size:14px;color:var(--text3)">С</span>
-          <input type="date" id="stats-from">
+          <input type="date" id="stats-from" style="padding:8px 12px;font-size:14px;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--radius);color:var(--text);outline:none;font-family:'DM Sans',sans-serif">
           <span style="font-size:14px;color:var(--text3)">По</span>
-          <input type="date" id="stats-to">
-          <button class="btn btn-sm" onclick="renderStats()">Показать</button>
+          <input type="date" id="stats-to" style="padding:8px 12px;font-size:14px;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--radius);color:var(--text);outline:none;font-family:'DM Sans',sans-serif">
+          <button class="btn" onclick="renderStats()" style="padding:8px 18px">Показать</button>
+          <!-- User filter -->
+          <div style="position:relative" id="stat-usr-wrap">
+            <button id="stat-usr-btn" onclick="toggleStatUserDD()" style="display:flex;align-items:center;gap:6px;padding:8px 14px;border:1px solid var(--border2);border-radius:var(--radius);background:var(--surface);color:var(--text2);font-family:'DM Sans',sans-serif;font-size:14px;cursor:pointer">
+              <span id="stat-usr-label">Все переводчики</span> <span style="font-size:10px">▾</span>
+            </button>
+            <div id="stat-usr-dd" style="display:none;position:absolute;top:calc(100% + 6px);left:0;background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius);padding:8px;z-index:200;min-width:190px;box-shadow:0 4px 20px rgba(0,0,0,.35)">
+              <div id="stat-usr-items"></div>
+            </div>
+          </div>
         </div>
         <div id="stats-content"></div>
       </div>
@@ -980,7 +988,7 @@ window.renderStats=function(){
       <div class="stat-card"><div class="sc-title">Проектов</div><div class="sc-value">${projSet.size}</div></div>
       <div class="stat-card"><div class="sc-title">Записей</div><div class="sc-value">${entries.length}</div></div>
     </div>
-    <div class="tbl" style="margin-bottom:1rem">
+    <div style="overflow-x:auto;margin-bottom:1rem"><div class="tbl">
       <div class="tbl-head stats-cols">
         <div>Переводчик</div><div>Проектов</div><div>Строк всего</div><div>Частей всего</div>
         <div>Строк (д)</div><div>Частей (д)</div><div>Строк (ш)</div><div>Частей (ш)</div>
