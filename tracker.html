@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Трекер переводов — Baddest Females</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600&display=swap" rel="stylesheet">
 <style>
 /* ── PALETTE VARIABLES ─────────────────────────────────────────────── */
 :root{
@@ -31,12 +31,12 @@ body.palette-copper{--bg:#110d08;--surface:#1c1410;--surface2:#281e16;--border:r
 body.palette-copper.light{--bg:#faf4ec;--surface:#fff;--surface2:#f0e4d0;--border:rgba(140,70,20,.10);--border2:rgba(140,70,20,.22);--text:#200c00;--text2:#400c00;--text3:#805828;--accent:#a04808;--accent2:#702800;--btn-text:#fff8f0}
 
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
 
 /* HEADER */
 header{border-bottom:1px solid var(--border);padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;height:64px;position:sticky;top:0;background:var(--bg);z-index:100;gap:12px}
-.logo{font-family:'Playfair Display',serif;font-size:20px;color:var(--accent);display:flex;align-items:center;gap:12px}
-.back-btn{font-size:13px;padding:6px 12px;border:1px solid var(--border2);border-radius:8px;background:transparent;color:var(--text2);cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s;text-decoration:none;display:inline-flex;align-items:center;gap:5px}
+.logo{font-family:'DM Sans',sans-serif;font-size:20px;color:var(--accent);display:flex;align-items:center;gap:12px}
+.back-btn{font-size:13px;padding:6px 12px;border:1px solid var(--border2);border-radius:8px;background:transparent;color:var(--text2);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s;text-decoration:none;display:inline-flex;align-items:center;gap:5px}
 .back-btn:hover{border-color:var(--accent);color:var(--text)}
 .header-right{display:flex;align-items:center;gap:10px}
 .toggle-switch{position:relative;width:38px;height:22px;cursor:pointer;flex-shrink:0}
@@ -49,7 +49,7 @@ header{border-bottom:1px solid var(--border);padding:0 1.5rem;display:flex;align
 .theme-toggle{display:flex;align-items:center;gap:6px}
 /* palette picker */
 .palette-wrap{position:relative}
-.palette-btn{display:flex;align-items:center;gap:6px;padding:5px 11px;border:1px solid var(--border2);border-radius:20px;background:transparent;color:var(--text2);font-size:13px;cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s}
+.palette-btn{display:flex;align-items:center;gap:6px;padding:5px 11px;border:1px solid var(--border2);border-radius:20px;background:transparent;color:var(--text2);font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s}
 .palette-btn:hover{border-color:var(--accent);color:var(--text)}
 .pal-swatch{width:12px;height:12px;border-radius:50%;flex-shrink:0}
 .palette-dropdown{display:none;position:absolute;top:calc(100% + 8px);right:0;background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius-lg);padding:12px;z-index:300;min-width:190px;box-shadow:0 8px 32px rgba(0,0,0,.4)}
@@ -63,7 +63,7 @@ header{border-bottom:1px solid var(--border);padding:0 1.5rem;display:flex;align
 
 /* LOGIN SCREEN */
 #login-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:calc(100vh - 64px);gap:24px;padding:2rem}
-.login-title{font-family:'Playfair Display',serif;font-size:32px;color:var(--text);text-align:center}
+.login-title{font-family:'DM Sans',sans-serif;font-size:32px;color:var(--text);text-align:center}
 .login-sub{font-size:16px;color:var(--text3);text-align:center}
 .login-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;max-width:440px;width:100%}
 .login-card{padding:22px;border:2px solid var(--border2);border-radius:var(--radius-lg);cursor:pointer;text-align:center;transition:all .2s;background:var(--surface)}
@@ -83,9 +83,9 @@ header{border-bottom:1px solid var(--border);padding:0 1.5rem;display:flex;align
 .user-dot{width:11px;height:11px;border-radius:50%;flex-shrink:0}
 .user-name{font-size:14px;font-weight:600;color:var(--text)}
 .user-sub{font-size:12px;color:var(--text3)}
-.switch-btn{font-size:13px;padding:6px 12px;border:1px solid var(--border2);border-radius:8px;background:transparent;color:var(--text3);cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s;width:100%}
+.switch-btn{font-size:13px;padding:6px 12px;border:1px solid var(--border2);border-radius:8px;background:transparent;color:var(--text3);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s;width:100%}
 .switch-btn:hover{border-color:var(--accent);color:var(--text)}
-.nav-item{display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:10px;cursor:pointer;font-size:14px;color:var(--text2);transition:all .15s;border:none;background:transparent;font-family:'Inter',sans-serif;width:100%;text-align:left;margin-bottom:2px}
+.nav-item{display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:10px;cursor:pointer;font-size:14px;color:var(--text2);transition:all .15s;border:none;background:transparent;font-family:'DM Sans',sans-serif;width:100%;text-align:left;margin-bottom:2px}
 .nav-item:hover{background:var(--surface);color:var(--text)}
 .nav-item.active{background:var(--surface2);color:var(--accent2)}
 .nav-icon{font-size:15px;flex-shrink:0;width:22px;text-align:center;display:inline-block}
@@ -97,15 +97,15 @@ header{border-bottom:1px solid var(--border);padding:0 1.5rem;display:flex;align
 
 /* MAIN CONTENT */
 .main-content{flex:1;overflow-y:auto;padding:1.5rem 2rem;min-width:0}
-.page-title{font-family:'Playfair Display',serif;font-size:26px;color:var(--text);margin-bottom:1.25rem}
+.page-title{font-family:'DM Sans',sans-serif;font-size:26px;color:var(--text);margin-bottom:1.25rem}
 
 /* CALENDAR */
 .cal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;flex-wrap:wrap;gap:10px}
 .cal-nav{display:flex;align-items:center;gap:10px}
-.cal-title{font-family:'Playfair Display',serif;font-size:26px;color:var(--text)}
+.cal-title{font-family:'DM Sans',sans-serif;font-size:26px;color:var(--text)}
 .cal-btn{width:34px;height:34px;border-radius:50%;border:1px solid var(--border2);background:transparent;color:var(--text2);cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;transition:all .15s}
 .cal-btn:hover{border-color:var(--accent);color:var(--accent)}
-.cal-today-btn{padding:7px 15px;border:1px solid var(--border2);border-radius:8px;background:transparent;color:var(--text2);cursor:pointer;font-family:'Inter',sans-serif;font-size:14px;transition:all .15s}
+.cal-today-btn{padding:7px 15px;border:1px solid var(--border2);border-radius:8px;background:transparent;color:var(--text2);cursor:pointer;font-family:'DM Sans',sans-serif;font-size:14px;transition:all .15s}
 .cal-today-btn:hover{border-color:var(--accent);color:var(--text)}
 /* view toggle */
 .view-toggle{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text3)}
@@ -134,19 +134,19 @@ header{border-bottom:1px solid var(--border);padding:0 1.5rem;display:flex;align
 .entry-chip:hover{filter:brightness(1.15)}
 .ep-actions{display:none;position:absolute;top:3px;right:3px;gap:2px}
 .entry-chip:hover .ep-actions{display:flex}
-.ep-btn{border:none;background:rgba(0,0,0,.35);color:#fff;cursor:pointer;font-size:11px;padding:2px 5px;border-radius:4px;line-height:1.4;transition:background .12s;font-family:'Inter',sans-serif}
+.ep-btn{border:none;background:rgba(0,0,0,.35);color:#fff;cursor:pointer;font-size:11px;padding:2px 5px;border-radius:4px;line-height:1.4;transition:background .12s;font-family:'DM Sans',sans-serif}
 .ep-btn:hover{background:rgba(0,0,0,.55)}
 .entry-project{font-weight:600;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%;padding-right:42px;font-size:13px}
 .entry-meta{font-size:12px;opacity:.85;display:block;padding-right:46px}
 
 /* FORMS & BUTTONS */
-.btn{padding:10px 20px;font-size:15px;border-radius:var(--radius);background:var(--accent);color:var(--btn-text);border:none;cursor:pointer;font-weight:600;font-family:'Inter',sans-serif;transition:opacity .15s;white-space:nowrap}
+.btn{padding:10px 20px;font-size:15px;border-radius:var(--radius);background:var(--accent);color:var(--btn-text);border:none;cursor:pointer;font-weight:600;font-family:'DM Sans',sans-serif;transition:opacity .15s;white-space:nowrap}
 .btn:hover{opacity:.85}
 .btn-ghost{background:transparent;color:var(--text2);border:1px solid var(--border2);font-weight:400}
 .btn-ghost:hover{background:var(--surface2);opacity:1}
 .btn-danger{background:#b03030;color:#fff;border:none}
 .btn-sm{padding:7px 13px;font-size:13px;border-radius:8px}
-input,select{padding:10px 13px;font-size:15px;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--radius);color:var(--text);outline:none;font-family:'Inter',sans-serif;transition:border-color .15s}
+input,select{padding:10px 13px;font-size:15px;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--radius);color:var(--text);outline:none;font-family:'DM Sans',sans-serif;transition:border-color .15s}
 input:focus,select:focus{border-color:var(--accent)}
 input::placeholder{color:var(--text3)}
 select option{background:var(--bg);color:var(--text)}
@@ -154,13 +154,13 @@ select option{background:var(--bg);color:var(--text)}
 /* MODAL */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:500;display:flex;align-items:center;justify-content:center;padding:1rem}
 .modal{background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius-lg);padding:1.75rem;max-width:480px;width:100%;max-height:90vh;overflow-y:auto}
-.modal-title{font-family:'Playfair Display',serif;font-size:20px;color:var(--text);margin-bottom:16px}
+.modal-title{font-family:'DM Sans',sans-serif;font-size:20px;color:var(--text);margin-bottom:16px}
 .field{margin-bottom:14px}
 .field label{display:block;font-size:13px;color:var(--text3);margin-bottom:5px}
 .field input,.field select{width:100%}
 .modal-btns{display:flex;gap:10px;justify-content:flex-end;margin-top:18px}
 .seg-wrap{display:flex;border:1px solid var(--border2);border-radius:10px;overflow:hidden}
-.seg-opt{padding:9px 16px;font-size:14px;border:none;background:transparent;color:var(--text3);cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s;white-space:nowrap}
+.seg-opt{padding:9px 16px;font-size:14px;border:none;background:transparent;color:var(--text3);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s;white-space:nowrap}
 .seg-opt.active{background:var(--accent);color:var(--btn-text);font-weight:600}
 
 /* STATS */
@@ -168,7 +168,7 @@ select option{background:var(--bg);color:var(--text)}
 .stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin-bottom:1.25rem}
 .stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.1rem}
 .sc-title{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px}
-.sc-value{font-family:'Playfair Display',serif;font-size:28px;color:var(--text)}
+.sc-value{font-family:'DM Sans',sans-serif;font-size:28px;color:var(--text)}
 .sc-sub{font-size:12px;color:var(--text3);margin-top:3px}
 .tbl{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);overflow-x:auto;margin-bottom:1rem}
 .tbl-head,.tbl-row{display:grid;align-items:center;padding:9px 14px;font-size:13px;gap:0}
@@ -185,7 +185,7 @@ select option{background:var(--bg);color:var(--text)}
 .h-time{font-size:12px;color:var(--text3);white-space:nowrap;min-width:95px;padding-top:1px}
 .h-desc{flex:1;font-size:14px;color:var(--text2);line-height:1.5}
 .h-desc b{font-weight:500;color:var(--text)}
-.h-undo{font-size:13px;padding:5px 12px;border-radius:8px;background:transparent;border:1px solid var(--border2);color:var(--text3);cursor:pointer;font-family:'Inter',sans-serif;white-space:nowrap;flex-shrink:0;transition:all .15s}
+.h-undo{font-size:13px;padding:5px 12px;border-radius:8px;background:transparent;border:1px solid var(--border2);color:var(--text3);cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;flex-shrink:0;transition:all .15s}
 .h-undo:hover{border-color:var(--accent);color:var(--accent)}
 
 /* PROJECTS PAGE */
@@ -197,12 +197,12 @@ select option{background:var(--bg);color:var(--text)}
 .type-drama{background:rgba(91,168,245,.15);color:#5ba8f5}
 .type-show{background:rgba(78,192,104,.15);color:#4ec068}
 .project-status{font-size:12px;color:var(--text3);flex-shrink:0}
-.proj-btn{border:none;background:transparent;cursor:pointer;font-size:14px;padding:4px 6px;border-radius:6px;color:var(--text3);transition:all .15s;font-family:'Inter',sans-serif}
+.proj-btn{border:none;background:transparent;cursor:pointer;font-size:14px;padding:4px 6px;border-radius:6px;color:var(--text3);transition:all .15s;font-family:'DM Sans',sans-serif}
 .proj-btn:hover{background:var(--surface2);color:var(--text)}
 .add-project-bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:1rem}
 
 .empty{font-size:15px;color:var(--text3);padding:6px 2px}
-#loading{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:999;font-family:'Playfair Display',serif;font-size:15px;color:var(--text3)}
+#loading{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:999;font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text3)}
 
 @media(max-width:860px){.sidebar{width:210px}.main-content{padding:1rem 1.25rem}}
 @media(max-width:700px){.app-layout{flex-direction:column}.sidebar{width:100%;height:auto;border-right:none;border-bottom:1px solid var(--border)}.cal-day{min-height:70px}.main-content{padding:1rem}}
@@ -282,7 +282,8 @@ select option{background:var(--bg);color:var(--text)}
           <span>Проекты</span>
           <div style="display:flex;border:1px solid var(--border2);border-radius:8px;overflow:hidden">
             <button class="seg-opt active" id="psort-alpha" onclick="setProjSort('alpha')" style="font-size:13px;padding:6px 12px">По алфавиту</button>
-            <button class="seg-opt" id="psort-new" onclick="setProjSort('new')" style="font-size:13px;padding:6px 12px">Сперва новые</button>
+            <button class="seg-opt" id="psort-new" onclick="setProjSort('new')" style="font-size:13px;padding:6px 12px">Новые</button>
+            <button class="seg-opt" id="psort-type" onclick="setProjSort('type')" style="font-size:13px;padding:6px 12px">По типу</button>
           </div>
         </div>
         <div class="add-project-bar">
@@ -299,7 +300,8 @@ select option{background:var(--bg);color:var(--text)}
       <!-- STATS -->
       <div id="page-stats" style="display:none">
         <div class="page-title">Статистика</div>
-        <div class="date-range">
+        <div style="display:flex;flex-wrap:wrap;align-items:flex-start;gap:12px;margin-bottom:1.5rem">
+          <div class="date-range" style="margin:0">
           <span style="font-size:14px;color:var(--text3)">С</span>
           <input type="date" id="stats-from">
           <span style="font-size:14px;color:var(--text3)">По</span>
@@ -329,11 +331,11 @@ select option{background:var(--bg);color:var(--text)}
   <div class="modal">
     <div class="modal-title" id="entry-modal-title">Добавить перевод</div>
     <div class="field"><label>Название проекта</label>
-      <select id="ef-project" style="width:100%;font-size:14px;font-family:'Inter',sans-serif"><option value="">— выбрать проект —</option></select>
+      <select id="ef-project" style="width:100%;font-size:14px;font-family:'DM Sans',sans-serif"><option value="">— выбрать проект —</option></select>
     </div>
     <div class="field"><label>Номер эпизода</label><input id="ef-episode" type="number" min="1" placeholder="например, 5" style="width:100%"></div>
     <div class="field"><label>Номер части</label>
-      <select id="ef-part" style="width:100%;font-size:14px;font-family:'Inter',sans-serif">
+      <select id="ef-part" style="width:100%;font-size:14px;font-family:'DM Sans',sans-serif">
         <option value="всё">всё</option>
         <option value="1">1</option><option value="2">2</option><option value="3">3</option>
         <option value="4">4</option><option value="5">5</option><option value="6">6</option>
@@ -479,8 +481,11 @@ window.switchUser=function(){currentUser=null;clearStoredUser();showLogin();};
 
 // ── RENDER ALL ────────────────────────────────────────────────────────────────
 window.setViewAll=function(val){
-  // val: true='all', false='mine', or a user key for Kristina's filter
-  viewAll=val;
+  // checkbox: checked=true→show all, unchecked→show mine
+  // For non-bool: user key string (Kristina's filter) or 'all'
+  if(val===true)viewAll=true;       // checkbox checked = all
+  else if(val===false)viewAll=false; // checkbox unchecked = mine
+  else viewAll=val;                  // string = user key or 'all'
   renderCalendar();
 };
 
@@ -490,19 +495,20 @@ function renderViewToggle(){
   if(currentUser==='kristina'){
     // dropdown for kristina
     const opts='<option value="all">Все переводчики</option>'+
-      USER_KEYS.map(k=>`<option value="${k}">${USERS[k].name}</option>`).join('');
-    wrap.innerHTML=`<select onchange="setViewAll(this.value)" style="font-size:13px;padding:5px 10px;background:var(--surface2);border:1px solid var(--border2);border-radius:8px;color:var(--text);outline:none;font-family:'Inter',sans-serif">${opts}</select>`;
+      USER_KEYS.filter(k=>k!=='kristina').map(k=>`<option value="${k}">${USERS[k].name}</option>`).join('');
+    wrap.innerHTML=`<select onchange="setViewAll(this.value)" style="font-size:13px;padding:5px 10px;background:var(--surface2);border:1px solid var(--border2);border-radius:8px;color:var(--text);outline:none;font-family:'DM Sans',sans-serif">${opts}</select>`;
     // default for kristina = all
     viewAll='all';
   } else {
-    // toggle for regular users
+    // toggle for regular users: viewAll=false → show mine (👤 active), viewAll=true → show all (👥 active)
+    const isMine=viewAll===false;
     wrap.innerHTML=`
-      <span class="view-toggle-icon${viewAll===true?'':' dim'}" title="Только мои">👤</span>
+      <span class="view-toggle-icon${isMine?'':' dim'}" title="Только мои">👤</span>
       <label class="vtoggle-switch">
-        <input type="checkbox" id="vt-chk" onchange="setViewAll(this.checked)" ${viewAll===true?'checked':''}>
+        <input type="checkbox" id="vt-chk" onchange="setViewAll(this.checked)" ${isMine?'':'checked'}>
         <div class="vtoggle-track"></div><div class="vtoggle-thumb"></div>
       </label>
-      <span class="view-toggle-icon${viewAll===true?' dim':''}" title="Все переводчики">👥</span>`;
+      <span class="view-toggle-icon${isMine?' dim':''}" title="Все переводчики">👥</span>`;
   }
 }
 
@@ -570,7 +576,7 @@ function renderDayEntries(ds){
   if(viewAll===false)es=es.filter(e=>e.user===currentUser);
   else if(viewAll!==true&&viewAll!=='all')es=es.filter(e=>e.user===viewAll);
   if(!es.length)return'';
-  es.sort((a,b)=>{if(a.user===currentUser&&b.user!==currentUser)return -1;if(b.user===currentUser&&a.user!==currentUser)return 1;return 0;});
+  es.sort((a,b)=>{if(a.user===currentUser&&b.user!==currentUser)return -1;if(b.user===currentUser&&a.user!==currentUser)return 1;if(viewAll==='all'||viewAll===true)return a.user.localeCompare(b.user);return 0;});
   const canEdit=USERS[currentUser].canEdit;
   return es.map(e=>{
     const u=USERS[e.user]||{color:'#888'};const isOwn=e.user===currentUser;
@@ -601,8 +607,7 @@ window.calToday=function(){calYear=new Date().getFullYear();calMonth=new Date().
 let projSort='alpha';
 window.setProjSort=function(s){
   projSort=s;
-  document.getElementById('psort-alpha').classList.toggle('active',s==='alpha');
-  document.getElementById('psort-new').classList.toggle('active',s==='new');
+  ['alpha','new','type'].forEach(v=>{const el=document.getElementById('psort-'+v);if(el)el.classList.toggle('active',s===v);});
   renderProjects();
 };
 window.setProjType=function(t){
@@ -619,7 +624,12 @@ window.addProject=function(){
 
 function renderProjects(){
   const list=document.getElementById('projects-list');
-  const items=Object.entries(allProjects).sort((a,b)=>projSort==='alpha'?a[1].name.localeCompare(b[1].name,'ru'):b[1].ts-a[1].ts);
+  const items=Object.entries(allProjects).sort((a,b)=>{
+    if(projSort==='alpha')return a[1].name.localeCompare(b[1].name,'ru');
+    if(projSort==='new')return b[1].ts-a[1].ts;
+    if(projSort==='type'){const td=(x)=>x.type==='show'?1:0;return td(a[1])-td(b[1])||a[1].name.localeCompare(b[1].name,'ru');}
+    return 0;
+  });
   if(!items.length){list.innerHTML='<div class="empty">Нет проектов. Добавь первый!</div>';return;}
   const active=items.filter(([,p])=>p.status==='active');
   const done=items.filter(([,p])=>p.status!=='active');
@@ -636,8 +646,15 @@ function renderProjects(){
       ${doneBtn}${delBtn}
     </div>`;
   }
-  list.innerHTML=(active.length?active.map(mkItem).join(''):'')+
-    (done.length?`<div style="font-size:12px;color:var(--text3);margin:12px 0 6px;letter-spacing:.06em;text-transform:uppercase">Завершённые</div>`+done.map(mkItem).join(''):'');
+  const doneHtml=done.length?`
+    <div style="margin-top:12px">
+      <div onclick="this.nextSibling.style.display=this.nextSibling.style.display==='none'?'block':'none';this.querySelector('.done-arrow').textContent=this.nextSibling.style.display==='none'?'▾':'▴'"
+        style="display:flex;align-items:center;gap:6px;cursor:pointer;user-select:none;font-size:12px;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px">
+        <span class="done-arrow">▾</span>Завершённые (${done.length})
+      </div>
+      <div style="display:none">${done.map(mkItem).join('')}</div>
+    </div>`:'';
+  list.innerHTML=(active.length?active.map(mkItem).join(''):'<div class="empty">Нет активных проектов</div>')+doneHtml;
 }
 
 window.toggleProjectStatus=function(k){
@@ -806,9 +823,10 @@ document.getElementById('confirm-modal').addEventListener('click',e=>{if(e.targe
 // ── HISTORY ───────────────────────────────────────────────────────────────────
 function logHist(action,ds,nd,od){
   const mk=ds.substring(0,7).replace('-','_');
-  const desc=action==='add'?`Добавил(а) <b>${nd.project}</b> (эп.${nd.episode}, ч.${nd.part}, ${nd.lines} стр.)`
-    :action==='edit'?`Изменил(а) <b>${nd.project}</b> (эп.${nd.episode}, ч.${nd.part}, ${nd.lines} стр.)`
-    :`Удалил(а) <b>${od.project}</b>`;
+  function fmtEntry(e){if(!e)return '';const pt=e.part==='всё'?'всё':'часть '+e.part;return `Эпизод ${e.episode||'?'}, ${pt} · ${e.lines||0} стр.`;}
+  const desc=action==='add'?`Добавил(а) <b>${nd.project}</b> — ${fmtEntry(nd)}`
+    :action==='edit'?`Изменил(а) <b>${nd.project}</b> → ${fmtEntry(nd)}`
+    :`Удалил(а) <b>${od.project}</b>${od.episode?' — '+fmtEntry(od):''}`;
   push(ref(db,`tr_history/${mk}`),{user:currentUser,action,desc,ds,nd,od,ts:Date.now()});
 }
 
@@ -854,6 +872,46 @@ window.undoHist=function(mk,hk){
   });
 };
 
+
+// ── STAT USER FILTER ─────────────────────────────────────────────────────────
+let statUserFilter=new Set(USER_KEYS.filter(k=>k!=='kristina')); // all by default
+function initStatUserFilter(){
+  const container=document.getElementById('stat-usr-items');
+  if(!container)return;
+  container.innerHTML=USER_KEYS.filter(k=>k!=='kristina').map(k=>{
+    const u=USERS[k];
+    return `<label style="display:flex;align-items:center;gap:8px;padding:6px 8px;cursor:pointer;font-size:14px;border-radius:6px" onmouseenter="this.style.background='var(--surface2)'" onmouseleave="this.style.background=''"><input type="checkbox" id="su-${k}" ${statUserFilter.has(k)?'checked':''} onchange="statUserToggle('${k}',this.checked)" style="width:14px;height:14px"><span style="color:${u.color};font-weight:500">${u.name}</span></label>`;
+  }).join('');
+}
+window.statUserToggle=function(key,checked){
+  if(key==='all'){
+    const ks=USER_KEYS.filter(k=>k!=='kristina');
+    if(checked){ks.forEach(k=>statUserFilter.add(k));}else statUserFilter.clear();
+    ks.forEach(k=>{const el=document.getElementById('su-'+k);if(el)el.checked=checked;});
+  } else {
+    if(checked)statUserFilter.add(key);else statUserFilter.delete(key);
+    const allChecked=USER_KEYS.filter(k=>k!=='kristina').every(k=>statUserFilter.has(k));
+    const allEl=document.getElementById('su-all');if(allEl)allEl.checked=allChecked;
+  }
+  // update label
+  const label=document.getElementById('stat-usr-label');
+  if(label){
+    const names=USER_KEYS.filter(k=>k!=='kristina'&&statUserFilter.has(k)).map(k=>USERS[k].name);
+    label.textContent=names.length===USER_KEYS.filter(k=>k!=='kristina').length?'Все переводчики':names.join(', ')||'Никто';
+  }
+};
+document.addEventListener('click',e=>{
+  const w=document.getElementById('stat-usr-wrap');
+  const dd=document.getElementById('stat-usr-dd');
+  if(w&&dd&&!w.contains(e.target))dd.style.display='none';
+});
+// override toggle to use display
+document.addEventListener('click',e=>{
+  const dd=document.getElementById('stat-usr-dd');
+  if(dd&&dd.classList.contains('open')){dd.style.display='block';dd.classList.remove('open');}
+  else if(dd&&!dd.style.display||dd?.style.display==='none'){}
+},true);
+
 // ── STATS ─────────────────────────────────────────────────────────────────────
 function initStatsDefaults(){
   const now=new Date();
@@ -884,7 +942,7 @@ window.renderStats=function(){
     const dsPadded=dsParts[0]+'-'+dsParts[1].padStart(2,'0')+'-'+dsParts[2].padStart(2,'0');
     if(dsPadded>=from&&dsPadded<=to){
       Object.values(day).forEach(e=>{
-        if(e&&typeof e==='object'&&e.user)entries.push({...e,date:dsPadded});
+        if(e&&typeof e==='object'&&e.user&&statUserFilter.has(e.user))entries.push({...e,date:dsPadded});
       });
     }
   });
@@ -901,12 +959,18 @@ window.renderStats=function(){
   entries.forEach(e=>{
     const isD=(projByName[e.project]||{}).type!=='show';
     const ls=e.lines||0,bu=byUser[e.user];
-    const isBig=(!isD&&(ls>500||e.part==='всё'))||(isD&&ls>600);
+    const isBigShow=!isD&&ls>500;
+    const isBigDrama=isD&&ls>600;
     tot.lines+=ls;tot.parts+=1;projSet.add(e.project);
     if(isD){tot.linesD+=ls;tot.partsD++;}else{tot.linesS+=ls;tot.partsS++;}
-    if(bu){bu.lines+=ls;bu.parts++;bu.projects.add(e.project);if(isD){bu.linesD+=ls;bu.partsD++;}else{bu.linesS+=ls;bu.partsS++;if(isBig){if(!bu.bigShow)bu.bigShow=[];bu.bigShow.push(e);}}}
+    if(bu){
+      bu.lines+=ls;bu.parts++;bu.projects.add(e.project);
+      if(isD){bu.linesD+=ls;bu.partsD++;if(isBigDrama){if(!bu.bigDrama)bu.bigDrama=[];bu.bigDrama.push(e);}}
+      else{bu.linesS+=ls;bu.partsS++;if(isBigShow){if(!bu.bigShow)bu.bigShow=[];bu.bigShow.push(e);}}
+    }
   });
   window._bigShowByUser=Object.fromEntries(USER_KEYS.map(k=>[k,(byUser[k]?.bigShow||[])]));
+  window._bigDramaByUser=Object.fromEntries(USER_KEYS.map(k=>[k,(byUser[k]?.bigDrama||[])]));
 
   const sc=document.getElementById('stats-content');
   sc.innerHTML=`
@@ -930,7 +994,7 @@ window.renderStats=function(){
           <div style="font-weight:600">${s.lines.toLocaleString()}</div>
           <div>${s.parts}</div>
           <div>${s.linesD.toLocaleString()}</div>
-          <div>${s.partsD}</div>
+          <div style='display:flex;align-items:center;justify-content:flex-end;gap:3px'>${s.partsD}${s.bigDrama&&s.bigDrama.length>0?`<span title='Части дорам с большим объёмом (>600 стр.)!' onclick='showBigPopup(window._bigDramaByUser["${k}"])' style='cursor:pointer;font-size:13px'>⚠️</span>`:''}</div>
           <div>${s.linesS.toLocaleString()}</div>
           <div style='display:flex;align-items:center;justify-content:flex-end;gap:4px'>${s.partsS}${s.bigShow&&s.bigShow.length>0?`<span title='Есть части с большим количеством строк!' onclick='showBigShowPopup(window._bigShowByUser["${k}"])' style='cursor:pointer;color:#f0a030;font-size:14px;flex-shrink:0'>⚠️</span>`:''}</div>
           <div>${s.parts}</div>
@@ -955,6 +1019,7 @@ window.renderStats=function(){
 };
 
 // ── BIG SHOW POPUP ────────────────────────────────────────────────────────────
+window.showBigPopup=function(entries){return showBigShowPopup(entries);};
 window.showBigShowPopup=function(entries){
   if(!entries||!entries.length){alert('Нет записей с большим объёмом');return;}
   let rows='';
@@ -1002,7 +1067,7 @@ function fmtDate(ds){return new Date(ds+'T12:00:00').toLocaleDateString('ru',{da
 <div id="bigshow-modal" style="display:none" class="modal-overlay">
   <div class="modal" style="max-width:560px">
     <div class="modal-title">⚠️ Части шоу с большим объёмом</div>
-    <div style="font-size:14px;color:var(--text3);margin-bottom:14px">Записи, где часть шоу содержит более 500 строк или выбрано «всё»:</div>
+    <div style="font-size:14px;color:var(--text3);margin-bottom:14px">Записи, где часть содержит более 500 строк (шоу) или более 600 строк (дорама):</div>
     <div id="bigshow-list"></div>
     <div class="modal-btns"><button class="btn btn-ghost" onclick="document.getElementById('bigshow-modal').style.display='none'">Закрыть</button></div>
   </div>
