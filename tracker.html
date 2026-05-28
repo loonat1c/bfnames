@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Трекер переводов — Baddest Females</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 /* ── PALETTE VARIABLES ─────────────────────────────────────────────── */
 :root{
@@ -654,14 +654,7 @@ function renderProjects(){
       ${doneBtn}${delBtn}
     </div>`;
   }
-  const doneHtml=done.length?`
-    <div style="margin-top:12px">
-      <div onclick="this.nextSibling.style.display=this.nextSibling.style.display==='none'?'block':'none';this.querySelector('.done-arrow').textContent=this.nextSibling.style.display==='none'?'▾':'▴'"
-        style="display:flex;align-items:center;gap:6px;cursor:pointer;user-select:none;font-size:12px;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px">
-        <span class="done-arrow">▾</span>Завершённые (${done.length})
-      </div>
-      <div style="display:none">${done.map(mkItem).join('')}</div>
-    </div>`:'';
+  const doneHtml=done.length?('<div style="margin-top:12px"><div onclick="toggleDoneProjects()" style="display:flex;align-items:center;gap:6px;cursor:pointer;user-select:none;font-size:12px;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px"><span id="done-projects-arrow">▾</span>Завершённые ('+done.length+')</div><div id="done-projects-list" style="display:none">'+done.map(mkItem).join('')+'</div></div>'):'';
   list.innerHTML=(active.length?active.map(mkItem).join(''):'<div class="empty">Нет активных проектов</div>')+doneHtml;
 }
 
@@ -891,7 +884,7 @@ function initStatUserFilter(){
     return `<label style="display:flex;align-items:center;gap:8px;padding:6px 8px;cursor:pointer;font-size:14px;border-radius:6px" onmouseenter="this.style.background='var(--surface2)'" onmouseleave="this.style.background=''"><input type="checkbox" id="su-${k}" ${statUserFilter.has(k)?'checked':''} onchange="statUserToggle('${k}',this.checked)" style="width:14px;height:14px"><span style="color:${u.color};font-weight:500">${u.name}</span></label>`;
   }).join('');
 }
-window.statUserToggle=function(key,checked){
+window.toggleStatUserDD=function(){var dd=document.getElementById("stat-usr-dd");if(dd)dd.style.display=dd.style.display==="none"?"block":"none";};window.statUserToggle=function(key,checked){
   if(key==='all'){
     const ks=USER_KEYS.filter(k=>k!=='kristina');
     if(checked){ks.forEach(k=>statUserFilter.add(k));}else statUserFilter.clear();
