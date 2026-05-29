@@ -903,6 +903,7 @@ window.toggleStatUserDD=function(){var dd=document.getElementById("stat-usr-dd")
     const names=USER_KEYS.filter(k=>k!=='kristina'&&statUserFilter.has(k)).map(k=>USERS[k].name);
     label.textContent=names.length===USER_KEYS.filter(k=>k!=='kristina').length?'Все переводчики':names.join(', ')||'Никто';
   }
+  renderStats();
 };
 document.addEventListener('click',e=>{
   const w=document.getElementById('stat-usr-wrap');
