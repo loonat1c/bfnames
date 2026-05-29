@@ -534,6 +534,7 @@ function renderAll(){
   renderCalendar();
   renderSidebarStats();
   populateProjectSelect();
+  setTimeout(initStatUserFilter,100);
 }
 
 // ── PAGE NAV ──────────────────────────────────────────────────────────────────
@@ -542,7 +543,7 @@ window.showPage=function(p){
     document.getElementById('page-'+id).style.display=id===p?'block':'none';
     document.getElementById('nav-'+id).classList.toggle('active',id===p);
   });
-  if(p==='stats')initStatsDefaults();
+  if(p==='stats'){initStatUserFilter();initStatsDefaults();}
   if(p==='history')renderHistory();
   if(p==='projects')renderProjects();
 };
@@ -630,6 +631,8 @@ window.addProject=function(){
   document.getElementById('proj-input').value='';
 };
 
+var doneProjectsOpen=false;
+window.toggleDoneProjects=function(){doneProjectsOpen=!doneProjectsOpen;applyDoneProjectsState();};function applyDoneProjectsState(){var el=document.getElementById("done-projects-list");var ar=document.getElementById("done-projects-arrow");if(el)el.style.display=doneProjectsOpen?"block":"none";if(ar)ar.textContent=doneProjectsOpen?"▴":"▾";};
 function renderProjects(){
   const list=document.getElementById('projects-list');
   const items=Object.entries(allProjects).sort((a,b)=>{
@@ -655,7 +658,7 @@ function renderProjects(){
     </div>`;
   }
   const doneHtml=done.length?('<div style="margin-top:12px"><div onclick="toggleDoneProjects()" style="display:flex;align-items:center;gap:6px;cursor:pointer;user-select:none;font-size:12px;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px"><span id="done-projects-arrow">▾</span>Завершённые ('+done.length+')</div><div id="done-projects-list" style="display:none">'+done.map(mkItem).join('')+'</div></div>'):'';
-  list.innerHTML=(active.length?active.map(mkItem).join(''):'<div class="empty">Нет активных проектов</div>')+doneHtml;
+  list.innerHTML=(active.length?active.map(mkItem).join(''):'<div class="empty">Нет активных проектов</div>')+doneHtml;setTimeout(applyDoneProjectsState,0);
 }
 
 window.toggleProjectStatus=function(k){
@@ -924,7 +927,7 @@ function initStatsDefaults(){
   renderStats();
 }
 
-window.renderStats=function(){
+window.renderStats=function(){initStatUserFilter();
   const from=document.getElementById('stats-from').value;
   const to=document.getElementById('stats-to').value;
   if(!from||!to)return;
