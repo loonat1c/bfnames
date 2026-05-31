@@ -735,7 +735,7 @@ window.openAddEntry=function(e,ds){
   // check month lock
   const parts=ds.split('-');const dMk=parts[0]+'_'+parts[1];
   if(allMonthLocks[dMk]&&currentUser!=='kristina'){
-    alert('🔒 Редактор Кристина запретила добавление новых записей в данный месяц.');
+    alert('🔒 Редактор Кристина запретила добавление новых записей к текущему месяцу.');
     return;
   }
   editingEntryKey=null;pendingDate=ds;
