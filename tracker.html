@@ -271,6 +271,12 @@ select option{background:var(--bg);color:var(--text)}
           <div style="display:flex;align-items:center;gap:10px">
             <div class="view-toggle" id="view-toggle-wrap"></div>
             <button class="cal-today-btn" onclick="calToday()">Сегодня</button>
+            <button id="month-lock-btn" onclick="toggleMonthLock()"
+              style="display:none;align-items:center;gap:5px;padding:6px 14px;border:1px solid;border-radius:8px;background:transparent;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;transition:all .2s">
+            </button>
+            <span id="month-locked-badge" style="display:none;align-items:center;gap:5px;padding:4px 10px;border-radius:8px;background:rgba(176,48,48,.12);color:#e05050;font-size:12px;font-weight:600;border:1px solid rgba(176,48,48,.25)">
+              🔒 Месяц закрыт
+            </span>
           </div>
         </div>
         <div class="cal-grid" id="cal-grid"></div>
@@ -418,6 +424,7 @@ let calMonth=new Date().getMonth();
 let viewAll=false; // show all users or just current
 let allEntries={};
 let allHistory={};
+let allMonthLocks={};
 let allProjects={};
 let editingEntryKey=null;
 let pendingDate=null;
@@ -446,6 +453,10 @@ onValue(ref(db,'translations'),snap=>{
 },()=>{document.getElementById('loading').style.display='none';showLogin();});
 
 onValue(ref(db,'tr_history'),snap=>{allHistory=snap.val()||{};});
+onValue(ref(db,'month_locks'),snap=>{
+  allMonthLocks=snap.val()||{};
+  if(currentUser)renderCalendar();
+});
 onValue(ref(db,'tr_projects'),snap=>{
   allProjects=snap.val()||{};
   if(currentUser){renderProjects();populateProjectSelect();}
@@ -552,8 +563,30 @@ window.showPage=function(p){
 const MONTHS_RU=['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
 const DAYS_RU=['Пн','Вт','Ср','Чт','Пт','Сб','Вс'];
 
+function monthKey(y,m){return y+'_'+String(m+1).padStart(2,'0');}
+function isMonthLocked(y,m){return !!(allMonthLocks[monthKey(y,m)]);}
+
 function renderCalendar(){
-  document.getElementById('cal-title').textContent=MONTHS_RU[calMonth]+' '+calYear;
+  const mk=monthKey(calYear,calMonth);
+  const locked=isMonthLocked(calYear,calMonth);
+  const calTitleEl=document.getElementById('cal-title');
+  calTitleEl.textContent=MONTHS_RU[calMonth]+' '+calYear;
+  // lock button for Kristina
+  const lockBtn=document.getElementById('month-lock-btn');
+  if(lockBtn){
+    if(currentUser==='kristina'){
+      lockBtn.style.display='inline-flex';
+      lockBtn.textContent=locked?'Открыть':'Закрыть';
+      lockBtn.style.background=locked?'var(--accent)':'rgba(176,48,48,.15)';
+      lockBtn.style.color=locked?'var(--btn-text)':'#e05050';
+      lockBtn.style.borderColor=locked?'var(--accent)':'#e05050';
+    } else {
+      lockBtn.style.display='none';
+    }
+  }
+  // locked badge for all
+  const lockedBadge=document.getElementById('month-locked-badge');
+  if(lockedBadge)lockedBadge.style.display=locked&&currentUser!=='kristina'?'inline-flex':'none';
   const first=new Date(calYear,calMonth,1);
   const startDow=(first.getDay()+6)%7;
   const daysInMonth=new Date(calYear,calMonth+1,0).getDate();
@@ -683,6 +716,12 @@ function populateProjectSelect(){
 // ── ENTRY MODAL ───────────────────────────────────────────────────────────────
 window.openAddEntry=function(e,ds){
   e.stopPropagation();if(!USERS[currentUser].canEdit)return;
+  // check month lock
+  const parts=ds.split('-');const dMk=parts[0]+'_'+parts[1];
+  if(allMonthLocks[dMk]&&currentUser!=='kristina'){
+    alert('🔒 Редактор Кристина запретила добавление новых записей в данный месяц.');
+    return;
+  }
   editingEntryKey=null;pendingDate=ds;
   document.getElementById('entry-modal-title').textContent='Добавить перевод — '+fmtDate(ds);
   document.getElementById('ef-project').value='';
