@@ -642,6 +642,22 @@ function getDayEntries(ds){
   return res;
 }
 
+
+window.toggleMonthLock=function(){
+  if(currentUser!=='kristina')return;
+  const mk=monthKey(calYear,calMonth);
+  const locked=isMonthLocked(calYear,calMonth);
+  if(!locked){
+    showConfirm(
+      'Закрыть месяц?',
+      'Вы правда хотите завершить подсчёт данного месяца и заблокировать его для добавления новых записей?',
+      function(){set(ref(db,'month_locks/'+mk),{locked:true,by:'kristina',ts:Date.now()});}
+    );
+  } else {
+    remove(ref(db,'month_locks/'+mk));
+  }
+};
+
 window.calNav=function(d){calMonth+=d;if(calMonth>11){calMonth=0;calYear++;}else if(calMonth<0){calMonth=11;calYear--;}renderCalendar();renderSidebarStats();};
 window.calToday=function(){calYear=new Date().getFullYear();calMonth=new Date().getMonth();renderCalendar();renderSidebarStats();};
 
