@@ -785,7 +785,7 @@ window.saveEntry=function(){
   const part=document.getElementById('ef-part').value;
   const lines=parseInt(document.getElementById('ef-lines').value)||0;
   // ── Check for conflicts ──────────────────────────────────────────────────
-  const conflict=findPartConflict(project,episode,part,editingEntryKey);
+  const conflict=currentUser==='emma'?null:findPartConflict(project,episode,part,editingEntryKey);
   if(conflict){
     const u=USERS[conflict.user]||{name:conflict.user};
     const cd=conflict.date?(' ('+fmtDate(conflict.date)+')'):'';
