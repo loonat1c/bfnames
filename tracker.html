@@ -540,7 +540,7 @@ function renderAll(){
   hw.innerHTML=`<div style="width:10px;height:10px;border-radius:50%;background:${u.color}"></div><span>${u.name}</span>`;
   document.getElementById('sb-dot').style.background=u.color;
   document.getElementById('sb-name').textContent=u.name;
-  document.getElementById('sb-role').textContent=currentUser==='kristina'?'Редактор':u.canEdit?'Переводчик':'Только просмотр';
+  document.getElementById('sb-role').textContent=u.role||(u.canEdit?'Переводчик':'Только просмотр');
   // default: Kristina='all', others=false (own only)
   viewAll=currentUser==='kristina'?'all':false;
   renderViewToggle();
