@@ -493,7 +493,7 @@ function showLogin(){
     return `<div class="login-card" onclick="login('${k}')" style="border-color:${u.color}33">
       <div class="lc-avatar" style="background:${u.color}">${u.emoji}</div>
       <div class="lc-name">${u.name}</div>
-      <div class="lc-role">${k==='kristina'?'Редактор':u.canEdit?'Переводчик':'Только просмотр'}</div>
+      <div class="lc-role">${u.role||(u.canEdit?'Переводчик':'Только просмотр')}</div>
     </div>`;
   }).join('');
 }
