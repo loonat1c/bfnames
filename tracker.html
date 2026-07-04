@@ -399,6 +399,8 @@ const USERS={
   sergey:{name:'Сергей',color:'#5ba8f5',emoji:'🦋',canEdit:true},
   yaroslavna:{name:'Ярославна',color:'#e8739a',emoji:'🌸',canEdit:true},
   victoria:{name:'Виктория',color:'#4ec068',emoji:'🌿',canEdit:true},
+  victorial:{name:'Виктория Л.',color:'#f0a030',emoji:'🌻',canEdit:true},
+  emma:{name:'Эмма',color:'#e07070',emoji:'🎬',canEdit:true},
   kristina:{name:'Кристина',color:'#a060f0',emoji:'✨',canEdit:false,role:'Редактор'},
 };
 const USER_KEYS=Object.keys(USERS);
@@ -735,7 +737,7 @@ window.openAddEntry=function(e,ds){
   // check month lock
   const parts=ds.split('-');const dMk=parts[0]+'_'+parts[1];
   if(allMonthLocks[dMk]&&currentUser!=='kristina'){
-    alert('🔒 Редактор Кристина запретила добавление новых записей к текущему месяцу.');
+    alert('🔒 Редактор Кристина запретила добавление новых записей в данный месяц.');
     return;
   }
   editingEntryKey=null;pendingDate=ds;
