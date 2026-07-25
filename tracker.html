@@ -820,6 +820,7 @@ function findPartConflict(project,episode,part,skipKey){
     for(const[eid,e] of Object.entries(day)){
       const fullKey=dk+'/'+eid;
       if(fullKey===skipKey)continue; // skip self when editing
+      if(e.user==='emma'||currentUser==='emma')continue; // emma never conflicts
       if(e.project!==project||String(e.episode)!==String(episode))continue;
       // same project + episode found
       if(e.part==='всё'&&part!=='всё')return{user:e.user,date:ds,type:'all'};
