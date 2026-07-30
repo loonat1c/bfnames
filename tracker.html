@@ -297,6 +297,7 @@ select option{background:var(--bg);color:var(--text)}
           <div class="seg-wrap" id="proj-type-seg">
             <button class="seg-opt active" id="ptype-drama" onclick="setProjType('drama')">Дорама</button>
             <button class="seg-opt" id="ptype-show" onclick="setProjType('show')">Шоу</button>
+            <button class="seg-opt" id="ptype-film" onclick="setProjType('film')">Фильм</button>
           </div>
           <button class="btn btn-sm" onclick="addProject()">Добавить</button>
         </div>
@@ -628,8 +629,9 @@ function renderDayEntries(ds){
     const db2=isOwn&&canEdit?`<button class="ep-btn" style="background:rgba(176,48,48,.5)" onclick="confirmDeleteEntry(event,'${e.key}','${ds}')">×</button>`:'';
     const pt=e.part==='всё'?'всё':'часть '+e.part;
     const projType=(allProjects&&Object.values(allProjects).find(p=>p.name===e.project)||{}).type;
+    const isFilm=projType==='film';
     const isD=projType!=='show';
-    const typeBadge=`<span style="font-size:10px;padding:1px 4px;border-radius:3px;margin-right:3px;background:${isD?'rgba(91,168,245,.25)':'rgba(78,192,104,.25)'};color:${isD?'#5ba8f5':'#4ec068'};font-weight:600">${isD?'д':'ш'}</span>`;
+    const typeBadge=`<span style="font-size:10px;padding:1px 4px;border-radius:3px;margin-right:3px;background:${isFilm?'rgba(240,160,48,.2)':isD?'rgba(91,168,245,.25)':'rgba(78,192,104,.25)'};color:${isFilm?'#f0a030':isD?'#5ba8f5':'#4ec068'};font-weight:600">${isFilm?'ф':isD?'д':'ш'}</span>`;
     return `<div class="entry-chip" style="background:${u.color}1a;border:1px solid ${u.color}44;color:${u.color}">
       <span class="entry-project" title="${e.project||''}">${typeBadge}${e.project||'—'}</span>
       <span class="entry-meta">Эпизод ${e.episode||'?'}, ${pt} · ${e.lines||0} стр.</span>
@@ -696,7 +698,7 @@ function renderProjects(){
   const active=items.filter(([,p])=>p.status==='active');
   const done=items.filter(([,p])=>p.status!=='active');
   function mkItem([k,p]){
-    const typeLabel=p.type==='show'?'Шоу':'Дорама';
+    const typeLabel=p.type==='show'?'Шоу':p.type==='film'?'Фильм':'Дорама';
     const typeCls=p.type==='show'?'type-show':'type-drama';
     const canEdit=USERS[currentUser]?.canEdit||(currentUser==='kristina');
     const doneBtn=canEdit?`<button class="proj-btn" onclick="toggleProjectStatus('${k}')" title="${p.status==='active'?'Завершить':'Вернуть'}">${p.status==='active'?'✓':'↩'}</button>`:'';
@@ -1021,6 +1023,7 @@ window.renderStats=function(){initStatUserFilter();
   USER_KEYS.forEach(k=>{byUser[k]={lines:0,parts:0,linesD:0,linesS:0,partsD:0,partsS:0,projects:new Set()};});
   entries.forEach(e=>{
     const isD=(projByName[e.project]||{}).type!=='show';
+    const isFilm=(projByName[e.project]||{}).type==='film';
     const ls=e.lines||0,bu=byUser[e.user];
     const isBigShow=!isD&&ls>500;
     const isBigDrama=isD&&ls>600;
@@ -1070,8 +1073,9 @@ window.renderStats=function(){initStatUserFilter();
       ${[...entries].sort((a,b)=>b.date.localeCompare(a.date)).map(e=>{
         const u=USERS[e.user]||{name:e.user,color:'#888'};
         const isD=(projByName[e.project]||{}).type!=='show';
+    const isFilm=(projByName[e.project]||{}).type==='film';
         return `<div class="tbl-row" style="grid-template-columns:1fr 90px 55px 55px 70px 110px">
-          <div style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap"><span style="font-size:10px;padding:1px 5px;border-radius:4px;margin-right:5px;background:${isD?'rgba(91,168,245,.15)':'rgba(78,192,104,.15)'};color:${isD?'#5ba8f5':'#4ec068'}">${isD?'д':'ш'}</span>${e.project||'—'}</div>
+          <div style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap"><span style="font-size:10px;padding:1px 5px;border-radius:4px;margin-right:5px;background:${isFilm?'rgba(240,160,48,.15)':isD?'rgba(91,168,245,.15)':'rgba(78,192,104,.15)'};color:${isD?'#5ba8f5':'#4ec068'}">${isD?'д':'ш'}</span>${e.project||'—'}</div>
           <div style="font-size:12px;color:var(--text3);text-align:right">${fmtDate(e.date)}</div>
           <div style='text-align:right'>${e.episode||'—'}</div><div style='text-align:right'>${e.part}</div>
           <div style="font-weight:600;text-align:right">${e.lines||0}</div>
