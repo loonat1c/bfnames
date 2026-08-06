@@ -73,8 +73,13 @@ header{border-bottom:1px solid var(--border);padding:0 1.5rem;display:flex;align
 .login-card .lc-role{font-size:13px;color:var(--text3);margin-top:4px}
 
 
-.login-status{font-size:14px;color:var(--text2);background:var(--surface);border:1px solid var(--border);border-radius:999px;padding:7px 14px;display:none;cursor:pointer;transition:all .15s}
-.login-status:hover{border-color:var(--accent);color:var(--accent)}
+.login-status{font-size:14px;color:var(--text2);background:var(--surface);border:1px solid var(--border);border-radius:999px;padding:7px 14px;display:none;cursor:pointer;transition:all .15s;position:relative;isolation:isolate;--login-color:var(--accent)}
+.login-status::before,.login-status::after{content:'';position:absolute;inset:-6px;border:1px solid var(--login-color);border-radius:999px;opacity:0;z-index:-1;animation:login-ripple 2.4s ease-out infinite;pointer-events:none}
+.login-status::after{animation-delay:1.2s}
+.login-status:hover{border-color:var(--login-color);color:var(--login-color)}
+.login-status-hint{font-size:12px;color:var(--text3);margin-left:8px;white-space:nowrap}
+@keyframes login-ripple{0%{transform:scale(.94);opacity:.55}70%{opacity:0}100%{transform:scale(1.18);opacity:0}}
+.tracker-version{position:fixed;right:16px;bottom:12px;font-size:12px;color:var(--text3);background:var(--surface);border:1px solid var(--border);border-radius:999px;padding:6px 10px;opacity:.82}
 .login-card.hidden-user{opacity:.55}
 .login-actions{position:absolute;top:8px;right:8px;display:flex;gap:5px}
 .login-pass-actions{position:absolute;top:8px;left:8px;display:flex;gap:5px}
@@ -250,6 +255,7 @@ select option{background:var(--bg);color:var(--text)}
   <div class="login-sub">Войди от своего имени</div>
   <div class="login-status" id="login-status" onclick="openProfileModal()"></div>
   <div class="login-grid" id="login-grid"></div>
+  <div class="tracker-version" id="tracker-version"></div>
 </div>
 
 <!-- APP -->
@@ -486,6 +492,8 @@ function slugifyName(name){
   return key;
 }
 function generatePassword(){return Math.random().toString(36).slice(2,5)+'-'+String(Math.floor(1000+Math.random()*9000));}
+const TRACKER_VERSION='v2026.08.06.2';
+const TRACKER_DEVELOPER='loonat1c';
 
 // Auth with 1-hour expiry via localStorage
 function getStoredUser(){
@@ -581,8 +589,10 @@ function showLogin(){
   const st=document.getElementById('login-status');
   if(currentUser&&USERS[currentUser]){
     st.style.display='block';
-    st.textContent='Вы вошли как '+USERS[currentUser].name;
-  }else st.style.display='none';
+    st.style.setProperty('--login-color',USERS[currentUser].color||'var(--accent)');
+    st.innerHTML='Вы вошли как '+USERS[currentUser].name+'<span class="login-status-hint">Нажмите, чтобы настроить цвет и эмодзи</span>';
+    const tv=document.getElementById('tracker-version');if(tv)tv.textContent=TRACKER_VERSION+' · '+TRACKER_DEVELOPER;
+  }else{st.style.display='none';const tv=document.getElementById('tracker-version');if(tv)tv.textContent=TRACKER_VERSION+' · '+TRACKER_DEVELOPER;}
   const cards=visibleUserKeys().map(k=>{
     const u=USERS[k];
     const passBtn=canManagePassword(k)?`<div class="login-pass-actions"><button class="login-action" title="Пароль" onclick="openPasswordModal(event,'${k}')">🔑</button></div>`:'';
