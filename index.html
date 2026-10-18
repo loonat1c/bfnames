@@ -164,7 +164,13 @@ select option{background:var(--bg);color:var(--text)}
 .chars-wrap{display:flex;flex-wrap:wrap;gap:8px;min-height:32px}
 .char-tag{display:inline-flex;align-items:center;gap:5px;font-size:15px;padding:6px 12px;background:var(--surface2);border:1.5px solid var(--border2);border-radius:24px;color:var(--text2);position:relative;transition:color .2s,border-color .2s}
 .char-tag.char-new{border-color:var(--accent);color:var(--text)}
-.char-tag.pinned{background:var(--pin-bg);border-color:var(--pin-border);color:var(--pin-text)}
+.char-tag.pinned{background:var(--pin-bg);border-color:var(--pin-border);color:var(--pin-text);animation:heroWave 2.4s ease-out infinite}
+@keyframes heroWave{0%{box-shadow:0 0 0 0 var(--pin-border)}70%{box-shadow:0 0 0 10px transparent}100%{box-shadow:0 0 0 0 transparent}}
+.hero-star{font-size:13px;margin-right:2px}
+.copy-name{cursor:pointer;transition:color .15s}
+.copy-name:hover{color:var(--accent2)}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--surface);border:1px solid var(--accent);color:var(--text);padding:9px 18px;border-radius:20px;font-size:14px;z-index:600;opacity:0;pointer-events:none;transition:opacity .2s}
+.toast.show{opacity:1}
 .char-tag.pending-delete{border-color:transparent!important;color:#c07070!important;background:rgba(176,48,48,.08)!important}
 .term-tag{display:inline-flex;align-items:center;gap:5px;font-size:14px;padding:5px 12px;background:var(--surface2);border:1.5px solid var(--border2);border-radius:8px;color:var(--text2);position:relative;transition:color .2s,border-color .2s}
 .term-tag.term-new{border-color:var(--accent);color:var(--text)}
@@ -822,9 +828,9 @@ window.renderChars=function(){
   const q=(document.getElementById('chars-search')?.value||'').trim().toLowerCase();
   const sort=document.getElementById('chars-sort')?.value||'alpha';
   if(q)chars=chars.filter(([,c])=>c.name.toLowerCase().includes(q));
-  // pinned first, then sort
+  // pinned (main heroes) first, then sort
   if(sort==='alpha')chars=[...chars].sort((a,b)=>{if(a[1].pinned&&!b[1].pinned)return -1;if(!a[1].pinned&&b[1].pinned)return 1;return a[1].name.localeCompare(b[1].name,'ru');});
-  else chars=[...chars].sort((a,b)=>{if(a[1].pinned&&!b[1].pinned)return -1;if(!a[1].pinned&&b[1].pinned)return 1;return 0;});
+  else chars=[...chars].sort((a,b)=>{if(a[1].pinned&&!b[1].pinned)return -1;if(!a[1].pinned&&b[1].pinned)return 1;if(a[1].pinned&&b[1].pinned)return a[1].name.localeCompare(b[1].name,'ru');return 0;});
   const w=document.getElementById('chars-list');
   if(!chars.length){w.innerHTML='<span class="empty">Нет персонажей</span>';return;}
   w.innerHTML=chars.map(([k,c])=>{
@@ -838,7 +844,7 @@ window.renderChars=function(){
     const pinned=c.pinned;
     const pinClass=pinned?' pinned':'';
     const pinIcon=pinned?'★':'☆';
-    return `<span class="char-tag${isNew?' char-new':''}${pinClass}" data-key="${k}">${tip}${gIcon(c.gender)}${c.name}<span class="char-actions"><button class="act-btn" onclick="toggleActMenu(event,'act-c-${k}')" title="Действия">⋮</button><div class="act-menu" id="act-c-${k}"><div class="act-menu-item${pinned?' pinned-item':''}" onclick="closeActMenus();togglePinChar('${k}')">${pinned?'★ Открепить':'☆ Закрепить'}</div><div class="act-menu-item" onclick="closeActMenus();openEditChar('${k}')">✎ Изменить</div><div class="act-menu-item danger" onclick="closeActMenus();removeChar('${k}')">× Удалить</div></div></span></span>`;
+    return `<span class="char-tag${isNew?' char-new':''}${pinClass}" data-key="${k}">${tip}${pinned?'<span class="hero-star">★</span>':''}${gIcon(c.gender)}<span class="copy-name" onclick="copyChar('${k}')">${c.name}</span><span class="char-actions"><button class="act-btn" onclick="toggleActMenu(event,'act-c-${k}')" title="Действия">⋮</button><div class="act-menu" id="act-c-${k}"><div class="act-menu-item${pinned?' pinned-item':''}" onclick="closeActMenus();togglePinChar('${k}')">${pinned?'★ Не главный герой':'☆ Главный герой'}</div><div class="act-menu-item" onclick="closeActMenus();openEditChar('${k}')">✎ Изменить</div><div class="act-menu-item danger" onclick="closeActMenus();removeChar('${k}')">× Удалить</div></div></span></span>`;
   }).join('');
 };
 
@@ -916,7 +922,7 @@ window.renderTerms=function(){
     }
     const isNew=!!newTermKeys[k];
     const pinIcon=pinned?'★':'☆';
-    return `<span class="term-tag${isNew?' term-new':''}${pinned?' pinned':''}" data-tkey="${k}">${t.val}<span class="char-actions"><button class="act-btn" onclick="toggleActMenu(event,'act-t-${k}')" title="Действия">⋮</button><div class="act-menu" id="act-t-${k}"><div class="act-menu-item${pinned?' pinned-item':''}" onclick="closeActMenus();togglePinTerm('${k}')">${pinned?'★ Открепить':'☆ Закрепить'}</div><div class="act-menu-item" onclick="closeActMenus();openEditTerm('${k}')">✎ Изменить</div><div class="act-menu-item danger" onclick="closeActMenus();removeTerm('${k}')">× Удалить</div></div></span></span>`;
+    return `<span class="term-tag${isNew?' term-new':''}${pinned?' pinned':''}" data-tkey="${k}"><span class="copy-name" onclick="copyTerm('${k}')">${t.val}</span><span class="char-actions"><button class="act-btn" onclick="toggleActMenu(event,'act-t-${k}')" title="Действия">⋮</button><div class="act-menu" id="act-t-${k}"><div class="act-menu-item${pinned?' pinned-item':''}" onclick="closeActMenus();togglePinTerm('${k}')">${pinned?'★ Открепить':'☆ Закрепить'}</div><div class="act-menu-item" onclick="closeActMenus();openEditTerm('${k}')">✎ Изменить</div><div class="act-menu-item danger" onclick="closeActMenus();removeTerm('${k}')">× Удалить</div></div></span></span>`;
   }).join('');
 };
 
@@ -960,6 +966,29 @@ window.removeTerm=function(key){
   },DELETE_MS);
 };
 window.restoreTerm=function(key){if(!pendingDeletesT[key])return;clearTimeout(pendingDeletesT[key].timer);if(pendingDeletesT[key].rafId)cancelAnimationFrame(pendingDeletesT[key].rafId);delete pendingDeletesT[key];renderTerms();};
+
+// COPY
+function showToast(msg){
+  let t=document.getElementById('toast');
+  if(!t){t=document.createElement('div');t.id='toast';t.className='toast';document.body.appendChild(t);}
+  t.textContent=msg;t.classList.add('show');
+  clearTimeout(t._tm);t._tm=setTimeout(()=>t.classList.remove('show'),1400);
+}
+function copyText(txt){
+  const done=()=>showToast('Скопировано: '+txt);
+  if(navigator.clipboard&&window.isSecureContext){
+    navigator.clipboard.writeText(txt).then(done).catch(()=>fallbackCopy(txt,done));
+  }else fallbackCopy(txt,done);
+}
+function fallbackCopy(txt,cb){
+  const ta=document.createElement('textarea');
+  ta.value=txt;ta.style.cssText='position:fixed;opacity:0';
+  document.body.appendChild(ta);ta.select();
+  try{document.execCommand('copy');cb();}catch(e){}
+  ta.remove();
+}
+window.copyChar=k=>copyText(charName(k));
+window.copyTerm=k=>{const t=(drama().terms||{})[k];if(t)copyText(typeof t==='object'?t.val:t);};
 
 // ACTION MENU
 window.toggleActMenu=function(e,id){
