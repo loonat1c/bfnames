@@ -460,12 +460,12 @@ select option{background:var(--bg);color:var(--text)}
     <div class="schedule-wrap">
       <div class="schedule-header" onclick="toggleSchedule()">
         <div class="schedule-header-left">
-          <span class="schedule-arrow" id="sch-arrow">▾</span>
+          <span class="schedule-arrow collapsed" id="sch-arrow">▾</span>
           <span class="schedule-title">Расписание</span>
         </div>
         <span id="sch-updated-badge" style="display:none;font-size:10px;color:var(--text3);border:1px solid var(--border2);border-radius:5px;padding:1px 6px;letter-spacing:.04em">Обновлено</span>
       </div>
-      <div class="schedule-body" id="sch-body">
+      <div class="schedule-body collapsed" id="sch-body">
         <div class="schedule-tabs">
           <button class="sch-tab active" onclick="switchSchTab('air',this)">Сейчас</button>
           <button class="sch-tab" onclick="switchSchTab('soon',this)">Скоро</button>
@@ -1381,7 +1381,7 @@ window.toggleTheme=function(isLight){document.body.classList.toggle('light',isLi
 })();
 
 // ── SCHEDULE ──────────────────────────────────────────────────────────────────
-let schCollapsed = JSON.parse(localStorage.getItem('sch_collapsed')||'true');
+let schCollapsed = true; // всегда свёрнуто при загрузке
 const SCH_DAYS = ['mn-tu','wd-th','fr-su'];
 
 function markSchUpdated(){
@@ -1399,7 +1399,6 @@ function renderSchUpdatedBadge(){
 
 window.toggleSchedule=function(){
   schCollapsed = !schCollapsed;
-  localStorage.setItem('sch_collapsed', JSON.stringify(schCollapsed));
   applyScheduleCollapse();
 };
 function applyScheduleCollapse(){
