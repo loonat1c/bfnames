@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Трекер переводов — Baddest Females</title>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700&family=DM+Sans:wght@400;500;600&family=Noto+Sans+KR:wght@900&display=swap" rel="stylesheet">
 <style>
 /* ── PALETTE VARIABLES ─────────────────────────────────────────────── */
 :root{
@@ -206,6 +206,36 @@ select option{background:var(--bg);color:var(--text)}
 
 @media(max-width:860px){.sidebar{width:210px}.main-content{padding:1rem 1.25rem}}
 @media(max-width:700px){.app-layout{flex-direction:column}.sidebar{width:100%;height:auto;border-right:none;border-bottom:1px solid var(--border)}.cal-day{min-height:70px}.main-content{padding:1rem}}
+/* ── ВХОД ПО КОДУ ── */
+#auth{position:fixed;inset:0;z-index:1000;display:none;align-items:center;justify-content:center;padding:1rem;background:color-mix(in srgb,var(--bg) 93%,transparent);backdrop-filter:blur(26px) saturate(1.4);-webkit-backdrop-filter:blur(26px) saturate(1.4)}
+#auth.show{display:flex;animation:authFade .5s cubic-bezier(.2,.8,.2,1)}
+#auth.leave{animation:authLeave .55s cubic-bezier(.2,.8,.2,1) forwards;pointer-events:none}
+@keyframes authFade{from{opacity:0}}
+@keyframes authLeave{to{opacity:0;transform:scale(1.06);filter:blur(10px)}}
+.auth-card{width:100%;max-width:340px;padding:2rem 1.5rem 1.5rem;text-align:center;background:var(--surface);border:1px solid var(--border);border-radius:28px;box-shadow:0 40px 80px -30px rgba(0,0,0,.6);animation:authRise .7s cubic-bezier(.2,.8,.2,1) both}
+@keyframes authRise{from{opacity:0;transform:translateY(24px) scale(.96)}}
+.auth-mark{font-family:'Noto Sans KR','Manrope',sans-serif,sans-serif;font-weight:900;font-size:40px;line-height:1.05;letter-spacing:-.05em;background:linear-gradient(120deg,var(--accent2),var(--accent) 55%,var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.auth-title{font-family:'Manrope',sans-serif;font-size:14px;font-weight:500;color:var(--text2);margin:14px 0 24px}
+.auth-dots{display:flex;justify-content:center;gap:16px;margin-bottom:10px}
+.auth-dot{width:16px;height:16px;border-radius:50%;border:2px solid var(--border2);transition:background .2s,border-color .2s,box-shadow .2s}
+.auth-dot.on{background:var(--accent);border-color:var(--accent);box-shadow:0 0 16px var(--accent);animation:dotPop .3s cubic-bezier(.2,.8,.2,1)}
+@keyframes dotPop{50%{transform:scale(1.55)}}
+.auth-dots.busy .auth-dot{animation:dotWave .9s ease-in-out infinite}
+.auth-dots.busy .auth-dot:nth-child(2){animation-delay:.1s}.auth-dots.busy .auth-dot:nth-child(3){animation-delay:.2s}.auth-dots.busy .auth-dot:nth-child(4){animation-delay:.3s}
+@keyframes dotWave{50%{transform:translateY(-7px)}}
+.auth-dots.err{animation:authShake .45s}
+.auth-dots.err .auth-dot{background:#e05050;border-color:#e05050;box-shadow:0 0 16px #e05050}
+@keyframes authShake{20%{transform:translateX(-10px)}40%{transform:translateX(9px)}60%{transform:translateX(-6px)}80%{transform:translateX(4px)}}
+.auth-dots.ok .auth-dot{background:#3dd68c;border-color:#3dd68c;box-shadow:0 0 16px #3dd68c;animation:dotPop .4s cubic-bezier(.2,.8,.2,1)}
+.auth-msg{min-height:20px;font-size:13px;color:var(--text3);margin-bottom:14px}
+.auth-msg.err{color:#e07070}
+.auth-pad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.auth-key{height:56px;border-radius:14px;border:1px solid var(--border);background:color-mix(in srgb,var(--surface2) 70%,transparent);color:var(--text);font:500 22px 'Manrope',sans-serif;cursor:pointer;touch-action:manipulation;transition:transform .15s cubic-bezier(.2,.8,.2,1),background .15s,border-color .15s}
+.auth-key:hover{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 14%,transparent)}
+.auth-key:active{transform:scale(.92)}
+.auth-key.ghost{background:transparent;border-color:transparent;font-size:18px;color:var(--text3)}
+.auth-key.blank{visibility:hidden}
+
 </style>
 </head>
 <body>
@@ -389,11 +419,23 @@ select option{background:var(--bg);color:var(--text)}
   </div>
 </div>
 
+<div id="auth">
+  <div class="auth-card">
+    <div class="auth-mark">배디스트<br>피메일즈</div>
+    <div class="auth-title">Введи код доступа</div>
+    <div class="auth-dots" id="auth-dots"><span class="auth-dot"></span><span class="auth-dot"></span><span class="auth-dot"></span><span class="auth-dot"></span></div>
+    <div class="auth-msg" id="auth-msg"></div>
+    <div class="auth-pad" id="auth-pad"></div>
+  </div>
+</div>
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import{getDatabase,ref,onValue,set,remove,push,update}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+import{getAuth,signInWithEmailAndPassword,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 const cfg={apiKey:"AIzaSyAg_UhVP2DRU_jrqJD-Or3Iy8ZEIQWaAIU",authDomain:"bfnames.firebaseapp.com",databaseURL:"https://bfnames-default-rtdb.europe-west1.firebasedatabase.app",projectId:"bfnames",storageBucket:"bfnames.firebasestorage.app",messagingSenderId:"1066954721078",appId:"1:1066954721078:web:fb729d5ccb8671db175597"};
-const db=getDatabase(initializeApp(cfg));
+const fbApp=initializeApp(cfg);
+const db=getDatabase(fbApp);
+const auth=getAuth(fbApp);
 
 // ── USERS ───────────────────────────────────────────────────────────────────
 const USERS={
@@ -436,6 +478,7 @@ let newProjType='drama';
 // ── FIREBASE LISTENERS ───────────────────────────────────────────────────────
 let appReady=false; // true after first translations snapshot
 
+function startData(){
 onValue(ref(db,'translations'),snap=>{
   allEntries=snap.val()||{};
   document.getElementById('loading').style.display='none';
@@ -464,6 +507,7 @@ onValue(ref(db,'tr_projects'),snap=>{
   allProjects=snap.val()||{};
   if(currentUser){renderProjects();populateProjectSelect();}
 });
+}
 
 // ── PALETTE ──────────────────────────────────────────────────────────────────
 const PALETTES=[{id:'',color:'#d4a853',label:'Янтарь'},{id:'sakura',color:'#e8739a',label:'Сакура'},{id:'ocean',color:'#3d9cf0',label:'Океан'},{id:'forest',color:'#4ec068',label:'Лес'},{id:'violet',color:'#a060f0',label:'Фиолет'},{id:'rose',color:'#f05840',label:'Алый'},{id:'slate',color:'#6888d0',label:'Сталь'},{id:'copper',color:'#c87840',label:'Медь'}];
@@ -1129,6 +1173,66 @@ function renderSidebarStats(){
 // ── HELPERS ───────────────────────────────────────────────────────────────────
 function p2(n){return String(n).padStart(2,'0');}
 function fmtDate(ds){return new Date(ds+'T12:00:00').toLocaleDateString('ru',{day:'2-digit',month:'short'});}
+
+// ── ВХОД ПО КОДУ ─────────────────────────────────────────────────────────────
+const AUTH_EMAIL='basic@bfnames.app';   // логин (подставляется сам)
+const PIN_LEN=4;                         // длина кода; пароль в Firebase = 'bf'+код
+let pin='',authBusy=false,authDone=false,appStarted=false;
+const authEl=document.getElementById('auth'),dotsEl=document.getElementById('auth-dots'),msgEl=document.getElementById('auth-msg');
+
+(function buildPad(){
+  const keys=['1','2','3','4','5','6','7','8','9','','0','del'];
+  document.getElementById('auth-pad').innerHTML=keys.map(k=>
+    k===''?'<button class="auth-key blank" tabindex="-1" aria-hidden="true"></button>'
+    :`<button class="auth-key${k==='del'?' ghost':''}" data-k="${k}" aria-label="${k==='del'?'Стереть':k}">${k==='del'?'⌫':k}</button>`).join('');
+  document.getElementById('auth-pad').addEventListener('click',e=>{const b=e.target.closest('[data-k]');if(b)authKey(b.dataset.k);});
+})();
+document.addEventListener('keydown',e=>{
+  if(!authEl.classList.contains('show')||e.ctrlKey||e.metaKey||e.altKey)return;
+  if(/^[0-9]$/.test(e.key))authKey(e.key);
+  else if(e.key==='Backspace')authKey('del');
+});
+function renderPin(){[...dotsEl.children].forEach((d,i)=>d.classList.toggle('on',i<pin.length));}
+function authMsg(text,isErr){msgEl.textContent=text||'';msgEl.classList.toggle('err',!!isErr);}
+function authKey(k){
+  if(authBusy||authDone)return;
+  if(k==='del')pin=pin.slice(0,-1);
+  else if(pin.length<PIN_LEN)pin+=k;
+  authMsg('');dotsEl.className='auth-dots';renderPin();
+  if(pin.length===PIN_LEN)submitPin();
+}
+async function submitPin(){
+  authBusy=true;dotsEl.classList.add('busy');
+  try{
+    await signInWithEmailAndPassword(auth,AUTH_EMAIL,'bf'+pin);
+  }catch(e){
+    console.error('auth error:',e.code);
+    dotsEl.classList.remove('busy');dotsEl.classList.add('err');
+    let m='Неверный код';
+    if(e.code==='auth/too-many-requests')m='Слишком много попыток — подожди пару минут';
+    else if(e.code==='auth/network-request-failed')m='Нет связи с сервером';
+    else if(e.code==='auth/operation-not-allowed')m='В Firebase не включён вход по паролю';
+    authMsg(m,true);
+    setTimeout(()=>{pin='';renderPin();dotsEl.classList.remove('err');authBusy=false;},700);
+    return;
+  }
+  dotsEl.classList.remove('busy');dotsEl.classList.add('ok');
+  authDone=true;   // дальше работает onAuthStateChanged
+}
+onAuthStateChanged(auth,user=>{
+  if(user){
+    if(!appStarted){appStarted=true;startData();}
+    if(authEl.classList.contains('show')){
+      authDone=true;dotsEl.classList.remove('busy');dotsEl.classList.add('ok');
+      setTimeout(()=>{authEl.classList.add('leave');setTimeout(()=>authEl.classList.remove('show','leave'),560);},450);
+    }
+  }else{
+    appStarted=false;
+    authDone=false;authBusy=false;pin='';renderPin();dotsEl.className='auth-dots';
+    document.getElementById('loading').style.display='none';
+    authEl.classList.remove('leave');authEl.classList.add('show');
+  }
+});
 </script>
 <!-- BIG SHOW PARTS POPUP -->
 <div id="bigshow-modal" style="display:none" class="modal-overlay">
