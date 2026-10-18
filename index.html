@@ -325,13 +325,32 @@ select option{background:var(--bg);color:var(--text)}
 .speech-row{display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap;padding:10px 14px;background:color-mix(in srgb,var(--surface2) 55%,transparent);border-radius:var(--r-md)}
 .speech-label{font-size:13px;color:var(--text3);white-space:nowrap;min-width:60px}
 .speech-sel{font-size:14px;padding:7px 12px;border-radius:999px}
-.pairs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px}
-.pair-item{display:flex;align-items:flex-start;gap:12px;padding:15px 18px;background:color-mix(in srgb,var(--surface2) 65%,transparent);border:1px solid var(--line);border-radius:var(--r-lg);font-size:15px;height:100%}
-.pair-body{flex:1;min-width:0;word-break:break-word}
-.pair-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap}
-.pair-row:last-child{margin-bottom:0}
-.pair-arrow{color:var(--text3);font-size:13px}
-.pair-note{font-size:13px;color:var(--text3);margin-top:6px}
+
+/* ── ОБРАЩЕНИЯ: список ── */
+.pairs-section{margin-bottom:24px}
+.pairs-section:last-child{margin-bottom:0}
+.pairs-head{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.pairs-head-label{font-size:13px;color:var(--text2)}
+.pairs-head-line{flex:1;height:1px;background:var(--line)}
+.pairs-head-count{font-size:12px;color:var(--text3);font-variant-numeric:tabular-nums}
+.pairs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,420px),1fr));gap:8px}
+.pair-item{--pc:var(--text3);position:relative;display:flex;flex-direction:column;justify-content:center;gap:7px;min-height:52px;padding:11px 40px 11px 20px;background:color-mix(in srgb,var(--surface2) 55%,transparent);border:1px solid var(--line);border-radius:var(--r-md);transition:border-color .2s,background .2s}
+.pair-item::before{content:"";position:absolute;left:8px;top:12px;bottom:12px;width:3px;border-radius:3px;background:var(--pc);opacity:.9}
+.pair-item.ty{--pc:var(--ty-text)}
+.pair-item.vy{--pc:var(--vy-text)}
+.pair-item:hover{border-color:color-mix(in srgb,var(--pc) 50%,transparent);background:color-mix(in srgb,var(--surface2) 85%,transparent)}
+.pair-line{display:flex;align-items:center;gap:10px;min-width:0;font-size:14.5px}
+.pn{display:flex;align-items:center;gap:9px;min-width:0;flex:1}
+.pair-arrow{flex-shrink:0;color:var(--text3);font-size:14px}
+.pair-line .badge{flex-shrink:0;margin-left:auto}
+.char-tag-inline{display:inline-flex;align-items:center;gap:6px;position:relative;min-width:0;cursor:default}
+.cn{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.pair-item .gender-icon{width:16px;height:16px;font-size:9px;margin:0}
+.pair-group-names{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:14.5px}
+.pair-note{font-size:12.5px;line-height:1.4;color:var(--text3);word-break:break-word}
+.pair-del{position:absolute;top:50%;right:8px;transform:translateY(-50%);width:26px;height:26px;display:grid;place-items:center;padding:0;opacity:0;transition:opacity .15s,color .15s,background .15s}
+.pair-item:hover .pair-del,.pair-del:focus-visible{opacity:1}
+@media(hover:none){.pair-del{opacity:.65}}
 
 /* ── ПОИСК ── */
 .result-card{background:color-mix(in srgb,var(--surface2) 60%,transparent);border:1px solid var(--line);border-radius:var(--r-xl);padding:2rem 1.5rem;margin-top:1.5rem;animation:pop .35s var(--ease)}
@@ -1124,90 +1143,69 @@ function badge(s){const c=s==='ты'?'ty':s==='вы'?'vy':'dash';return `<span c
 function charTag(k){
   const c=getChar(k);if(!c)return k;
   const photo=c.photo?`<span class="char-photo-tip"><img src="${c.photo}" alt="" onerror="this.parentNode.style.display='none'"></span>`:'';
-  return `<span class="char-tag-inline" style="display:inline-flex;align-items:center;gap:4px;position:relative;cursor:default">${photo}${gIcon(c.gender)}${c.name}</span>`;
+  return `<span class="char-tag-inline">${photo}${gIcon(c.gender)}<span class="cn" title="${String(c.name).replace(/"/g,'&quot;')}">${c.name}</span></span>`;
 }
 
 function renderPairs(){
   const rawPairs=Object.entries(drama().pairs||{});
   const w=document.getElementById('pairs-list');
   if(!rawPairs.length){w.innerHTML='<div class="empty">Нет обращений</div>';return;}
-
-  // Group symmetric pairs (same speech both ways) by speech value
-  // and find clusters: chains of chars that are all mutually same speech
   const pairs=rawPairs.map(([k,p])=>({k,a:p.a,b:p.b,speech:p.speech,rev:p.speechRev,note:p.note||'',sym:p.speech===p.speechRev&&p.speech!=='—'}));
-
-  // Build adjacency for symmetric pairs grouped by speech
+  const nm=k=>charName(k);
+  const byName=(x,y)=>nm(x).localeCompare(nm(y),'ru');
+  const cls=s=>s==='ты'?'ty':s==='вы'?'vy':'';
+  const noteHtml=n=>n?`<div class="pair-note">${n}</div>`:'';
   const rendered=new Set();
-  let html='';
+  const sections={'ты':[],'вы':[],'diff':[]};
 
-  // Try to find groups of 3+ chars all mutually symmetric with same speech
-  const symBySpeech={'ты':[],'вы':[]};
-  pairs.filter(p=>p.sym&&p.speech!=='—').forEach(p=>{
-    if(symBySpeech[p.speech])symBySpeech[p.speech].push(p);
-  });
-
-  // Find cliques of 3+ (all mutual)
-  const groupedKeys=new Set();
+  // группы: 3+ персонажей, все взаимно на одно обращение
   for(const speech of['ты','вы']){
-    const sp=symBySpeech[speech];
-    if(sp.length<2)continue;
-    // build adjacency
+    const sp=pairs.filter(p=>p.sym&&p.speech===speech);
+    if(sp.length<3)continue;
     const adj={};
-    sp.forEach(p=>{
-      if(!adj[p.a])adj[p.a]=new Set();
-      if(!adj[p.b])adj[p.b]=new Set();
-      adj[p.a].add(p.b);adj[p.b].add(p.a);
-    });
-    const chars=Object.keys(adj);
-    // greedy clique: find nodes connected to ALL others in a group
-    const visited=new Set();
+    sp.forEach(p=>{(adj[p.a]=adj[p.a]||new Set()).add(p.b);(adj[p.b]=adj[p.b]||new Set()).add(p.a);});
+    const chars=Object.keys(adj),visited=new Set();
     for(const start of chars){
       if(visited.has(start))continue;
       const clique=[start];
       for(const other of chars){
         if(other===start||visited.has(other))continue;
-        // check other is connected to ALL in clique
-        if(clique.every(c=>adj[c]?.has(other)&&adj[other]?.has(c))){
-          clique.push(other);
-        }
+        if(clique.every(c=>adj[c].has(other)&&adj[other].has(c)))clique.push(other);
       }
-      if(clique.length>=3){
-        // find the pair keys that connect this clique
-        const cliquePairKeys=[];
-        for(let i=0;i<clique.length;i++)for(let j=i+1;j<clique.length;j++){
-          const p=sp.find(x=>(x.a===clique[i]&&x.b===clique[j])||(x.a===clique[j]&&x.b===clique[i]));
-          if(p){cliquePairKeys.push(p.k);groupedKeys.add(p.k);rendered.add(p.k);}
-        }
-        clique.forEach(c=>visited.add(c));
-        const names=clique.map(c=>charTag(c)).join('<span class="pair-arrow">, </span>');
-        // collect notes from clique pairs
-        const cliqueNotes=cliquePairKeys.map(pk=>{const pp=rawPairs.find(([rk])=>rk===pk);return pp?pp[1].note||'':''}).filter(Boolean);
-        const groupNote=cliqueNotes[0]||'';
-        html+=`<div class="pair-item"><div class="pair-body">
-          <div class="pair-row" style="flex-wrap:wrap;gap:4px">${names}</div>
-          <div class="pair-row" style="margin-top:4px"><span style="color:var(--text3);font-size:13px">между собой на</span> ${badge(speech)}</div>
-          ${groupNote?`<div class="pair-note">${groupNote}</div>`:''}
-        </div><button class="del-btn" onclick="confirmRemovePairGroup([${cliquePairKeys.map(k=>"'"+k+"'").join(',')}])" title="Удалить группу">×</button></div>`;
+      if(clique.length<3)continue;
+      const keys=[];
+      for(let i=0;i<clique.length;i++)for(let j=i+1;j<clique.length;j++){
+        const x=sp.find(q=>(q.a===clique[i]&&q.b===clique[j])||(q.a===clique[j]&&q.b===clique[i]));
+        if(x){keys.push(x.k);rendered.add(x.k);}
       }
+      clique.forEach(c=>visited.add(c));
+      const names=[...clique].sort(byName);
+      const note=keys.map(k=>pairs.find(q=>q.k===k).note).find(Boolean)||'';
+      sections[speech].push({sort:nm(names[0]),html:`<div class="pair-item ${cls(speech)}">
+        <div class="pair-group-names">${names.map(charTag).join('')}</div>
+        <div class="pair-note">Группа · ${names.length}${note?' · '+note:''}</div>
+        <button class="del-btn pair-del" onclick="confirmRemovePairGroup([${keys.map(k=>"'"+k+"'").join(',')}])" title="Удалить группу" aria-label="Удалить группу">×</button></div>`});
     }
   }
 
-  // Render remaining pairs normally
   pairs.forEach(p=>{
     if(rendered.has(p.k))return;
-    rendered.add(p.k);
-    let body='';
+    const del=`<button class="del-btn pair-del" onclick="removePair('${p.k}')" title="Удалить" aria-label="Удалить">×</button>`;
     if(p.sym){
-      // compact: one line with ↔
-      body=`<div class="pair-row">${charTag(p.a)}<span class="pair-arrow">↔</span>${charTag(p.b)}: ${badge(p.speech)}</div>`;
-    } else {
-      body=`<div class="pair-row">${charTag(p.a)}<span class="pair-arrow">→</span>${charTag(p.b)}: ${badge(p.speech)}</div>
-            <div class="pair-row">${charTag(p.b)}<span class="pair-arrow">→</span>${charTag(p.a)}: ${badge(p.rev)}</div>`;
+      const [x,y]=[p.a,p.b].sort(byName);
+      sections[p.speech].push({sort:nm(x),html:`<div class="pair-item ${cls(p.speech)}">
+        <div class="pair-line"><span class="pn">${charTag(x)}<span class="pair-arrow">↔</span>${charTag(y)}</span></div>${noteHtml(p.note)}${del}</div>`});
+    }else{
+      const line=(f,t,s)=>`<div class="pair-line"><span class="pn">${charTag(f)}<span class="pair-arrow">→</span>${charTag(t)}</span>${badge(s)}</div>`;
+      sections.diff.push({sort:nm(p.a),html:`<div class="pair-item">${line(p.a,p.b,p.speech)}${line(p.b,p.a,p.rev)}${noteHtml(p.note)}${del}</div>`});
     }
-    html+=`<div class="pair-item"><div class="pair-body">${body}${p.note?`<div class="pair-note">${p.note}</div>`:''}</div><button class="del-btn" onclick="removePair('${p.k}')">×</button></div>`;
   });
 
-  w.innerHTML=`<div class="pairs-grid">${html}</div>`;
+  const defs=[['ты','<span class="badge ty">ты</span>','Взаимно на «ты»'],['вы','<span class="badge vy">вы</span>','Взаимно на «вы»'],['diff','<span class="badge dash">≠</span>','Разное в каждую сторону']];
+  w.innerHTML=defs.filter(([k])=>sections[k].length).map(([k,b,label])=>{
+    const items=sections[k].sort((x,y)=>x.sort.localeCompare(y.sort,'ru'));
+    return `<div class="pairs-section"><div class="pairs-head">${b}<span class="pairs-head-label">${label}</span><span class="pairs-head-line"></span><span class="pairs-head-count">${items.length}</span></div><div class="pairs-grid">${items.map(i=>i.html).join('')}</div></div>`;
+  }).join('');
 }
 
 
