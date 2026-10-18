@@ -272,12 +272,13 @@ select option{background:var(--bg);color:var(--text)}
 
 
 /* ── ГЛАВНЫЕ ГЕРОИ ── */
-.char-tag.pinned{font-weight:700;padding:8px 10px 8px 14px;
-  background:linear-gradient(100deg,color-mix(in srgb,var(--pin-text) 24%,transparent),var(--pin-bg));
-  border-color:var(--pin-text);box-shadow:0 0 18px -4px var(--pin-text)}
-.char-tag.pinned::before,.char-tag.pinned::after{content:"";position:absolute;inset:-1px;border-radius:inherit;pointer-events:none;animation:heroRipple 2.6s ease-out infinite}
-.char-tag.pinned::after{animation-delay:1.3s}
+.char-tag.pinned{font-weight:700}
+.heroes-group{position:relative;display:flex;flex-wrap:wrap;gap:8px;padding:7px;margin-bottom:6px;border-radius:24px;border:1px solid var(--pin-border);
+  background:linear-gradient(100deg,color-mix(in srgb,var(--pin-text) 14%,transparent),var(--pin-bg));box-shadow:0 0 22px -6px var(--pin-text)}
+.heroes-group::before,.heroes-group::after{content:"";position:absolute;inset:-1px;border-radius:inherit;pointer-events:none;animation:heroRipple 2.8s ease-out infinite}
+.heroes-group::after{animation-delay:1.4s}
 @keyframes heroRipple{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--pin-text) 65%,transparent)}100%{box-shadow:0 0 0 12px transparent}}
+.chars-break{flex-basis:100%;height:0}
 .hero-star{color:var(--pin-text);font-size:15px;line-height:1;text-shadow:0 0 8px var(--pin-text);animation:heroStar 2.6s ease-in-out infinite}
 @keyframes heroStar{50%{transform:scale(1.25) rotate(14deg)}}
 .card-divider{height:1px;background:var(--line);margin:20px 0 16px}
@@ -706,6 +707,7 @@ window.closeSidebar=()=>{document.getElementById('sidebar').classList.remove('op
 function checkReminder(){
   const el=document.getElementById('reminder');
   if(!state.currentDrama){el.classList.remove('show');return;}
+  if(document.getElementById('pane-pairs')?.classList.contains('active')){el.classList.remove('show');return;}
   const d=drama();
   // show for ongoing dramas always (regardless of whether pairs exist)
   if(d.status==='done'||d.status==='trash'){el.classList.remove('show');return;}
@@ -916,7 +918,7 @@ window.renderChars=function(){
   else chars=[...chars].sort((a,b)=>{if(a[1].pinned&&!b[1].pinned)return -1;if(!a[1].pinned&&b[1].pinned)return 1;if(a[1].pinned&&b[1].pinned)return a[1].name.localeCompare(b[1].name,'ru');return 0;});
   const w=document.getElementById('chars-list');
   if(!chars.length){w.innerHTML='<span class="empty">Нет персонажей</span>';return;}
-  w.innerHTML=chars.map(([k,c])=>{
+  const tagHtml=([k,c])=>{
     if(pendingDeletes[k]){
       const prog=Math.min((Date.now()-pendingDeletes[k].startTs)/DELETE_MS,1);
       const off=RING_C-(RING_C*prog);
@@ -928,7 +930,9 @@ window.renderChars=function(){
     const pinClass=pinned?' pinned':'';
     const pinIcon=pinned?'★':'☆';
     return `<span class="char-tag${isNew?' char-new':''}${pinClass}" data-key="${k}">${tip}${pinned?'<span class="hero-star">★</span>':''}${gIcon(c.gender)}<span class="copy-name" onclick="copyChar('${k}')">${c.name}</span><span class="char-actions"><button class="act-btn" onclick="toggleActMenu(event,'act-c-${k}')" title="Действия">⋮</button><div class="act-menu" id="act-c-${k}"><div class="act-menu-item${pinned?' pinned-item':''}" onclick="closeActMenus();togglePinChar('${k}')">${pinned?'★ Не главный герой':'☆ Главный герой'}</div><div class="act-menu-item" onclick="closeActMenus();openEditChar('${k}')">✎ Изменить</div><div class="act-menu-item danger" onclick="closeActMenus();removeChar('${k}')">× Удалить</div></div></span></span>`;
-  }).join('');
+  };
+  const heroes=chars.filter(([,c])=>c.pinned),rest=chars.filter(([,c])=>!c.pinned);
+  w.innerHTML=(heroes.length?`<div class="heroes-group">${heroes.map(tagHtml).join('')}</div>`+(rest.length?'<span class="chars-break"></span>':''):'')+rest.map(tagHtml).join('');
 };
 
 function updateSelects(){
@@ -1224,7 +1228,7 @@ window.addPair=function(){
       document.querySelectorAll('.pane').forEach(p=>p.classList.remove('active'));
       if(btn){btn.classList.add('active');}
       document.getElementById('pane-search')?.classList.add('active');
-      renderSearchPicker();
+      renderSearchPicker();checkReminder();
       return;
     }
   }
@@ -1360,6 +1364,7 @@ window.switchTab=function(t,btn){
   document.querySelectorAll('.pane').forEach(p=>p.classList.remove('active'));
   btn.classList.add('active');document.getElementById('pane-'+t).classList.add('active');
   if(t==='history')renderHistory();if(t==='pairs')renderPairPicker();if(t==='search'){searchSel=[];renderSearchPicker();}
+  checkReminder();
 };
 
 // PALETTE
