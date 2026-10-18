@@ -1,0 +1,77 @@
+name: Deploy GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+      - work
+      - codex
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Build main site and branch preview
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          rm -rf _site _branch_export
+          mkdir -p _site
+
+          # Keep the production site pinned to main.
+          git archive origin/main | tar -x -C _site
+
+          # Keep a preview for the branch Codex works on. When main is being
+          # deployed, refresh the existing preview branch if it exists.
+          preview_branch="${GITHUB_REF_NAME}"
+          if [[ "$preview_branch" == "main" ]]; then
+            if git show-ref --verify --quiet refs/remotes/origin/work; then
+              preview_branch="work"
+            elif git show-ref --verify --quiet refs/remotes/origin/codex; then
+              preview_branch="codex"
+            else
+              preview_branch=""
+            fi
+          fi
+
+          if [[ -n "$preview_branch" && "$preview_branch" != "main" ]] && git show-ref --verify --quiet "refs/remotes/origin/$preview_branch"; then
+            safe_branch="$(printf '%s' "$preview_branch" | tr '/ ' '--')"
+            mkdir -p "_site/previews/$safe_branch"
+            git archive "origin/$preview_branch" | tar -x -C "_site/previews/$safe_branch"
+          fi
+
+          # Keep deployment internals out of the published static site.
+          rm -rf _site/.git _site/.github
+          find _site -name '.git' -type d -prune -exec rm -rf {} +
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
