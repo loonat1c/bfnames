@@ -65,12 +65,31 @@ header{border-bottom:1px solid var(--border);padding:0 1.5rem;display:flex;align
 #login-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:calc(100vh - 64px);gap:24px;padding:2rem}
 .login-title{font-family:'DM Sans',sans-serif;font-size:32px;color:var(--text);text-align:center}
 .login-sub{font-size:16px;color:var(--text3);text-align:center}
-.login-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;max-width:440px;width:100%}
-.login-card{padding:22px;border:2px solid var(--border2);border-radius:var(--radius-lg);cursor:pointer;text-align:center;transition:all .2s;background:var(--surface)}
+.login-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:680px;width:100%}
+.login-card{padding:22px;border:2px solid var(--border2);border-radius:var(--radius-lg);cursor:pointer;text-align:center;transition:all .2s;background:var(--surface);position:relative}
 .login-card:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(0,0,0,.35)}
 .login-card .lc-avatar{width:62px;height:62px;border-radius:50%;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-size:28px;color:#fff}
 .login-card .lc-name{font-size:17px;font-weight:600;color:var(--text)}
 .login-card .lc-role{font-size:13px;color:var(--text3);margin-top:4px}
+
+
+.login-status{font-size:14px;color:var(--text2);background:var(--surface);border:1px solid var(--border);border-radius:999px;padding:7px 14px;display:none;cursor:pointer;transition:all .15s;position:relative;isolation:isolate;--login-color:var(--accent)}
+.login-status::before,.login-status::after{content:'';position:absolute;inset:-6px;border:1px solid var(--login-color);border-radius:999px;opacity:0;z-index:-1;animation:login-ripple 2.4s ease-out infinite;pointer-events:none}
+.login-status::after{animation-delay:1.2s}
+.login-status:hover{border-color:var(--login-color);color:var(--login-color)}
+.login-status-hint{font-size:12px;color:var(--text3);margin-left:8px;white-space:nowrap}
+@keyframes login-ripple{0%{transform:scale(.94);opacity:.55}70%{opacity:0}100%{transform:scale(1.18);opacity:0}}
+.tracker-version{position:fixed;right:16px;bottom:12px;font-size:12px;color:var(--text3);background:var(--surface);border:1px solid var(--border);border-radius:999px;padding:6px 10px;opacity:.82}
+.login-card.hidden-user{opacity:.55}
+.login-actions{position:absolute;top:8px;right:8px;display:flex;gap:5px}
+.login-pass-actions{position:absolute;top:8px;left:8px;display:flex;gap:5px}
+.login-action{width:24px;height:24px;border-radius:50%;border:1px solid var(--border2);background:var(--surface2);color:var(--text2);cursor:pointer;font-size:13px;line-height:1;display:flex;align-items:center;justify-content:center}
+.login-action:hover{border-color:var(--accent);color:var(--accent)}
+.add-member-card{border-style:dashed;color:var(--accent)}
+.password-box{font-family:monospace;font-size:18px;letter-spacing:.04em;background:var(--surface2);border:1px solid var(--border2);border-radius:10px;padding:10px 12px;color:var(--accent2);user-select:all}
+.choice-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
+.choice-btn{height:38px;border-radius:10px;border:1px solid var(--border2);background:var(--surface2);color:var(--text);cursor:pointer;font-size:20px;display:flex;align-items:center;justify-content:center}
+.choice-btn.active{border-color:var(--accent);box-shadow:0 0 0 2px rgba(212,168,83,.18)}
 
 /* APP LAYOUT */
 #app{display:none}
@@ -204,8 +223,8 @@ select option{background:var(--bg);color:var(--text)}
 .empty{font-size:15px;color:var(--text3);padding:6px 2px}
 #loading{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:999;font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text3)}
 
-@media(max-width:860px){.sidebar{width:210px}.main-content{padding:1rem 1.25rem}}
-@media(max-width:700px){.app-layout{flex-direction:column}.sidebar{width:100%;height:auto;border-right:none;border-bottom:1px solid var(--border)}.cal-day{min-height:70px}.main-content{padding:1rem}}
+@media(max-width:860px){.sidebar{width:210px}.main-content{padding:1rem 1.25rem}.login-grid{grid-template-columns:repeat(2,1fr);max-width:460px}}
+@media(max-width:700px){.app-layout{flex-direction:column}.sidebar{width:100%;height:auto;border-right:none;border-bottom:1px solid var(--border)}.cal-day{min-height:70px}.main-content{padding:1rem}.login-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -234,7 +253,9 @@ select option{background:var(--bg);color:var(--text)}
 <div id="login-screen">
   <div class="login-title">Трекер переводов</div>
   <div class="login-sub">Войди от своего имени</div>
+  <div class="login-status" id="login-status" onclick="openProfileModal()"></div>
   <div class="login-grid" id="login-grid"></div>
+  <div class="tracker-version" id="tracker-version"></div>
 </div>
 
 <!-- APP -->
@@ -366,6 +387,50 @@ select option{background:var(--bg);color:var(--text)}
   </div>
 </div>
 
+
+
+
+<!-- LOGIN PASSWORD MODAL -->
+<div id="login-pass-modal" class="modal-overlay" style="display:none">
+  <div class="modal">
+    <div class="modal-title" id="login-pass-title">Вход</div>
+    <div class="field"><label>Пароль</label><input id="login-pass-input" type="password" placeholder="Введите пароль" style="width:100%" onkeydown="if(event.key==='Enter')confirmLoginPassword()"></div>
+    <div id="login-pass-error" style="display:none;color:#e05050;font-size:13px;margin-top:6px">Неверный пароль</div>
+    <div class="modal-btns"><button class="btn btn-ghost" onclick="closeLoginPasswordModal()">Отмена</button><button class="btn" onclick="confirmLoginPassword()">Войти</button></div>
+  </div>
+</div>
+
+<!-- PROFILE MODAL -->
+<div id="profile-modal" class="modal-overlay" style="display:none">
+  <div class="modal">
+    <div class="modal-title">Настроить иконку</div>
+    <div class="field"><label>Цвет</label><div class="choice-grid" id="profile-colors"></div></div>
+    <div class="field"><label>Эмодзи</label><div class="choice-grid" id="profile-emojis"></div></div>
+    <div class="modal-btns"><button class="btn btn-ghost" onclick="closeProfileModal()">Отмена</button><button class="btn" onclick="saveProfileIcon()">Сохранить</button></div>
+  </div>
+</div>
+
+<!-- PASSWORD MODAL -->
+<div id="password-modal" class="modal-overlay" style="display:none">
+  <div class="modal">
+    <div class="modal-title" id="password-modal-title">Пароль участника</div>
+    <div class="field"><label>Текущий пароль</label><div class="password-box" id="password-current"></div></div>
+    <div class="field"><label>Новый пароль</label><input id="password-new" placeholder="Оставьте пустым для случайного" style="width:100%"></div>
+    <div class="modal-btns"><button class="btn btn-ghost" onclick="closePasswordModal()">Закрыть</button><button class="btn btn-ghost" onclick="randomizeMemberPassword()">Случайный</button><button class="btn" onclick="saveMemberPassword()">Сохранить</button></div>
+  </div>
+</div>
+
+<!-- MEMBER MODAL -->
+<div id="member-modal" class="modal-overlay" style="display:none">
+  <div class="modal">
+    <div class="modal-title">Добавить участника</div>
+    <div class="field"><label>Имя</label><input id="mf-name" placeholder="Имя участника" style="width:100%"></div>
+    <div class="field"><label>Роль</label><select id="mf-role" style="width:100%"><option value="translator">Переводчик</option><option value="timer">Таймингёр</option><option value="editor">Редактор</option></select></div>
+    <div id="member-pass-result" style="display:none;margin:12px 0"><div style="font-size:13px;color:var(--text3);margin-bottom:6px">Пароль нового участника:</div><div class="password-box" id="member-pass-value"></div><div style="font-size:12px;color:var(--text3);margin-top:6px">Скопируйте и отправьте участнику. Пароль видят только Сергей и Кристина.</div></div>
+    <div class="modal-btns"><button class="btn btn-ghost" onclick="closeMemberModal()">Закрыть</button><button class="btn" id="member-save-btn" onclick="saveMember()">Добавить</button></div>
+  </div>
+</div>
+
 <!-- MOVE MODAL -->
 <div id="move-modal" class="modal-overlay" style="display:none">
   <div class="modal">
@@ -397,14 +462,38 @@ const db=getDatabase(initializeApp(cfg));
 
 // ── USERS ───────────────────────────────────────────────────────────────────
 const USERS={
-  sergey:{name:'Сергей',color:'#5ba8f5',emoji:'🦋',canEdit:true},
-  yaroslavna:{name:'Ярославна',color:'#e8739a',emoji:'🌸',canEdit:true},
-  victoria:{name:'Виктория',color:'#4ec068',emoji:'🌿',canEdit:true},
-  victorial:{name:'Виктория Л.',color:'#f0a030',emoji:'🌻',canEdit:true},
-  emma:{name:'Эмма',color:'#e07070',emoji:'🎬',canEdit:true,role:'Таймингер'},
-  kristina:{name:'Кристина',color:'#a060f0',emoji:'✨',canEdit:false,role:'Редактор'},
+  sergey:{name:'Сергей',color:'#5ba8f5',emoji:'🦋',canEdit:true,password:'ser-4829',admin:true},
+  yaroslavna:{name:'Ярославна',color:'#e8739a',emoji:'🌸',canEdit:true,password:'yar-7316'},
+  victoria:{name:'Виктория',color:'#4ec068',emoji:'🌿',canEdit:true,password:'vik-9052'},
+  victorial:{name:'Виктория Л.',color:'#f0a030',emoji:'🌻',canEdit:true,password:'vkl-6148'},
+  emma:{name:'Эмма',color:'#e07070',emoji:'🎬',canEdit:true,role:'Таймингёр',password:'emm-2584'},
+  kristina:{name:'Кристина',color:'#a060f0',emoji:'✨',canEdit:false,role:'Редактор',password:'kri-3697',canManageMembers:true},
 };
-const USER_KEYS=Object.keys(USERS);
+let USER_KEYS=Object.keys(USERS);
+function syncUsers(){
+  Object.entries(remoteUsers||{}).forEach(([k,u])=>{
+    USERS[k]={...USERS[k],...u};
+  });
+  USER_KEYS=Object.keys(USERS).filter(k=>!USERS[k].deleted);
+}
+function visibleUserKeys(){return USER_KEYS.filter(k=>!USERS[k].hidden||isAdmin());}
+function activeWorkUserKeys(){return USER_KEYS.filter(k=>k!=='kristina'&&!USERS[k].hidden&&!USERS[k].deleted);}
+function canManageMembers(){return currentUser==='sergey'||currentUser==='kristina';}
+function isAdmin(){return currentUser==='sergey';}
+function hasSergeySession(){return localStorage.getItem('tr_admin')==='sergey';}
+function canHideMember(k){return (currentUser==='sergey'||currentUser==='kristina')&&(k!=='sergey'||currentUser==='sergey');}
+function canDeleteMember(k){return currentUser==='sergey'&&k!=='sergey';}
+function canManagePassword(k){return currentUser==='sergey'&&!!USERS[k]&&!USERS[k].deleted;}
+function roleTitle(u){return u.role||(u.canEdit?'Переводчик':'Только просмотр');}
+function slugifyName(name){
+  const map={'а':'a','б':'b','в':'v','г':'g','д':'d','е':'e','ё':'e','ж':'zh','з':'z','и':'i','й':'y','к':'k','л':'l','м':'m','н':'n','о':'o','п':'p','р':'r','с':'s','т':'t','у':'u','ф':'f','х':'h','ц':'c','ч':'ch','ш':'sh','щ':'sch','ы':'y','э':'e','ю':'yu','я':'ya'};
+  let base=name.toLowerCase().replace(/[ъь]/g,'').split('').map(ch=>map[ch]||ch).join('').replace(/[^a-z0-9]+/g,'').slice(0,18)||'user';
+  let key=base,i=2;while(USERS[key])key=base+(i++);
+  return key;
+}
+function generatePassword(){return Math.random().toString(36).slice(2,5)+'-'+String(Math.floor(1000+Math.random()*9000));}
+const TRACKER_VERSION='v2026.08.06.2';
+const TRACKER_DEVELOPER='loonat1c';
 
 // Auth with 1-hour expiry via localStorage
 function getStoredUser(){
@@ -420,6 +509,7 @@ function storeUser(k){
   const exp=Date.now()+60*60*1000; // 1 hour
   localStorage.setItem('tr_auth',JSON.stringify({user:k,exp}));
 }
+function hasStoredUserSession(k){return getStoredUser()===k;}
 function clearStoredUser(){localStorage.removeItem('tr_auth');}
 let currentUser=getStoredUser();
 let calYear=new Date().getFullYear();
@@ -429,6 +519,7 @@ let allEntries={};
 let allHistory={};
 let allMonthLocks={};
 let allProjects={};
+let remoteUsers={};
 let editingEntryKey=null;
 let pendingDate=null;
 let newProjType='drama';
@@ -464,6 +555,12 @@ onValue(ref(db,'tr_projects'),snap=>{
   allProjects=snap.val()||{};
   if(currentUser){renderProjects();populateProjectSelect();}
 });
+onValue(ref(db,'tr_users'),snap=>{
+  remoteUsers=snap.val()||{};
+  syncUsers();
+  if(currentUser&&!USERS[currentUser]){currentUser=null;clearStoredUser();showLogin();return;}
+  if(currentUser){renderAll();}else if(appReady){showLogin();}
+});
 
 // ── PALETTE ──────────────────────────────────────────────────────────────────
 const PALETTES=[{id:'',color:'#d4a853',label:'Янтарь'},{id:'sakura',color:'#e8739a',label:'Сакура'},{id:'ocean',color:'#3d9cf0',label:'Океан'},{id:'forest',color:'#4ec068',label:'Лес'},{id:'violet',color:'#a060f0',label:'Фиолет'},{id:'rose',color:'#f05840',label:'Алый'},{id:'slate',color:'#6888d0',label:'Сталь'},{id:'copper',color:'#c87840',label:'Медь'}];
@@ -489,17 +586,169 @@ window.toggleTheme=function(l){document.body.classList.toggle('light',l);localSt
 function showLogin(){
   document.getElementById('login-screen').style.display='flex';
   document.getElementById('app').style.display='none';
-  document.getElementById('login-grid').innerHTML=USER_KEYS.map(k=>{
+  const st=document.getElementById('login-status');
+  if(currentUser&&USERS[currentUser]){
+    st.style.display='block';
+    st.style.setProperty('--login-color',USERS[currentUser].color||'var(--accent)');
+    st.innerHTML='Вы вошли как '+USERS[currentUser].name+'<span class="login-status-hint">Нажмите, чтобы настроить цвет и эмодзи</span>';
+    const tv=document.getElementById('tracker-version');if(tv)tv.textContent=TRACKER_VERSION+' · '+TRACKER_DEVELOPER;
+  }else{st.style.display='none';const tv=document.getElementById('tracker-version');if(tv)tv.textContent=TRACKER_VERSION+' · '+TRACKER_DEVELOPER;}
+  const cards=visibleUserKeys().map(k=>{
     const u=USERS[k];
-    return `<div class="login-card" onclick="login('${k}')" style="border-color:${u.color}33">
+    const passBtn=canManagePassword(k)?`<div class="login-pass-actions"><button class="login-action" title="Пароль" onclick="openPasswordModal(event,'${k}')">🔑</button></div>`:'';
+    const manage=(canHideMember(k)||canDeleteMember(k))?`<div class="login-actions">
+      ${canHideMember(k)?`<button class="login-action" title="${u.hidden?'Показать':'Скрыть'}" onclick="toggleMemberHidden(event,'${k}')">${u.hidden?'👁':'🙈'}</button>`:''}
+      ${canDeleteMember(k)?`<button class="login-action" title="Удалить" onclick="confirmDeleteMember(event,'${k}')">×</button>`:''}
+    </div>`:'';
+    return `<div class="login-card${u.hidden?' hidden-user':''}" onclick="login('${k}')" style="border-color:${u.color}33">
+      ${passBtn}
+      ${manage}
       <div class="lc-avatar" style="background:${u.color}">${u.emoji}</div>
       <div class="lc-name">${u.name}</div>
-      <div class="lc-role">${u.role||(u.canEdit?'Переводчик':'Только просмотр')}</div>
+      <div class="lc-role">${roleTitle(u)}</div>
     </div>`;
-  }).join('');
+  });
+  if(canManageMembers())cards.push(`<div class="login-card add-member-card" onclick="openMemberModal()">
+    <div class="lc-avatar" style="background:var(--surface2);color:var(--accent);border:1px dashed var(--accent)">＋</div>
+    <div class="lc-name">Добавить участника</div>
+    <div class="lc-role">Переводчик, таймингёр или редактор</div>
+  </div>`);
+  document.getElementById('login-grid').innerHTML=cards.join('');
 }
-window.login=function(k){currentUser=k;storeUser(k);document.getElementById('login-screen').style.display='none';document.getElementById('app').style.display='block';renderAll();};
-window.switchUser=function(){currentUser=null;clearStoredUser();showLogin();};
+window.login=function(k){
+  const u=USERS[k];if(!u)return;
+  if(!hasSergeySession()&&!hasStoredUserSession(k)){
+    openLoginPasswordModal(k);
+    return;
+  }
+  completeLogin(k);
+};
+function completeLogin(k){
+  const u=USERS[k];if(!u)return;
+  if(k==='sergey')localStorage.setItem('tr_admin','sergey');
+  currentUser=k;storeUser(k);document.getElementById('login-screen').style.display='none';document.getElementById('app').style.display='block';renderAll();
+}
+window.switchUser=function(){showLogin();};
+
+let pendingLoginKey=null;
+window.openLoginPasswordModal=function(k){
+  pendingLoginKey=k;
+  document.getElementById('login-pass-title').textContent='Вход — '+(USERS[k]?.name||'');
+  document.getElementById('login-pass-input').value='';
+  document.getElementById('login-pass-error').style.display='none';
+  document.getElementById('login-pass-modal').style.display='flex';
+  setTimeout(()=>document.getElementById('login-pass-input').focus(),50);
+};
+window.closeLoginPasswordModal=function(){document.getElementById('login-pass-modal').style.display='none';pendingLoginKey=null;};
+window.confirmLoginPassword=function(){
+  if(!pendingLoginKey||!USERS[pendingLoginKey])return;
+  const pass=document.getElementById('login-pass-input').value;
+  if(pass!==USERS[pendingLoginKey].password){
+    document.getElementById('login-pass-error').style.display='block';
+    return;
+  }
+  const k=pendingLoginKey;
+  closeLoginPasswordModal();
+  completeLogin(k);
+};
+
+window.openMemberModal=function(){
+  if(!canManageMembers())return;
+  document.getElementById('mf-name').value='';
+  document.getElementById('mf-role').value='translator';
+  document.getElementById('member-pass-result').style.display='none';
+  document.getElementById('member-save-btn').style.display='inline-flex';
+  document.getElementById('member-modal').style.display='flex';
+};
+window.closeMemberModal=function(){document.getElementById('member-modal').style.display='none';};
+window.saveMember=function(){
+  if(!canManageMembers())return;
+  const name=document.getElementById('mf-name').value.trim();if(!name){alert('Введите имя');return;}
+  const role=document.getElementById('mf-role').value;
+  const key=slugifyName(name), pass=generatePassword();
+  const palette=['#5ba8f5','#e8739a','#4ec068','#f0a030','#e07070','#a060f0','#c87840','#6888d0'];
+  const data={name,password:pass,color:palette[USER_KEYS.length%palette.length],emoji:role==='editor'?'✨':role==='timer'?'🎬':'🌸',canEdit:role!=='editor',role:role==='editor'?'Редактор':role==='timer'?'Таймингёр':'Переводчик',ts:Date.now(),createdBy:currentUser};
+  set(ref(db,'tr_users/'+key),data);
+  USERS[key]=data;syncUsers();
+  document.getElementById('member-pass-value').textContent=pass;
+  document.getElementById('member-pass-result').style.display='block';
+  document.getElementById('member-save-btn').style.display='none';
+  showLogin();
+};
+window.toggleMemberHidden=function(e,k){
+  e.stopPropagation();if(!canHideMember(k))return;
+  update(ref(db,'tr_users/'+k),{hidden:!USERS[k].hidden});
+  USERS[k].hidden=!USERS[k].hidden;syncUsers();showLogin();if(currentUser&&document.getElementById('app').style.display!=='none')renderAll();
+};
+window.confirmDeleteMember=function(e,k){
+  e.stopPropagation();if(!canDeleteMember(k))return;
+  showConfirm('Удалить участника?',`Профиль «${USERS[k].name}» будет убран из трекера.`,()=>{update(ref(db,'tr_users/'+k),{deleted:true,hidden:true});USERS[k].deleted=true;syncUsers();showLogin();if(currentUser&&document.getElementById('app').style.display!=='none')renderAll();});
+};
+let passwordMemberKey=null;
+window.openPasswordModal=function(e,k){
+  e.stopPropagation();if(!canManagePassword(k))return;
+  passwordMemberKey=k;
+  document.getElementById('password-modal-title').textContent='Пароль — '+USERS[k].name;
+  document.getElementById('password-current').textContent=USERS[k].password||'—';
+  document.getElementById('password-new').value='';
+  document.getElementById('password-modal').style.display='flex';
+};
+window.closePasswordModal=function(){document.getElementById('password-modal').style.display='none';passwordMemberKey=null;};
+window.randomizeMemberPassword=function(){
+  if(!passwordMemberKey||!canManagePassword(passwordMemberKey))return;
+  document.getElementById('password-new').value=generatePassword();
+};
+window.saveMemberPassword=function(){
+  if(!passwordMemberKey||!canManagePassword(passwordMemberKey))return;
+  const next=(document.getElementById('password-new').value.trim()||generatePassword());
+  update(ref(db,'tr_users/'+passwordMemberKey),{password:next});
+  USERS[passwordMemberKey].password=next;
+  document.getElementById('password-current').textContent=next;
+  document.getElementById('password-new').value='';
+  showLogin();
+};
+
+const PROFILE_COLORS=['#5ba8f5','#e8739a','#4ec068','#f0a030','#e07070','#a060f0','#c87840','#6888d0','#3d9cf0','#f05840','#d4a853','#3dd68c'];
+const PROFILE_EMOJIS=['🦋','🌸','🌿','🌻','🎬','✨','💫','🌙','⭐','🔥','🍑','🍒','🧸','🐈','🦊','🐰','💎','🎀'];
+let profileColor=null,profileEmoji=null;
+function usedByOtherUsers(prop){
+  return new Set(USER_KEYS.filter(k=>k!==currentUser&&!USERS[k].hidden&&!USERS[k].deleted).map(k=>USERS[k][prop]).filter(Boolean));
+}
+function renderProfileChoices(){
+  const u=USERS[currentUser];if(!u)return;
+  const usedColors=usedByOtherUsers('color');
+  const usedEmojis=usedByOtherUsers('emoji');
+  profileColor=profileColor||u.color;
+  profileEmoji=profileEmoji||u.emoji;
+  document.getElementById('profile-colors').innerHTML=PROFILE_COLORS.filter(c=>c===u.color||!usedColors.has(c)).map(c=>
+    `<button class="choice-btn${c===profileColor?' active':''}" style="background:${c}" onclick="selectProfileColor('${c}')" title="${c}"></button>`
+  ).join('');
+  document.getElementById('profile-emojis').innerHTML=PROFILE_EMOJIS.filter(e=>e===u.emoji||!usedEmojis.has(e)).map(e=>
+    `<button class="choice-btn${e===profileEmoji?' active':''}" onclick="selectProfileEmoji('${e}')">${e}</button>`
+  ).join('');
+}
+window.openProfileModal=function(){
+  if(!currentUser||!USERS[currentUser]||document.getElementById('login-status').style.display==='none')return;
+  profileColor=USERS[currentUser].color;
+  profileEmoji=USERS[currentUser].emoji;
+  renderProfileChoices();
+  document.getElementById('profile-modal').style.display='flex';
+};
+window.closeProfileModal=function(){document.getElementById('profile-modal').style.display='none';};
+window.selectProfileColor=function(c){profileColor=c;renderProfileChoices();};
+window.selectProfileEmoji=function(e){profileEmoji=e;renderProfileChoices();};
+window.saveProfileIcon=function(){
+  if(!currentUser||!USERS[currentUser])return;
+  const usedColors=usedByOtherUsers('color');
+  const usedEmojis=usedByOtherUsers('emoji');
+  if(usedColors.has(profileColor)||usedEmojis.has(profileEmoji)){alert('Этот цвет или эмодзи уже занят.');renderProfileChoices();return;}
+  update(ref(db,'tr_users/'+currentUser),{color:profileColor,emoji:profileEmoji});
+  USERS[currentUser].color=profileColor;
+  USERS[currentUser].emoji=profileEmoji;
+  closeProfileModal();
+  showLogin();
+  if(document.getElementById('app').style.display!=='none')renderAll();
+};
 
 // ── RENDER ALL ────────────────────────────────────────────────────────────────
 window.setViewAll=function(val){
@@ -517,7 +766,7 @@ function renderViewToggle(){
   if(currentUser==='kristina'){
     // dropdown for kristina
     const opts='<option value="all">Все переводчики</option>'+
-      USER_KEYS.filter(k=>k!=='kristina').map(k=>`<option value="${k}">${USERS[k].name}</option>`).join('');
+      activeWorkUserKeys().map(k=>`<option value="${k}">${USERS[k].name}</option>`).join('');
     wrap.innerHTML=`<select onchange="setViewAll(this.value)" style="font-size:13px;padding:5px 10px;background:var(--surface2);border:1px solid var(--border2);border-radius:8px;color:var(--text);outline:none;font-family:'DM Sans',sans-serif">${opts}</select>`;
     // default for kristina = all
     viewAll='all';
@@ -617,6 +866,7 @@ function renderCalendar(){
 
 function renderDayEntries(ds){
   let es=getDayEntries(ds);if(!es.length)return'';
+  es=es.filter(e=>!USERS[e.user]?.hidden&&!USERS[e.user]?.deleted);
   // filter by view mode
   if(viewAll===false)es=es.filter(e=>e.user===currentUser);
   else if(viewAll!==true&&viewAll!=='all')es=es.filter(e=>e.user===viewAll);
@@ -938,30 +1188,30 @@ window.undoHist=function(mk,hk){
 
 
 // ── STAT USER FILTER ─────────────────────────────────────────────────────────
-let statUserFilter=new Set(USER_KEYS.filter(k=>k!=='kristina')); // all by default
+let statUserFilter=new Set(activeWorkUserKeys()); // all by default
 function initStatUserFilter(){
   const container=document.getElementById('stat-usr-items');
   if(!container)return;
-  container.innerHTML=USER_KEYS.filter(k=>k!=='kristina').map(k=>{
+  container.innerHTML=activeWorkUserKeys().map(k=>{
     const u=USERS[k];
     return `<label style="display:flex;align-items:center;gap:8px;padding:6px 8px;cursor:pointer;font-size:14px;border-radius:6px" onmouseenter="this.style.background='var(--surface2)'" onmouseleave="this.style.background=''"><input type="checkbox" id="su-${k}" ${statUserFilter.has(k)?'checked':''} onchange="statUserToggle('${k}',this.checked)" style="width:14px;height:14px"><span style="color:${u.color};font-weight:500">${u.name}</span></label>`;
   }).join('');
 }
 window.toggleStatUserDD=function(){var dd=document.getElementById("stat-usr-dd");if(dd)dd.style.display=dd.style.display==="none"?"block":"none";};window.statUserToggle=function(key,checked){
   if(key==='all'){
-    const ks=USER_KEYS.filter(k=>k!=='kristina');
+    const ks=activeWorkUserKeys();
     if(checked){ks.forEach(k=>statUserFilter.add(k));}else statUserFilter.clear();
     ks.forEach(k=>{const el=document.getElementById('su-'+k);if(el)el.checked=checked;});
   } else {
     if(checked)statUserFilter.add(key);else statUserFilter.delete(key);
-    const allChecked=USER_KEYS.filter(k=>k!=='kristina').every(k=>statUserFilter.has(k));
+    const allChecked=activeWorkUserKeys().every(k=>statUserFilter.has(k));
     const allEl=document.getElementById('su-all');if(allEl)allEl.checked=allChecked;
   }
   // update label
   const label=document.getElementById('stat-usr-label');
   if(label){
-    const names=USER_KEYS.filter(k=>k!=='kristina'&&statUserFilter.has(k)).map(k=>USERS[k].name);
-    label.textContent=names.length===USER_KEYS.filter(k=>k!=='kristina').length?'Все переводчики':names.join(', ')||'Никто';
+    const names=activeWorkUserKeys().filter(k=>statUserFilter.has(k)).map(k=>USERS[k].name);
+    label.textContent=names.length===activeWorkUserKeys().length?'Все переводчики':names.join(', ')||'Никто';
   }
   renderStats();
 };
@@ -1007,7 +1257,7 @@ window.renderStats=function(){initStatUserFilter();
     const dsPadded=dsParts[0]+'-'+dsParts[1].padStart(2,'0')+'-'+dsParts[2].padStart(2,'0');
     if(dsPadded>=from&&dsPadded<=to){
       Object.values(day).forEach(e=>{
-        if(e&&typeof e==='object'&&e.user&&statUserFilter.has(e.user))entries.push({...e,date:dsPadded});
+        if(e&&typeof e==='object'&&e.user&&activeWorkUserKeys().includes(e.user)&&statUserFilter.has(e.user))entries.push({...e,date:dsPadded});
       });
     }
   });
@@ -1020,7 +1270,7 @@ window.renderStats=function(){initStatUserFilter();
   const tot={lines:0,parts:0,linesD:0,linesS:0,partsD:0,partsS:0};
   const projSet=new Set();
   const byUser={};
-  USER_KEYS.forEach(k=>{byUser[k]={lines:0,parts:0,linesD:0,linesS:0,partsD:0,partsS:0,projects:new Set()};});
+  activeWorkUserKeys().forEach(k=>{byUser[k]={lines:0,parts:0,linesD:0,linesS:0,partsD:0,partsS:0,projects:new Set()};});
   entries.forEach(e=>{
     const isD=(projByName[e.project]||{}).type!=='show';
     const isFilm=(projByName[e.project]||{}).type==='film';
@@ -1035,8 +1285,8 @@ window.renderStats=function(){initStatUserFilter();
       else{bu.linesS+=ls;bu.partsS++;if(isBigShow){if(!bu.bigShow)bu.bigShow=[];bu.bigShow.push(e);}}
     }
   });
-  window._bigShowByUser=Object.fromEntries(USER_KEYS.map(k=>[k,(byUser[k]?.bigShow||[])]));
-  window._bigDramaByUser=Object.fromEntries(USER_KEYS.map(k=>[k,(byUser[k]?.bigDrama||[])]));
+  window._bigShowByUser=Object.fromEntries(activeWorkUserKeys().map(k=>[k,(byUser[k]?.bigShow||[])]));
+  window._bigDramaByUser=Object.fromEntries(activeWorkUserKeys().map(k=>[k,(byUser[k]?.bigDrama||[])]));
 
   const sc=document.getElementById('stats-content');
   sc.innerHTML=`
@@ -1052,7 +1302,7 @@ window.renderStats=function(){initStatUserFilter();
         <div>Строк (д)</div><div>Частей (д)</div><div>Строк (ш)</div><div>Частей (ш)</div>
         <div>Записей</div>
       </div>
-      ${USER_KEYS.filter(k=>k!=='kristina').sort((a,b)=>byUser[b].lines-byUser[a].lines).map(k=>{
+      ${activeWorkUserKeys().sort((a,b)=>byUser[b].lines-byUser[a].lines).map(k=>{
         const u=USERS[k];const s=byUser[k];
         return `<div class="tbl-row stats-cols">
           <div style="display:flex;align-items:center;gap:7px;text-align:left"><div style="width:9px;height:9px;border-radius:50%;background:${u.color};flex-shrink:0"></div>${u.name}</div>
@@ -1119,7 +1369,7 @@ function renderSidebarStats(){
     Object.values(day).forEach(e=>{if(e&&e.user&&bu[e.user])bu[e.user].lines+=e.lines||0;});
   });
   const el=document.getElementById('sidebar-stats');
-  const has=USER_KEYS.filter(k=>bu[k].lines>0);
+  const has=activeWorkUserKeys().filter(k=>bu[k].lines>0);
   el.innerHTML=has.length?has.map(k=>{
     const u=USERS[k];
     return `<div class="stat-row"><div class="stat-label"><span class="stat-dot" style="background:${u.color}"></span>${u.name}</div><div class="stat-value">${bu[k].lines.toLocaleString()} стр.</div></div>`;
