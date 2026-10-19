@@ -118,6 +118,12 @@ header a[href="tracker.html"]{border-radius:999px!important;padding:8px 16px!imp
 .sidebar-add .s-inp{flex:1}
 .sidebar-filter-select{cursor:pointer;font-size:13px}
 .sidebar-filter-select option{background:var(--bg);color:var(--text)}
+.sidebar-filter-row{display:flex;gap:6px;align-items:stretch}
+.sidebar-filter-row .sidebar-filter-select{flex:0 0 118px;width:118px;min-width:0}
+.sidebar-filter-select:disabled{opacity:.45;cursor:default}
+.today-btn{flex:1;min-width:0;padding:0 14px;font:500 13px var(--font-body);border-radius:999px;border:1px solid var(--line);background:color-mix(in srgb,var(--surface2) 70%,transparent);color:var(--text2);cursor:pointer;transition:background .2s,color .2s,border-color .2s,box-shadow .2s;white-space:nowrap}
+.today-btn:hover{border-color:var(--accent);color:var(--text)}
+.today-btn.active{background:var(--accent);border-color:var(--accent);color:var(--btn-text,#0f0e0c);font-weight:600;box-shadow:0 8px 20px -10px var(--accent)}
 .btn-sm{width:40px;height:40px;padding:0;font-size:20px;line-height:1;border-radius:50%;background:var(--accent);color:var(--btn-text,#0f0e0c);border:none;cursor:pointer;font-weight:600;flex-shrink:0;transition:transform .2s var(--ease),box-shadow .2s;box-shadow:0 8px 20px -8px var(--accent)}
 .btn-sm:hover{transform:rotate(90deg) scale(1.06)}
 .sidebar-group{padding:.35rem .75rem .35rem;flex-shrink:0}
@@ -461,12 +467,15 @@ select option{background:var(--bg);color:var(--text)}
         <button class="btn-sm" onclick="addDrama()">+</button>
       </div>
       <input class="s-inp" placeholder="Поиск дорам…" oninput="filterDramas(this.value)">
-      <select class="sidebar-filter-select" id="airday-filter" onchange="renderSidebar()">
-        <option value="">Все дни</option>
-        <option value="mn-tu">ПН-ВТ</option>
-        <option value="wd-th">СР-ЧТ</option>
-        <option value="fr-su">ПТ-ВС</option>
-      </select>
+      <div class="sidebar-filter-row">
+        <select class="sidebar-filter-select" id="airday-filter" onchange="renderSidebar()">
+          <option value="">Все дни</option>
+          <option value="mn-tu">ПН-ВТ</option>
+          <option value="wd-th">СР-ЧТ</option>
+          <option value="fr-su">ПТ-ВС</option>
+        </select>
+        <button class="today-btn" id="today-btn" onclick="toggleToday()" aria-pressed="false">Сегодня</button>
+      </div>
     </div>
     <div class="sidebar-group">
       <div class="sidebar-label" onclick="toggleGroup('active')">Текущие<div class="sidebar-label-right"><span class="sidebar-label-count" id="count-active">0</span><span class="sidebar-label-arrow" id="arrow-active">▾</span></div></div>
@@ -754,9 +763,17 @@ function expandGroup(g){
 }
 
 // SIDEBAR
+let todayOnly=false;
+function todayAirday(){const w=new Date().getDay();return w===1||w===2?'mn-tu':w===3||w===4?'wd-th':'fr-su';}
+window.toggleToday=function(){todayOnly=!todayOnly;renderSidebar();};
 window.renderSidebar=function(){
   const q=dramaFilter.toLowerCase();
-  const af=document.getElementById('airday-filter')?.value||'';
+  const selEl=document.getElementById('airday-filter');
+  const af=todayOnly?todayAirday():(selEl?.value||'');
+  if(selEl)selEl.disabled=todayOnly;
+  const tb=document.getElementById('today-btn');
+  if(tb){tb.classList.toggle('active',todayOnly);tb.setAttribute('aria-pressed',todayOnly);}
+  ['done','trash'].forEach(g=>{const el=document.getElementById('drama-list-'+g);if(el&&el.parentElement)el.parentElement.style.display=todayOnly?'none':'';});
   let keys=Object.keys(state.dramas);
   if(q)keys=keys.filter(k=>(state.dramas[k].name||k).toLowerCase().includes(q));
   const active=keys.filter(k=>{const d=state.dramas[k];return(!d.status||d.status==='ongoing')&&(!af||d.airday===af);});
