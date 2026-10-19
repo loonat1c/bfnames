@@ -179,6 +179,11 @@ main{flex:1;overflow-y:auto;scrollbar-width:thin;padding:.25rem .5rem 2.5rem;min
 .no-drama{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;color:var(--text3);gap:18px;text-align:center}
 .no-drama .big{font-family:'Noto Sans KR',var(--font-display),sans-serif;font-weight:900;font-size:clamp(48px,10vw,120px);line-height:1;letter-spacing:-.05em;
   background:linear-gradient(120deg,var(--accent2),var(--accent) 55%,var(--vy-text));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero-caret{display:inline-block;width:0;height:1em;vertical-align:top;position:relative}
+.hero-caret::after{content:"";position:absolute;left:.03em;top:.1em;width:max(2px,.028em);height:.8em;border-radius:2px;background:linear-gradient(180deg,var(--accent2),var(--accent) 55%,var(--vy-text));opacity:.7;animation:caretBlink 1s steps(1) infinite}
+@keyframes caretBlink{50%{opacity:0}}
+.hero-sub{font-size:16px;color:var(--text3);opacity:0;transform:translateY(6px);transition:opacity .35s var(--ease),transform .35s var(--ease)}
+.hero-sub.show{opacity:1;transform:none}
 
 /* ── TABS ── */
 .tabs{display:inline-flex;gap:4px;padding:5px;align-self:flex-start;max-width:100%;overflow-x:auto;scrollbar-width:none;
@@ -409,7 +414,7 @@ select option{background:var(--bg);color:var(--text)}
 </style>
 </head>
 <body>
-<div id="loading">연결 중…</div>
+<div id="loading">.</div>
 <div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
 
 <header>
@@ -526,8 +531,8 @@ select option{background:var(--bg);color:var(--text)}
 
   <main>
     <div id="no-drama" class="no-drama">
-      <div class="big">배디스트<br>피메일즈</div>
-      <div style="font-size:16px;color:var(--text3)">Выбери дораму слева или создай новую</div>
+      <div class="big" id="hero-big" aria-label="배디스트 피메일즈">배디스트<br>피메일즈</div>
+      <div class="hero-sub" id="hero-sub">Выбери дораму слева или создай новую</div>
     </div>
     <div id="drama-view" style="display:none" class="drama-view-inner">
       <div class="tabs">
@@ -787,7 +792,7 @@ window.selectDrama=function(id){
 };
 
 // DELETE DRAMA
-function doDelete(id){remove(ref(db,`dramas/${id}`));if(state.currentDrama===id){state.currentDrama=null;document.getElementById('no-drama').style.display='';document.getElementById('drama-view').style.display='none';}}
+function doDelete(id){remove(ref(db,`dramas/${id}`));if(state.currentDrama===id){state.currentDrama=null;document.getElementById('no-drama').style.display='';document.getElementById('drama-view').style.display='none';runHeroTyping();}}
 window.confirmDeleteDrama=function(id){const name=(state.dramas[id]||{}).name||id;showConfirm('Удалить навсегда?',`«${name}» — все данные будут удалены без восстановления.`,()=>doDelete(id));};
 window.confirmDeleteCurrentDrama=function(){if(state.currentDrama)confirmDeleteDrama(state.currentDrama);};
 
@@ -1711,6 +1716,34 @@ document.addEventListener('click',e=>{
   if(w&&!w.contains(e.target))document.getElementById('presence-panel')?.classList.remove('open');
 });
 
+// ── HERO TYPING ──
+const HERO_TEXT='배디스트\n피메일즈';
+let heroTimer=null;
+function heroRender(n,noCaret){
+  const big=document.getElementById('hero-big');if(!big)return;
+  const t=[...HERO_TEXT],f=s=>s.replace(/\n/g,'<br>');
+  big.innerHTML=f(t.slice(0,n).join(''))+(noCaret?'':'<span class="hero-caret"></span>')+'<span style="visibility:hidden">'+f(t.slice(n).join(''))+'</span>';
+}
+function runHeroTyping(){
+  clearTimeout(heroTimer);
+  const sub=document.getElementById('hero-sub');if(!sub)return;
+  const t=[...HERO_TEXT];
+  sub.classList.remove('show');
+  if(window.matchMedia('(prefers-reduced-motion:reduce)').matches){heroRender(t.length,true);sub.classList.add('show');return;}
+  let n=0;heroRender(0);
+  const step=()=>{
+    n++;if(t[n-1]==='\n')n++;
+    heroRender(n);
+    if(n<t.length){heroTimer=setTimeout(step,130+Math.random()*70);}
+    else{
+      sub.classList.add('show');
+      heroTimer=setTimeout(()=>heroRender(t.length,true),1000);
+    }
+  };
+  heroTimer=setTimeout(step,300);
+}
+heroRender(0); // спрятать статичный текст до старта
+
 // ── ВХОД ПО КОДУ ─────────────────────────────────────────────────────────────
 const AUTH_EMAIL='basic@bfnames.app';   // логин (подставляется сам)
 const PIN_LEN=4;                         // длина кода; пароль в Firebase = 'bf'+код
@@ -1758,7 +1791,10 @@ async function submitPin(){
 }
 onAuthStateChanged(auth,user=>{
   if(user){
-    if(!appStarted){appStarted=true;startDramas();startSchedule();startPresence();}
+    if(!appStarted){
+      appStarted=true;startDramas();startSchedule();startPresence();
+      setTimeout(runHeroTyping,authEl.classList.contains('show')?1100:400);
+    }
     if(authEl.classList.contains('show')){
       authDone=true;dotsEl.classList.remove('busy');dotsEl.classList.add('ok');
       setTimeout(()=>{authEl.classList.add('leave');setTimeout(()=>authEl.classList.remove('show','leave'),560);},450);
