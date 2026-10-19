@@ -180,7 +180,7 @@ main{flex:1;overflow-y:auto;scrollbar-width:thin;padding:.25rem .5rem 2.5rem;min
 .no-drama .big{font-family:'Noto Sans KR',var(--font-display),sans-serif;font-weight:900;font-size:clamp(48px,10vw,120px);line-height:1;letter-spacing:-.05em;
   background:linear-gradient(120deg,var(--accent2),var(--accent) 55%,var(--vy-text));-webkit-background-clip:text;background-clip:text;color:transparent}
 .hero-caret{display:inline-block;width:0;height:1em;vertical-align:top;position:relative}
-.hero-caret::after{content:"";position:absolute;left:.03em;top:.1em;width:.055em;height:.8em;border-radius:2px;background:var(--accent);animation:caretBlink 1s steps(1) infinite}
+.hero-caret::after{content:"";position:absolute;left:.03em;top:.1em;width:max(2px,.028em);height:.8em;border-radius:2px;background:linear-gradient(180deg,var(--accent2),var(--accent) 55%,var(--vy-text));opacity:.7;animation:caretBlink 1s steps(1) infinite}
 @keyframes caretBlink{50%{opacity:0}}
 .hero-sub{font-size:16px;color:var(--text3);opacity:0;transform:translateY(6px);transition:opacity .35s var(--ease),transform .35s var(--ease)}
 .hero-sub.show{opacity:1;transform:none}
