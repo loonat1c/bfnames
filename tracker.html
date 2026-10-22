@@ -678,6 +678,8 @@ window.setViewAll=function(val){
   else if(val===false)viewAll=false; // checkbox unchecked = mine
   else viewAll=val;                  // string = user key or 'all'
   renderCalendar();
+  const ic=document.querySelectorAll('#view-toggle-wrap .view-toggle-icon');
+  if(ic.length===2){ic[0].classList.toggle('dim',viewAll!==false);ic[1].classList.toggle('dim',viewAll===false);}
 };
 
 function renderViewToggle(){
