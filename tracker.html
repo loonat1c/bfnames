@@ -70,7 +70,22 @@ header{position:sticky;top:0;height:68px;padding:0 1.25rem;display:flex;align-it
 .toggle-switch input:checked+.toggle-track{background:var(--accent);border-color:var(--accent)}
 .toggle-thumb{position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:var(--text3);transition:transform .25s var(--ease),background .25s}
 .toggle-switch input:checked~.toggle-thumb{transform:translateX(18px);background:#fff}
-.toggle-icon{font-size:14px;color:var(--text2)}
+.toggle-icon{display:inline-flex;color:var(--text2)}
+.toggle-icon .ic{width:16px;height:16px}
+.ic{width:1.15em;height:1.15em;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;vertical-align:-.2em;flex-shrink:0}
+.nav-icon .ic{width:18px;height:18px;vertical-align:middle}
+.ep-btn .ic{width:12px;height:12px;vertical-align:-2px;stroke-width:2.2}
+.proj-btn .ic{width:16px;height:16px;vertical-align:middle}
+.cal-btn .ic{width:18px;height:18px;vertical-align:middle}
+.view-toggle-icon .ic{width:16px;height:16px;vertical-align:middle}
+.warn-ic{display:inline-flex;vertical-align:middle;color:#f0a030;cursor:pointer}
+.warn-ic .ic{width:15px;height:15px}
+.modal-title .ic{color:#f0a030;margin-right:6px;vertical-align:-3px}
+.locked-badge .ic,.lock-btn .ic,.h-undo .ic,.back-btn .ic{width:14px;height:14px}
+.add-entry-btn .ic{width:14px;height:14px;stroke-width:2.2}
+.dd-caret .ic,.done-toggle .ic{width:12px;height:12px}
+.done-toggle .ic{transition:transform .25s var(--ease)}
+.lc-avatar{font-family:var(--font-display);font-weight:500;letter-spacing:-.02em}
 .theme-toggle{display:flex;align-items:center;gap:7px}
 .palette-wrap{position:relative}
 .palette-btn{display:flex;align-items:center;gap:8px;padding:7px 14px;border:1px solid var(--line);border-radius:999px;background:var(--glass);color:var(--text2);font:500 13px var(--font-body);cursor:pointer;transition:border-color .2s,color .2s}
@@ -97,7 +112,7 @@ header{position:sticky;top:0;height:68px;padding:0 1.25rem;display:flex;align-it
 @keyframes cardIn{from{opacity:0;transform:translateY(14px)}}
 .login-card:hover{transform:translateY(-4px);border-color:color-mix(in srgb,var(--uc) 60%,transparent);box-shadow:var(--shadow),0 18px 40px -20px var(--uc)}
 .login-card:active{transform:scale(.97)}
-.lc-avatar{width:60px;height:60px;border-radius:50%;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-size:28px;color:#fff;box-shadow:0 0 0 4px color-mix(in srgb,var(--uc) 22%,transparent)}
+.lc-avatar{width:60px;height:60px;border-radius:50%;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-size:24px;color:#fff;background-image:linear-gradient(135deg,rgba(255,255,255,.28),transparent 60%);box-shadow:0 0 0 4px color-mix(in srgb,var(--uc) 22%,transparent)}
 .lc-name{font-size:16px;font-weight:600;color:var(--text)}
 .lc-role{font-size:12.5px;color:var(--text3);margin-top:3px}
 
@@ -330,11 +345,34 @@ body.light input[type=date]{color-scheme:light}
 </style>
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="16.5" rx="3"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4"/></symbol>
+<symbol id="i-layers" viewBox="0 0 24 24"><path d="M12 3 3 8l9 5 9-5-9-5Z"/><path d="m3 12.5 9 5 9-5"/><path d="m3 17 9 5 9-5"/></symbol>
+<symbol id="i-chart" viewBox="0 0 24 24"><path d="M5 20v-8M12 20V4M19 20v-11"/></symbol>
+<symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+<symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+<symbol id="i-moon" viewBox="0 0 24 24"><path d="M21 13A9 9 0 1 1 11 3a7 7 0 0 0 10 10Z"/></symbol>
+<symbol id="i-lock" viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="3"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></symbol>
+<symbol id="i-unlock" viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="3"/><path d="M8 11V7a4 4 0 0 1 7.5-2"/></symbol>
+<symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></symbol>
+<symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.6a3.5 3.5 0 0 1 0 6.8M18.5 14.5a6.5 6.5 0 0 1 3 5.5"/></symbol>
+<symbol id="i-pencil" viewBox="0 0 24 24"><path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16v4Z"/><path d="m13.5 6.5 4 4"/></symbol>
+<symbol id="i-move" viewBox="0 0 24 24"><path d="M7 17 17 7M8 7h9v9"/></symbol>
+<symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+<symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
+<symbol id="i-undo" viewBox="0 0 24 24"><path d="M9 14 4 9l5-5"/><path d="M4 9h10a6 6 0 0 1 0 12h-3"/></symbol>
+<symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 3.5 2.5 20h19L12 3.5Z"/><path d="M12 10v4.5M12 17.5v.01"/></symbol>
+<symbol id="i-chev-l" viewBox="0 0 24 24"><path d="m15 5-7 7 7 7"/></symbol>
+<symbol id="i-chev-r" viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></symbol>
+<symbol id="i-chev-d" viewBox="0 0 24 24"><path d="m5 9 7 7 7-7"/></symbol>
+<symbol id="i-arrow-l" viewBox="0 0 24 24"><path d="M19 12H5m6-6-6 6 6 6"/></symbol>
+</defs></svg>
 <div id="loading">연결 중…</div>
 
 <header>
   <div class="logo">
-    <a href="index.html" class="back-btn">← Трекер</a>
+    <a href="index.html" class="back-btn"><svg class="ic" aria-hidden="true"><use href="#i-arrow-l"/></svg> Трекер</a>
     <span class="logo-text">Переводы</span>
   </div>
   <div class="header-right">
@@ -344,9 +382,9 @@ body.light input[type=date]{color-scheme:light}
       <div class="palette-dropdown" id="pal-dd"><div class="palette-grid" id="pal-grid"></div></div>
     </div>
     <div class="theme-toggle">
-      <span class="toggle-icon">☽</span>
+      <span class="toggle-icon"><svg class="ic" aria-hidden="true"><use href="#i-moon"/></svg></span>
       <label class="toggle-switch"><input type="checkbox" id="theme-chk" onchange="toggleTheme(this.checked)"><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
-      <span class="toggle-icon">☀</span>
+      <span class="toggle-icon"><svg class="ic" aria-hidden="true"><use href="#i-sun"/></svg></span>
     </div>
   </div>
 </header>
@@ -369,10 +407,10 @@ body.light input[type=date]{color-scheme:light}
       </div>
       <div class="sidebar-section nav-section">
         <div class="section-title">Навигация</div>
-        <button class="nav-item active" id="nav-calendar" onclick="showPage('calendar')"><span class="nav-icon">📅</span>Календарь</button>
-        <button class="nav-item" id="nav-projects" onclick="showPage('projects')"><span class="nav-icon">🗂</span>Проекты</button>
-        <button class="nav-item" id="nav-stats" onclick="showPage('stats')"><span class="nav-icon">📊</span>Статистика</button>
-        <button class="nav-item" id="nav-history" onclick="showPage('history')"><span class="nav-icon">🕐</span>История</button>
+        <button class="nav-item active" id="nav-calendar" onclick="showPage('calendar')"><span class="nav-icon"><svg class="ic" aria-hidden="true"><use href="#i-calendar"/></svg></span>Календарь</button>
+        <button class="nav-item" id="nav-projects" onclick="showPage('projects')"><span class="nav-icon"><svg class="ic" aria-hidden="true"><use href="#i-layers"/></svg></span>Проекты</button>
+        <button class="nav-item" id="nav-stats" onclick="showPage('stats')"><span class="nav-icon"><svg class="ic" aria-hidden="true"><use href="#i-chart"/></svg></span>Статистика</button>
+        <button class="nav-item" id="nav-history" onclick="showPage('history')"><span class="nav-icon"><svg class="ic" aria-hidden="true"><use href="#i-clock"/></svg></span>История</button>
       </div>
       <div class="sidebar-section">
         <div class="section-title">Этот месяц</div>
@@ -385,15 +423,15 @@ body.light input[type=date]{color-scheme:light}
       <div id="page-calendar">
         <div class="cal-header">
           <div class="cal-nav">
-            <button class="cal-btn" onclick="calNav(-1)">‹</button>
+            <button class="cal-btn" onclick="calNav(-1)" aria-label="Назад"><svg class="ic" aria-hidden="true"><use href="#i-chev-l"/></svg></button>
             <div class="cal-title" id="cal-title"></div>
-            <button class="cal-btn" onclick="calNav(1)">›</button>
+            <button class="cal-btn" onclick="calNav(1)" aria-label="Вперёд"><svg class="ic" aria-hidden="true"><use href="#i-chev-r"/></svg></button>
           </div>
           <div class="cal-tools">
             <div class="view-toggle" id="view-toggle-wrap"></div>
             <button class="cal-today-btn" onclick="calToday()">Сегодня</button>
             <button class="lock-btn" id="month-lock-btn" onclick="toggleMonthLock()"></button>
-            <span class="locked-badge" id="month-locked-badge">🔒 Месяц закрыт</span>
+            <span class="locked-badge" id="month-locked-badge"><svg class="ic" aria-hidden="true"><use href="#i-lock"/></svg> Месяц закрыт</span>
           </div>
         </div>
         <div class="cal-grid" id="cal-grid"></div>
@@ -432,7 +470,7 @@ body.light input[type=date]{color-scheme:light}
           <button class="btn" onclick="renderStats()">Показать</button>
           <div class="dd-wrap" id="stat-usr-wrap">
             <button class="dd-btn" id="stat-usr-btn" onclick="toggleStatUserDD()">
-              <span id="stat-usr-label">Все переводчики</span><span class="dd-caret">▾</span>
+              <span id="stat-usr-label">Все переводчики</span><span class="dd-caret"><svg class="ic" aria-hidden="true"><use href="#i-chev-d"/></svg></span>
             </button>
             <div class="dd-panel" id="stat-usr-dd" style="display:none">
               <div id="stat-usr-items"></div>
@@ -533,6 +571,7 @@ const USERS={
   kristina:{name:'Кристина',color:'#a060f0',emoji:'✨',canEdit:false,role:'Редактор'},
 };
 const USER_KEYS=Object.keys(USERS);
+const ico=(n)=>`<svg class="ic" aria-hidden="true"><use href="#i-${n}"/></svg>`;
 
 // Auth with 1-hour expiry via localStorage
 function getStoredUser(){
@@ -622,7 +661,7 @@ function showLogin(){
   document.getElementById('login-grid').innerHTML=USER_KEYS.map(k=>{
     const u=USERS[k];
     return `<div class="login-card" onclick="login('${k}')" style="--uc:${u.color}">
-      <div class="lc-avatar" style="background:${u.color}">${u.emoji}</div>
+      <div class="lc-avatar" style="background-color:${u.color}">${u.name.trim().charAt(0)}</div>
       <div class="lc-name">${u.name}</div>
       <div class="lc-role">${u.role||(u.canEdit?'Переводчик':'Только просмотр')}</div>
     </div>`;
@@ -653,15 +692,15 @@ function renderViewToggle(){
     // default for kristina = all
     viewAll='all';
   } else {
-    // toggle for regular users: viewAll=false → show mine (👤 active), viewAll=true → show all (👥 active)
+    // toggle for regular users: viewAll=false → show mine (user icon active), viewAll=true → show all (users icon active)
     const isMine=viewAll===false;
     wrap.innerHTML=`
-      <span class="view-toggle-icon${isMine?'':' dim'}" title="Только мои">👤</span>
+      <span class="view-toggle-icon${isMine?'':' dim'}" title="Только мои">${ico('user')}</span>
       <label class="vtoggle-switch">
         <input type="checkbox" id="vt-chk" onchange="setViewAll(this.checked)" ${isMine?'':'checked'}>
         <div class="vtoggle-track"></div><div class="vtoggle-thumb"></div>
       </label>
-      <span class="view-toggle-icon${isMine?' dim':''}" title="Все переводчики">👥</span>`;
+      <span class="view-toggle-icon${isMine?' dim':''}" title="Все переводчики">${ico('users')}</span>`;
   }
 }
 
@@ -720,7 +759,7 @@ function renderCalendar(){
   if(lockBtn){
     if(currentUser==='kristina'){
       lockBtn.style.display='inline-flex';
-      lockBtn.textContent=locked?'Открыть':'Закрыть';
+      lockBtn.innerHTML=(locked?ico('unlock')+' Открыть':ico('lock')+' Закрыть');
       lockBtn.className='lock-btn '+(locked?'is-locked':'is-open');
     } else {
       lockBtn.style.display='none';
@@ -748,7 +787,7 @@ function renderCalendar(){
     html+=`<div class="cal-day${other?' other-month':''}${isToday?' today':''}">
       <div class="cal-day-num">${d}</div>
       ${renderDayEntries(ds)}
-      ${canAdd?`<button class="add-entry-btn" onclick="openAddEntry(event,'${ds}')">+</button>`:''}
+      ${canAdd?`<button class="add-entry-btn" onclick="openAddEntry(event,'${ds}')" aria-label="Добавить">${ico('plus')}</button>`:''}
     </div>`;
   }
   document.getElementById('cal-grid').innerHTML=html;
@@ -764,9 +803,9 @@ function renderDayEntries(ds){
   const canEdit=USERS[currentUser].canEdit;
   return es.map(e=>{
     const u=USERS[e.user]||{color:'#888'};const isOwn=e.user===currentUser;
-    const eb=isOwn&&canEdit?`<button class="ep-btn" onclick="openEditEntry(event,'${e.key}','${ds}')">✎</button>`:'';
-    const mb=isOwn&&canEdit?`<button class="ep-btn ep-move" title="Перенести" onclick="openMoveEntry(event,'${e.key}','${ds}')">↗</button>`:'';
-    const db2=isOwn&&canEdit?`<button class="ep-btn ep-del" onclick="confirmDeleteEntry(event,'${e.key}','${ds}')">×</button>`:'';
+    const eb=isOwn&&canEdit?`<button class="ep-btn" onclick="openEditEntry(event,'${e.key}','${ds}')" title="Изменить">${ico('pencil')}</button>`:'';
+    const mb=isOwn&&canEdit?`<button class="ep-btn ep-move" title="Перенести" onclick="openMoveEntry(event,'${e.key}','${ds}')">${ico('move')}</button>`:'';
+    const db2=isOwn&&canEdit?`<button class="ep-btn ep-del" onclick="confirmDeleteEntry(event,'${e.key}','${ds}')" title="Удалить">${ico('x')}</button>`:'';
     const pt=e.part==='всё'?'всё':'часть '+e.part;
     const projType=(allProjects&&Object.values(allProjects).find(p=>p.name===e.project)||{}).type;
     return `<div class="entry-chip" style="--uc:${u.color}">
@@ -822,7 +861,7 @@ window.addProject=function(){
 
 var doneProjectsOpen=false;
 window.toggleDoneProjects=function(){doneProjectsOpen=!doneProjectsOpen;applyDoneProjectsState();};
-function applyDoneProjectsState(){var el=document.getElementById("done-projects-list");var ar=document.getElementById("done-projects-arrow");if(el)el.style.display=doneProjectsOpen?"flex":"none";if(ar)ar.textContent=doneProjectsOpen?"▴":"▾";}
+function applyDoneProjectsState(){var el=document.getElementById("done-projects-list");var ar=document.getElementById("done-projects-arrow");if(el)el.style.display=doneProjectsOpen?"flex":"none";if(ar)ar.style.transform=doneProjectsOpen?"rotate(180deg)":"";}
 function renderProjects(){
   const list=document.getElementById('projects-list');
   const items=Object.entries(allProjects).sort((a,b)=>{
@@ -838,8 +877,8 @@ function renderProjects(){
     const typeLabel=p.type==='show'?'Шоу':p.type==='film'?'Фильм':'Дорама';
     const typeCls=p.type==='show'?'type-show':p.type==='film'?'type-film':'type-drama';
     const canEdit=USERS[currentUser]?.canEdit||(currentUser==='kristina');
-    const doneBtn=canEdit?`<button class="proj-btn" onclick="toggleProjectStatus('${k}')" title="${p.status==='active'?'Завершить':'Вернуть'}">${p.status==='active'?'✓':'↩'}</button>`:'';
-    const delBtn=canEdit?`<button class="proj-btn danger" onclick="confirmDeleteProject('${k}')" title="Удалить">×</button>`:'';
+    const doneBtn=canEdit?`<button class="proj-btn" onclick="toggleProjectStatus('${k}')" title="${p.status==='active'?'Завершить':'Вернуть'}">${p.status==='active'?ico('check'):ico('undo')}</button>`:'';
+    const delBtn=canEdit?`<button class="proj-btn danger" onclick="confirmDeleteProject('${k}')" title="Удалить">${ico('x')}</button>`:'';
     return `<div class="project-item${p.status!=='active'?' done':''}">
       <div class="project-name">${p.name}</div>
       <span class="project-type ${typeCls}">${typeLabel}</span>
@@ -847,7 +886,7 @@ function renderProjects(){
       ${doneBtn}${delBtn}
     </div>`;
   }
-  const doneHtml=done.length?('<div class="done-toggle" onclick="toggleDoneProjects()"><span id="done-projects-arrow">▾</span>Завершённые ('+done.length+')</div><div id="done-projects-list" style="display:none;flex-direction:column;gap:8px">'+done.map(mkItem).join('')+'</div>'):'';
+  const doneHtml=done.length?('<div class="done-toggle" onclick="toggleDoneProjects()"><span id="done-projects-arrow" style="display:inline-flex">'+ico('chev-d')+'</span>Завершённые ('+done.length+')</div><div id="done-projects-list" style="display:none;flex-direction:column;gap:8px">'+done.map(mkItem).join('')+'</div>'):'';
   list.innerHTML=(active.length?active.map(mkItem).join(''):'<div class="empty">Нет активных проектов</div>')+doneHtml;setTimeout(applyDoneProjectsState,0);
 }
 
@@ -876,7 +915,7 @@ window.openAddEntry=function(e,ds){
   // check month lock
   const parts=ds.split('-');const dMk=parts[0]+'_'+parts[1];
   if(allMonthLocks[dMk]&&currentUser!=='kristina'){
-    alert('🔒 Редактор Кристина запретила добавление новых записей в данный месяц.');
+    alert('Редактор Кристина запретила добавление новых записей в данный месяц.');
     return;
   }
   editingEntryKey=null;pendingDate=ds;
@@ -933,7 +972,7 @@ window.saveEntry=function(){
       :conflict.type==='part'
       ?`${u.name}${cd} уже добавил(а) часть ${part} этого эпизода.`
       :`${u.name}${cd} уже добавил(а) часть «всё», что включает все части.`;
-    alert('⚠️ Конфликт: '+msg);
+    alert('Конфликт: '+msg);
     return;
   }
   const data={user:currentUser,project,episode,part,lines,ts:Date.now()};
@@ -1052,7 +1091,7 @@ window.renderHistory=function(){
     const d=new Date(h.ts);
     const t=d.toLocaleDateString('ru',{day:'2-digit',month:'2-digit'})+' '+d.toLocaleTimeString('ru',{hour:'2-digit',minute:'2-digit'});
     const canUndo=USERS[currentUser]?.canEdit;
-    const ub=canUndo?`<button class="h-undo" onclick="undoHist('${mk}','${k}')">↩ Отменить</button>`:'';
+    const ub=canUndo?`<button class="h-undo" onclick="undoHist('${mk}','${k}')">${ico('undo')} Отменить</button>`:'';
     return `<div class="history-item">
       <div class="h-dot" style="background:${u.color};color:${u.color}"></div>
       <div class="h-time">${t}</div>
@@ -1186,9 +1225,9 @@ window.renderStats=function(){initStatUserFilter();
           <div style="font-weight:600;color:var(--text)">${s.lines.toLocaleString()}</div>
           <div>${s.parts}</div>
           <div>${s.linesD.toLocaleString()}</div>
-          <div style='display:flex;align-items:center;justify-content:flex-end;gap:3px'>${s.partsD}${s.bigDrama&&s.bigDrama.length>0?`<span title='Части дорам с большим объёмом (>600 стр.)!' onclick='showBigPopup(window._bigDramaByUser["${k}"])' style='cursor:pointer;font-size:13px'>⚠️</span>`:''}</div>
+          <div style='display:flex;align-items:center;justify-content:flex-end;gap:3px'>${s.partsD}${s.bigDrama&&s.bigDrama.length>0?`<span title='Части дорам с большим объёмом (>600 стр.)!' onclick='showBigPopup(window._bigDramaByUser["${k}"])' class='warn-ic'>${ico('alert')}</span>`:''}</div>
           <div>${s.linesS.toLocaleString()}</div>
-          <div style='display:flex;align-items:center;justify-content:flex-end;gap:4px'>${s.partsS}${s.bigShow&&s.bigShow.length>0?`<span title='Есть части с большим количеством строк!' onclick='showBigShowPopup(window._bigShowByUser["${k}"])' style='cursor:pointer;color:#f0a030;font-size:14px;flex-shrink:0'>⚠️</span>`:''}</div>
+          <div style='display:flex;align-items:center;justify-content:flex-end;gap:4px'>${s.partsS}${s.bigShow&&s.bigShow.length>0?`<span title='Есть части с большим количеством строк!' onclick='showBigShowPopup(window._bigShowByUser["${k}"])' class='warn-ic'>${ico('alert')}</span>`:''}</div>
           <div>${s.parts}</div>
         </div>`;
       }).join('')}
@@ -1316,7 +1355,7 @@ onAuthStateChanged(auth,user=>{
 <!-- BIG SHOW PARTS POPUP -->
 <div id="bigshow-modal" style="display:none" class="modal-overlay">
   <div class="modal" style="max-width:600px">
-    <div class="modal-title">⚠️ Части с большим объёмом</div>
+    <div class="modal-title"><svg class="ic" aria-hidden="true"><use href="#i-alert"/></svg>Части с большим объёмом</div>
     <div class="modal-text" style="font-size:14px;margin-bottom:14px">Записи, где часть содержит более 500 строк (шоу) или более 600 строк (дорама):</div>
     <div id="bigshow-list"></div>
     <div class="modal-btns"><button class="btn btn-ghost" onclick="document.getElementById('bigshow-modal').style.display='none'">Закрыть</button></div>
